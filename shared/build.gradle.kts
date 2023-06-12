@@ -14,7 +14,7 @@ kotlin {
 
     cocoapods {
         version = "1.0.0"
-        summary = "Some description for the Shared Module"
+        summary = "Yuli app"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "14.1"
         podfile = project.file("../iosApp/Podfile")
@@ -56,7 +56,7 @@ kotlin {
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.myapplication.common"
+    namespace = "io.github.krisbitney.yuli.common"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
