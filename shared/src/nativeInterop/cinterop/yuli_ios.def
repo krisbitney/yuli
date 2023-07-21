@@ -1,0 +1,4 @@
+language = Objective-C
+headers = yuli_ios-Swift.h yuli_ios.h
+package = yuli_ios
+linkerOpts = -Fsrc/nativeInterop/frameworks/yuli_ios.xcframework/ios-arm64_x86_64-simulator/yuli_ios.framework -framework yuli_ios

@@ -1,0 +1,2284 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "yuli_ios"
+      },
+      {
+        "kind": "Import",
+        "name": "Swiftagram",
+        "printedName": "Swiftagram",
+        "declKind": "Import",
+        "moduleName": "yuli_ios"
+      },
+      {
+        "kind": "Import",
+        "name": "SwiftagramCrypto",
+        "printedName": "SwiftagramCrypto",
+        "declKind": "Import",
+        "moduleName": "yuli_ios"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SwiftSocialApi",
+        "printedName": "SwiftSocialApi",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "cancellables",
+            "printedName": "cancellables",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Set",
+                "printedName": "Swift.Set<Combine.AnyCancellable>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AnyCancellable",
+                    "printedName": "Combine.AnyCancellable",
+                    "usr": "s:7Combine14AnyCancellableC"
+                  }
+                ],
+                "usr": "s:Sh"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8yuli_ios14SwiftSocialApiC12cancellables33_0E71D9261AB1B6B964CA7DD8041041CFLLShy7Combine14AnyCancellableCGvp",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC12cancellables33_0E71D9261AB1B6B964CA7DD8041041CFLLShy7Combine14AnyCancellableCGvp",
+            "moduleName": "yuli_ios",
+            "isInternal": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "fixedbinaryorder": 0,
+            "hasStorage": true
+          },
+          {
+            "kind": "Var",
+            "name": "username",
+            "printedName": "username",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8yuli_ios14SwiftSocialApiC8username33_0E71D9261AB1B6B964CA7DD8041041CFLLSSSgvp",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC8username33_0E71D9261AB1B6B964CA7DD8041041CFLLSSSgvp",
+            "moduleName": "yuli_ios",
+            "isInternal": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "fixedbinaryorder": 1,
+            "hasStorage": true
+          },
+          {
+            "kind": "Var",
+            "name": "secretIdentifier",
+            "printedName": "secretIdentifier",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8yuli_ios14SwiftSocialApiC16secretIdentifier33_0E71D9261AB1B6B964CA7DD8041041CFLLSSvp",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC16secretIdentifier33_0E71D9261AB1B6B964CA7DD8041041CFLLSSvp",
+            "moduleName": "yuli_ios",
+            "isInternal": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "fixedbinaryorder": 2,
+            "isLet": true,
+            "hasStorage": true
+          },
+          {
+            "kind": "Var",
+            "name": "labelStorage",
+            "printedName": "labelStorage",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "KeychainStorage",
+                "printedName": "ComposableStorageCrypto.KeychainStorage<yuli_ios.KeychainItem>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "KeychainItem",
+                    "printedName": "yuli_ios.KeychainItem",
+                    "usr": "c:@M@yuli_ios@objc(cs)KeychainItem"
+                  }
+                ],
+                "usr": "s:23ComposableStorageCrypto08KeychainB0V"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8yuli_ios14SwiftSocialApiC12labelStorage33_0E71D9261AB1B6B964CA7DD8041041CFLL010ComposableG6Crypto08KeychainG0VyAA0R4ItemCGvp",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC12labelStorage33_0E71D9261AB1B6B964CA7DD8041041CFLL010ComposableG6Crypto08KeychainG0VyAA0R4ItemCGvp",
+            "moduleName": "yuli_ios",
+            "isInternal": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "fixedbinaryorder": 3,
+            "isLet": true,
+            "hasStorage": true
+          },
+          {
+            "kind": "Var",
+            "name": "storage",
+            "printedName": "storage",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "KeychainStorage",
+                "printedName": "ComposableStorageCrypto.KeychainStorage<Swiftagram.Secret>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Secret",
+                    "printedName": "Swiftagram.Secret",
+                    "usr": "s:10Swiftagram6SecretV"
+                  }
+                ],
+                "usr": "s:23ComposableStorageCrypto08KeychainB0V"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8yuli_ios14SwiftSocialApiC7storage33_0E71D9261AB1B6B964CA7DD8041041CFLL23ComposableStorageCrypto08KeychainP0Vy10Swiftagram6SecretVGvp",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC7storage33_0E71D9261AB1B6B964CA7DD8041041CFLL23ComposableStorageCrypto08KeychainP0Vy10Swiftagram6SecretVGvp",
+            "moduleName": "yuli_ios",
+            "isInternal": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "Final",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "fixedbinaryorder": 4,
+            "isLet": true,
+            "hasStorage": true
+          },
+          {
+            "kind": "Var",
+            "name": "secret",
+            "printedName": "secret",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swiftagram.Secret?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Secret",
+                    "printedName": "Swiftagram.Secret",
+                    "usr": "s:10Swiftagram6SecretV"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:8yuli_ios14SwiftSocialApiC6secret33_0E71D9261AB1B6B964CA7DD8041041CFLL10Swiftagram6SecretVSgvp",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC6secret33_0E71D9261AB1B6B964CA7DD8041041CFLL10Swiftagram6SecretVSgvp",
+            "moduleName": "yuli_ios",
+            "isInternal": true,
+            "declAttributes": [
+              "HasInitialValue",
+              "HasStorage",
+              "AccessControl"
+            ],
+            "fixedbinaryorder": 5,
+            "hasStorage": true
+          },
+          {
+            "kind": "Function",
+            "name": "login",
+            "printedName": "login(username:password:completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.Bool, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(Swift.Bool, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)loginWithUsername:password:completion:",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC5login8username8password10completionySS_SSySb_SSSgtctF",
+            "moduleName": "yuli_ios",
+            "isOpen": true,
+            "objc_name": "loginWithUsername:password:completion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "restoreSession",
+            "printedName": "restoreSession(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.Bool, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(Swift.Bool, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)restoreSessionWithCompletion:",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC14restoreSession10completionyySb_SSSgtc_tF",
+            "moduleName": "yuli_ios",
+            "isOpen": true,
+            "objc_name": "restoreSessionWithCompletion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fetchUserProfile",
+            "printedName": "fetchUserProfile(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(yuli_ios.User?, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(yuli_ios.User?, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "yuli_ios.User?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "User",
+                            "printedName": "yuli_ios.User",
+                            "usr": "c:@M@yuli_ios@objc(cs)User"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchUserProfileWithCompletion:",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC16fetchUserProfile10completionyyAA0G0CSg_SSSgtc_tF",
+            "moduleName": "yuli_ios",
+            "isOpen": true,
+            "objc_name": "fetchUserProfileWithCompletion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fetchFollowers",
+            "printedName": "fetchFollowers(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "([yuli_ios.Profile]?, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "([yuli_ios.Profile]?, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "[yuli_ios.Profile]?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Array",
+                            "printedName": "[yuli_ios.Profile]",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Profile",
+                                "printedName": "yuli_ios.Profile",
+                                "usr": "c:@M@yuli_ios@objc(cs)Profile"
+                              }
+                            ],
+                            "usr": "s:Sa"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchFollowersWithCompletion:",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC14fetchFollowers10completionyySayAA7ProfileCGSg_SSSgtc_tF",
+            "moduleName": "yuli_ios",
+            "isOpen": true,
+            "objc_name": "fetchFollowersWithCompletion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fetchFollowings",
+            "printedName": "fetchFollowings(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "([yuli_ios.Profile]?, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "([yuli_ios.Profile]?, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "[yuli_ios.Profile]?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Array",
+                            "printedName": "[yuli_ios.Profile]",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Profile",
+                                "printedName": "yuli_ios.Profile",
+                                "usr": "c:@M@yuli_ios@objc(cs)Profile"
+                              }
+                            ],
+                            "usr": "s:Sa"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchFollowingsWithCompletion:",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC15fetchFollowings10completionyySayAA7ProfileCGSg_SSSgtc_tF",
+            "moduleName": "yuli_ios",
+            "isOpen": true,
+            "objc_name": "fetchFollowingsWithCompletion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "SwiftSocialApi",
+                "printedName": "yuli_ios.SwiftSocialApi",
+                "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)init",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiCACycfc",
+            "moduleName": "yuli_ios",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi",
+        "mangledName": "$s8yuli_ios14SwiftSocialApiC",
+        "moduleName": "yuli_ios",
+        "isOpen": true,
+        "declAttributes": [
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "inheritsConvenienceInitializers": true,
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "SocialApi",
+            "printedName": "SocialApi",
+            "usr": "c:@M@yuli_ios@objc(pl)SocialApi",
+            "mangledName": "$s8yuli_ios9SocialApiP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "yuli_ios"
+      },
+      {
+        "kind": "Import",
+        "name": "ComposableStorage",
+        "printedName": "ComposableStorage",
+        "declKind": "Import",
+        "moduleName": "yuli_ios"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "User",
+        "printedName": "User",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "username",
+            "printedName": "username",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)User(py)username",
+            "mangledName": "$s8yuli_ios4UserC8usernameSSvp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 0,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)User(im)username",
+                "mangledName": "$s8yuli_ios4UserC8usernameSSvg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "name",
+            "printedName": "name",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)User(py)name",
+            "mangledName": "$s8yuli_ios4UserC4nameSSSgvp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 1,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)User(im)name",
+                "mangledName": "$s8yuli_ios4UserC4nameSSSgvg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "picUrl",
+            "printedName": "picUrl",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)User(py)picUrl",
+            "mangledName": "$s8yuli_ios4UserC6picUrlSSSgvp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 2,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)User(im)picUrl",
+                "mangledName": "$s8yuli_ios4UserC6picUrlSSSgvg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "followerCount",
+            "printedName": "followerCount",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)User(py)followerCount",
+            "mangledName": "$s8yuli_ios4UserC13followerCountSivp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 3,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)User(im)followerCount",
+                "mangledName": "$s8yuli_ios4UserC13followerCountSivg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "followingCount",
+            "printedName": "followingCount",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)User(py)followingCount",
+            "mangledName": "$s8yuli_ios4UserC14followingCountSivp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 4,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)User(im)followingCount",
+                "mangledName": "$s8yuli_ios4UserC14followingCountSivg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "mediaCount",
+            "printedName": "mediaCount",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)User(py)mediaCount",
+            "mangledName": "$s8yuli_ios4UserC10mediaCountSivp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 5,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int",
+                    "printedName": "Swift.Int",
+                    "usr": "s:Si"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)User(im)mediaCount",
+                "mangledName": "$s8yuli_ios4UserC10mediaCountSivg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(username:name:picUrl:followerCount:followingCount:mediaCount:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "User",
+                "printedName": "yuli_ios.User",
+                "usr": "c:@M@yuli_ios@objc(cs)User"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int",
+                "printedName": "Swift.Int",
+                "usr": "s:Si"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@yuli_ios@objc(cs)User(im)initWithUsername:name:picUrl:followerCount:followingCount:mediaCount:",
+            "mangledName": "$s8yuli_ios4UserC8username4name6picUrl13followerCount09followingI005mediaI0ACSS_SSSgAJS3itcfc",
+            "moduleName": "yuli_ios",
+            "objc_name": "initWithUsername:name:picUrl:followerCount:followingCount:mediaCount:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "User",
+                "printedName": "yuli_ios.User",
+                "usr": "c:@M@yuli_ios@objc(cs)User"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@yuli_ios@objc(cs)User(im)init",
+            "mangledName": "$s8yuli_ios4UserCACycfc",
+            "moduleName": "yuli_ios",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@yuli_ios@objc(cs)User",
+        "mangledName": "$s8yuli_ios4UserC",
+        "moduleName": "yuli_ios",
+        "isOpen": true,
+        "declAttributes": [
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "Profile",
+        "printedName": "Profile",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "username",
+            "printedName": "username",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)Profile(py)username",
+            "mangledName": "$s8yuli_ios7ProfileC8usernameSSvp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 0,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)Profile(im)username",
+                "mangledName": "$s8yuli_ios7ProfileC8usernameSSvg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "name",
+            "printedName": "name",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)Profile(py)name",
+            "mangledName": "$s8yuli_ios7ProfileC4nameSSSgvp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 1,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)Profile(im)name",
+                "mangledName": "$s8yuli_ios7ProfileC4nameSSSgvg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "picUrl",
+            "printedName": "picUrl",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)Profile(py)picUrl",
+            "mangledName": "$s8yuli_ios7ProfileC6picUrlSSSgvp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 2,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Optional",
+                    "printedName": "Swift.String?",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ],
+                    "usr": "s:Sq"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)Profile(im)picUrl",
+                "mangledName": "$s8yuli_ios7ProfileC6picUrlSSSgvg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(username:name:picUrl:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Profile",
+                "printedName": "yuli_ios.Profile",
+                "usr": "c:@M@yuli_ios@objc(cs)Profile"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Optional",
+                "printedName": "Swift.String?",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "usr": "s:Sq"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@yuli_ios@objc(cs)Profile(im)initWithUsername:name:picUrl:",
+            "mangledName": "$s8yuli_ios7ProfileC8username4name6picUrlACSS_SSSgAGtcfc",
+            "moduleName": "yuli_ios",
+            "objc_name": "initWithUsername:name:picUrl:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Profile",
+                "printedName": "yuli_ios.Profile",
+                "usr": "c:@M@yuli_ios@objc(cs)Profile"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@yuli_ios@objc(cs)Profile(im)init",
+            "mangledName": "$s8yuli_ios7ProfileCACycfc",
+            "moduleName": "yuli_ios",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@yuli_ios@objc(cs)Profile",
+        "mangledName": "$s8yuli_ios7ProfileC",
+        "moduleName": "yuli_ios",
+        "isOpen": true,
+        "declAttributes": [
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "SocialApi",
+        "printedName": "SocialApi",
+        "children": [
+          {
+            "kind": "Function",
+            "name": "login",
+            "printedName": "login(username:password:completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.Bool, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(Swift.Bool, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)loginWithUsername:password:completion:",
+            "mangledName": "$s8yuli_ios9SocialApiP5login8username8password10completionySS_SSySb_SSSgtctF",
+            "moduleName": "yuli_ios",
+            "genericSig": "<τ_0_0 where τ_0_0 : yuli_ios.SocialApi>",
+            "sugared_genericSig": "<Self where Self : yuli_ios.SocialApi>",
+            "protocolReq": true,
+            "objc_name": "loginWithUsername:password:completion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "restoreSession",
+            "printedName": "restoreSession(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(Swift.Bool, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(Swift.Bool, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Bool",
+                        "printedName": "Swift.Bool",
+                        "usr": "s:Sb"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)restoreSessionWithCompletion:",
+            "mangledName": "$s8yuli_ios9SocialApiP14restoreSession10completionyySb_SSSgtc_tF",
+            "moduleName": "yuli_ios",
+            "genericSig": "<τ_0_0 where τ_0_0 : yuli_ios.SocialApi>",
+            "sugared_genericSig": "<Self where Self : yuli_ios.SocialApi>",
+            "protocolReq": true,
+            "objc_name": "restoreSessionWithCompletion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fetchUserProfile",
+            "printedName": "fetchUserProfile(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(yuli_ios.User?, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "(yuli_ios.User?, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "yuli_ios.User?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "User",
+                            "printedName": "yuli_ios.User",
+                            "usr": "c:@M@yuli_ios@objc(cs)User"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)fetchUserProfileWithCompletion:",
+            "mangledName": "$s8yuli_ios9SocialApiP16fetchUserProfile10completionyyAA0F0CSg_SSSgtc_tF",
+            "moduleName": "yuli_ios",
+            "genericSig": "<τ_0_0 where τ_0_0 : yuli_ios.SocialApi>",
+            "sugared_genericSig": "<Self where Self : yuli_ios.SocialApi>",
+            "protocolReq": true,
+            "objc_name": "fetchUserProfileWithCompletion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fetchFollowers",
+            "printedName": "fetchFollowers(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "([yuli_ios.Profile]?, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "([yuli_ios.Profile]?, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "[yuli_ios.Profile]?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Array",
+                            "printedName": "[yuli_ios.Profile]",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Profile",
+                                "printedName": "yuli_ios.Profile",
+                                "usr": "c:@M@yuli_ios@objc(cs)Profile"
+                              }
+                            ],
+                            "usr": "s:Sa"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)fetchFollowersWithCompletion:",
+            "mangledName": "$s8yuli_ios9SocialApiP14fetchFollowers10completionyySayAA7ProfileCGSg_SSSgtc_tF",
+            "moduleName": "yuli_ios",
+            "genericSig": "<τ_0_0 where τ_0_0 : yuli_ios.SocialApi>",
+            "sugared_genericSig": "<Self where Self : yuli_ios.SocialApi>",
+            "protocolReq": true,
+            "objc_name": "fetchFollowersWithCompletion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "fetchFollowings",
+            "printedName": "fetchFollowings(completion:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "([yuli_ios.Profile]?, Swift.String?) -> ()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Void",
+                    "printedName": "()"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Tuple",
+                    "printedName": "([yuli_ios.Profile]?, Swift.String?)",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "[yuli_ios.Profile]?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "Array",
+                            "printedName": "[yuli_ios.Profile]",
+                            "children": [
+                              {
+                                "kind": "TypeNominal",
+                                "name": "Profile",
+                                "printedName": "yuli_ios.Profile",
+                                "usr": "c:@M@yuli_ios@objc(cs)Profile"
+                              }
+                            ],
+                            "usr": "s:Sa"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "Optional",
+                        "printedName": "Swift.String?",
+                        "children": [
+                          {
+                            "kind": "TypeNominal",
+                            "name": "String",
+                            "printedName": "Swift.String",
+                            "usr": "s:SS"
+                          }
+                        ],
+                        "usr": "s:Sq"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)fetchFollowingsWithCompletion:",
+            "mangledName": "$s8yuli_ios9SocialApiP15fetchFollowings10completionyySayAA7ProfileCGSg_SSSgtc_tF",
+            "moduleName": "yuli_ios",
+            "genericSig": "<τ_0_0 where τ_0_0 : yuli_ios.SocialApi>",
+            "sugared_genericSig": "<Self where Self : yuli_ios.SocialApi>",
+            "protocolReq": true,
+            "objc_name": "fetchFollowingsWithCompletion:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Protocol",
+        "usr": "c:@M@yuli_ios@objc(pl)SocialApi",
+        "mangledName": "$s8yuli_ios9SocialApiP",
+        "moduleName": "yuli_ios",
+        "genericSig": "<τ_0_0 : AnyObject>",
+        "sugared_genericSig": "<Self : AnyObject>",
+        "declAttributes": [
+          "ObjC"
+        ]
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "KeychainItem",
+        "printedName": "KeychainItem",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "id",
+            "printedName": "id",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)KeychainItem(py)id",
+            "mangledName": "$s8yuli_ios12KeychainItemC2idSSvp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 0,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)KeychainItem(im)id",
+                "mangledName": "$s8yuli_ios12KeychainItemC2idSSvg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "label",
+            "printedName": "label",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "c:@M@yuli_ios@objc(cs)KeychainItem(py)label",
+            "mangledName": "$s8yuli_ios12KeychainItemC5labelSSvp",
+            "moduleName": "yuli_ios",
+            "declAttributes": [
+              "Final",
+              "HasStorage",
+              "ObjC"
+            ],
+            "fixedbinaryorder": 1,
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "c:@M@yuli_ios@objc(cs)KeychainItem(im)label",
+                "mangledName": "$s8yuli_ios12KeychainItemC5labelSSvg",
+                "moduleName": "yuli_ios",
+                "implicit": true,
+                "declAttributes": [
+                  "Final",
+                  "ObjC"
+                ],
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(id:label:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "KeychainItem",
+                "printedName": "yuli_ios.KeychainItem",
+                "usr": "c:@M@yuli_ios@objc(cs)KeychainItem"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "String",
+                "printedName": "Swift.String",
+                "usr": "s:SS"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@yuli_ios@objc(cs)KeychainItem(im)initWithId:label:",
+            "mangledName": "$s8yuli_ios12KeychainItemC2id5labelACSS_SStcfc",
+            "moduleName": "yuli_ios",
+            "objc_name": "initWithId:label:",
+            "declAttributes": [
+              "ObjC"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "KeychainItem",
+                "printedName": "yuli_ios.KeychainItem",
+                "usr": "c:@M@yuli_ios@objc(cs)KeychainItem"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "c:@M@yuli_ios@objc(cs)KeychainItem(im)init",
+            "mangledName": "$s8yuli_ios12KeychainItemCACycfc",
+            "moduleName": "yuli_ios",
+            "overriding": true,
+            "implicit": true,
+            "objc_name": "init",
+            "declAttributes": [
+              "Dynamic",
+              "ObjC",
+              "Override"
+            ],
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(from:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "KeychainItem",
+                "printedName": "yuli_ios.KeychainItem",
+                "usr": "c:@M@yuli_ios@objc(cs)KeychainItem"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Decoder",
+                "printedName": "Swift.Decoder",
+                "usr": "s:s7DecoderP"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:8yuli_ios12KeychainItemC4fromACs7Decoder_p_tKcfc",
+            "mangledName": "$s8yuli_ios12KeychainItemC4fromACs7Decoder_p_tKcfc",
+            "moduleName": "yuli_ios",
+            "implicit": true,
+            "declAttributes": [
+              "Required"
+            ],
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "encode",
+            "printedName": "encode(to:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Encoder",
+                "printedName": "Swift.Encoder",
+                "usr": "s:s7EncoderP"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:8yuli_ios12KeychainItemC6encode2toys7Encoder_p_tKF",
+            "mangledName": "$s8yuli_ios12KeychainItemC6encode2toys7Encoder_p_tKF",
+            "moduleName": "yuli_ios",
+            "implicit": true,
+            "isOpen": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          }
+        ],
+        "declKind": "Class",
+        "usr": "c:@M@yuli_ios@objc(cs)KeychainItem",
+        "mangledName": "$s8yuli_ios12KeychainItemC",
+        "moduleName": "yuli_ios",
+        "isOpen": true,
+        "declAttributes": [
+          "ObjC"
+        ],
+        "superclassUsr": "c:objc(cs)NSObject",
+        "superclassNames": [
+          "ObjectiveC.NSObject"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "Decodable",
+            "printedName": "Decodable",
+            "usr": "s:Se",
+            "mangledName": "$sSe"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Encodable",
+            "printedName": "Encodable",
+            "usr": "s:SE",
+            "mangledName": "$sSE"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Identifiable",
+            "printedName": "Identifiable",
+            "children": [
+              {
+                "kind": "TypeWitness",
+                "name": "ID",
+                "printedName": "ID",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "String",
+                    "printedName": "Swift.String",
+                    "usr": "s:SS"
+                  }
+                ]
+              }
+            ],
+            "usr": "s:s12IdentifiableP",
+            "mangledName": "$ss12IdentifiableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Storable",
+            "printedName": "Storable",
+            "usr": "s:17ComposableStorage8StorableP",
+            "mangledName": "$s17ComposableStorage8StorableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Equatable",
+            "printedName": "Equatable",
+            "usr": "s:SQ",
+            "mangledName": "$sSQ"
+          },
+          {
+            "kind": "Conformance",
+            "name": "Hashable",
+            "printedName": "Hashable",
+            "usr": "s:SH",
+            "mangledName": "$sSH"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CVarArg",
+            "printedName": "CVarArg",
+            "usr": "s:s7CVarArgP",
+            "mangledName": "$ss7CVarArgP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObservingPublishing",
+            "printedName": "_KeyValueCodingAndObservingPublishing",
+            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
+            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "_KeyValueCodingAndObserving",
+            "printedName": "_KeyValueCodingAndObserving",
+            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
+            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomStringConvertible",
+            "printedName": "CustomStringConvertible",
+            "usr": "s:s23CustomStringConvertibleP",
+            "mangledName": "$ss23CustomStringConvertibleP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "CustomDebugStringConvertible",
+            "printedName": "CustomDebugStringConvertible",
+            "usr": "s:s28CustomDebugStringConvertibleP",
+            "mangledName": "$ss28CustomDebugStringConvertibleP"
+          }
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/kris\/XcodeProjects\/yuli_ios\/Sources\/yuli_ios\/SwiftSocialApi.swift",
+      "kind": "StringLiteral",
+      "offset": 235,
+      "length": 30,
+      "value": "\"io.github.krisbitney.yuli.ig\""
+    },
+    {
+      "filePath": "\/Users\/kris\/XcodeProjects\/yuli_ios\/Sources\/yuli_ios\/Types.swift",
+      "kind": "StringLiteral",
+      "offset": 56,
+      "length": 4,
+      "value": "\"yuli_ios.User\""
+    },
+    {
+      "filePath": "\/Users\/kris\/XcodeProjects\/yuli_ios\/Sources\/yuli_ios\/Types.swift",
+      "kind": "StringLiteral",
+      "offset": 618,
+      "length": 7,
+      "value": "\"yuli_ios.Profile\""
+    },
+    {
+      "filePath": "\/Users\/kris\/XcodeProjects\/yuli_ios\/Sources\/yuli_ios\/Types.swift",
+      "kind": "StringLiteral",
+      "offset": 1361,
+      "length": 12,
+      "value": "\"yuli_ios.KeychainItem\""
+    }
+  ]
+}
