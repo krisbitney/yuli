@@ -432,12 +432,18 @@
           {
             "kind": "Function",
             "name": "fetchFollowers",
-            "printedName": "fetchFollowers(completion:)",
+            "printedName": "fetchFollowers(pageDelay:completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "Void",
                 "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int64",
+                "printedName": "Swift.Int64",
+                "usr": "s:s5Int64V"
               },
               {
                 "kind": "TypeFunc",
@@ -496,11 +502,11 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchFollowersWithCompletion:",
-            "mangledName": "$s8yuli_ios14SwiftSocialApiC14fetchFollowers10completionyySayAA7ProfileCGSg_SSSgtc_tF",
+            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchFollowersWithPageDelay:completion:",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC14fetchFollowers9pageDelay10completionys5Int64V_ySayAA7ProfileCGSg_SSSgtctF",
             "moduleName": "yuli_ios",
             "isOpen": true,
-            "objc_name": "fetchFollowersWithCompletion:",
+            "objc_name": "fetchFollowersWithPageDelay:completion:",
             "declAttributes": [
               "ObjC"
             ],
@@ -509,12 +515,18 @@
           {
             "kind": "Function",
             "name": "fetchFollowings",
-            "printedName": "fetchFollowings(completion:)",
+            "printedName": "fetchFollowings(pageDelay:completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "Void",
                 "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int64",
+                "printedName": "Swift.Int64",
+                "usr": "s:s5Int64V"
               },
               {
                 "kind": "TypeFunc",
@@ -573,11 +585,11 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchFollowingsWithCompletion:",
-            "mangledName": "$s8yuli_ios14SwiftSocialApiC15fetchFollowings10completionyySayAA7ProfileCGSg_SSSgtc_tF",
+            "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchFollowingsWithPageDelay:completion:",
+            "mangledName": "$s8yuli_ios14SwiftSocialApiC15fetchFollowings9pageDelay10completionys5Int64V_ySayAA7ProfileCGSg_SSSgtctF",
             "moduleName": "yuli_ios",
             "isOpen": true,
-            "objc_name": "fetchFollowingsWithCompletion:",
+            "objc_name": "fetchFollowingsWithPageDelay:completion:",
             "declAttributes": [
               "ObjC"
             ],
@@ -1752,12 +1764,18 @@
           {
             "kind": "Function",
             "name": "fetchFollowers",
-            "printedName": "fetchFollowers(completion:)",
+            "printedName": "fetchFollowers(pageDelay:completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "Void",
                 "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int64",
+                "printedName": "Swift.Int64",
+                "usr": "s:s5Int64V"
               },
               {
                 "kind": "TypeFunc",
@@ -1816,13 +1834,13 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)fetchFollowersWithCompletion:",
-            "mangledName": "$s8yuli_ios9SocialApiP14fetchFollowers10completionyySayAA7ProfileCGSg_SSSgtc_tF",
+            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)fetchFollowersWithPageDelay:completion:",
+            "mangledName": "$s8yuli_ios9SocialApiP14fetchFollowers9pageDelay10completionys5Int64V_ySayAA7ProfileCGSg_SSSgtctF",
             "moduleName": "yuli_ios",
             "genericSig": "<τ_0_0 where τ_0_0 : yuli_ios.SocialApi>",
             "sugared_genericSig": "<Self where Self : yuli_ios.SocialApi>",
             "protocolReq": true,
-            "objc_name": "fetchFollowersWithCompletion:",
+            "objc_name": "fetchFollowersWithPageDelay:completion:",
             "declAttributes": [
               "ObjC"
             ],
@@ -1832,12 +1850,18 @@
           {
             "kind": "Function",
             "name": "fetchFollowings",
-            "printedName": "fetchFollowings(completion:)",
+            "printedName": "fetchFollowings(pageDelay:completion:)",
             "children": [
               {
                 "kind": "TypeNominal",
                 "name": "Void",
                 "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Int64",
+                "printedName": "Swift.Int64",
+                "usr": "s:s5Int64V"
               },
               {
                 "kind": "TypeFunc",
@@ -1896,13 +1920,13 @@
               }
             ],
             "declKind": "Func",
-            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)fetchFollowingsWithCompletion:",
-            "mangledName": "$s8yuli_ios9SocialApiP15fetchFollowings10completionyySayAA7ProfileCGSg_SSSgtc_tF",
+            "usr": "c:@M@yuli_ios@objc(pl)SocialApi(im)fetchFollowingsWithPageDelay:completion:",
+            "mangledName": "$s8yuli_ios9SocialApiP15fetchFollowings9pageDelay10completionys5Int64V_ySayAA7ProfileCGSg_SSSgtctF",
             "moduleName": "yuli_ios",
             "genericSig": "<τ_0_0 where τ_0_0 : yuli_ios.SocialApi>",
             "sugared_genericSig": "<Self where Self : yuli_ios.SocialApi>",
             "protocolReq": true,
-            "objc_name": "fetchFollowingsWithCompletion:",
+            "objc_name": "fetchFollowingsWithPageDelay:completion:",
             "declAttributes": [
               "ObjC"
             ],
@@ -2276,7 +2300,7 @@
     {
       "filePath": "\/Users\/kris\/XcodeProjects\/yuli_ios\/Sources\/yuli_ios\/Types.swift",
       "kind": "StringLiteral",
-      "offset": 1361,
+      "offset": 1397,
       "length": 12,
       "value": "\"yuli_ios.KeychainItem\""
     }

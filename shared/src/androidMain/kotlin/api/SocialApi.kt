@@ -1,21 +1,25 @@
 package api
 
 import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import com.github.instagram4j.instagram4j.IGClient
 import com.github.instagram4j.instagram4j.actions.users.UserAction
 import com.github.instagram4j.instagram4j.exceptions.IGLoginException
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import models.Profile
 import models.User
 import java.io.File
 
 actual object SocialApiFactory {
-    actual fun <T> get(context: T): SocialApi = AndroidSocialApi(context as Context)
+    @Composable
+    actual fun get(): SocialApi = AndroidSocialApi(LocalContext.current)
 }
 
-class AndroidSocialApi(private val context: Context) : SocialApi {
+class AndroidSocialApi(context: Context) : SocialApi {
 
     private val cacheDir = File(context.filesDir, "cache")
     private val client = File(cacheDir, "ClientObject.ser")
@@ -53,13 +57,13 @@ class AndroidSocialApi(private val context: Context) : SocialApi {
         }
     }
 
-    override suspend fun restoreSessionAsync(): Deferred<Boolean> = coroutineScope {
+    override suspend fun restoreSessionAsync(): Deferred<Result<Boolean>> = coroutineScope {
         async {
             if (client.exists() && cookie.exists()) {
                 insta = IGClient.deserialize(client, cookie)
-                return@async true
+                return@async Result.success(true)
             }
-            false
+            Result.success(false)
         }
     }
 
@@ -71,30 +75,21 @@ class AndroidSocialApi(private val context: Context) : SocialApi {
             }.getOrElse { e ->
                 return@async Result.failure(e)
             }.let {
-                User(
-                    username = it.username,
-                    name = it.full_name,
-                    picUrl = it.profile_pic_url,
-                    followerCount = it.follower_count,
-                    followingCount = it.following_count,
-                    mediaCount = it.media_count
-                )
-            }.let {
-                Result.success(it)
+                Result.success(it.toUser())
             }
         }
     }
 
-    override suspend fun fetchFollowersAsync(): Deferred<Result<List<Profile>>> = fetchFollowsAsync(FollowType.Followers)
+    override suspend fun fetchFollowersAsync(pageDelay: Long): Deferred<Result<List<Profile>>> = fetchFollowsAsync(pageDelay, FollowType.Followers)
 
-    override suspend fun fetchFollowingsAsync(): Deferred<Result<List<Profile>>> = fetchFollowsAsync(FollowType.Followings)
+    override suspend fun fetchFollowingsAsync(pageDelay: Long): Deferred<Result<List<Profile>>> = fetchFollowsAsync(pageDelay, FollowType.Followings)
 
     private enum class FollowType {
         Followers,
         Followings
     }
 
-    private suspend fun fetchFollowsAsync(target: FollowType): Deferred<Result<List<Profile>>> = coroutineScope {
+    private suspend fun fetchFollowsAsync(pageDelay: Long, target: FollowType): Deferred<Result<List<Profile>>> = coroutineScope {
         async {
             val ig = insta ?: return@async Result.failure(Exception("User is not logged in"))
             runCatching {
@@ -106,10 +101,10 @@ class AndroidSocialApi(private val context: Context) : SocialApi {
             }.getOrElse { e ->
                 return@async Result.failure(e)
             }.flatMap {
-                requestDelay()
+                delay(randomizePageDelay(pageDelay))
                 it.users
             }.map {
-                Profile(it.username, it.full_name, it.profile_pic_url)
+                it.toProfile()
             }.let {
                 Result.success(it)
             }
