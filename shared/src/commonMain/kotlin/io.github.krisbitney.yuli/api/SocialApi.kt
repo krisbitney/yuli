@@ -1,10 +1,10 @@
-package api
+package io.github.krisbitney.yuli.api
 
 import kotlinx.coroutines.Deferred
-import models.Profile
-import models.User
+import io.github.krisbitney.yuli.models.Profile
+import io.github.krisbitney.yuli.models.User
 
-expect object SocialApiFactory {
+expect class SocialApiFactory {
     fun get(): SocialApi
 }
 

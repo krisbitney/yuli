@@ -1,8 +1,6 @@
-package api
+package io.github.krisbitney.yuli.api
 
 import android.content.Context
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import com.github.instagram4j.instagram4j.IGClient
 import com.github.instagram4j.instagram4j.actions.users.UserAction
 import com.github.instagram4j.instagram4j.exceptions.IGLoginException
@@ -10,13 +8,13 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import models.Profile
-import models.User
+import io.github.krisbitney.yuli.models.Profile
+import io.github.krisbitney.yuli.models.User
 import java.io.File
 
-actual object SocialApiFactory {
-    @Composable
-    actual fun get(): SocialApi = AndroidSocialApi(LocalContext.current)
+actual class SocialApiFactory(private val context: Context) {
+
+    actual fun get(): SocialApi = AndroidSocialApi(context)
 }
 
 class AndroidSocialApi(context: Context) : SocialApi {
@@ -80,9 +78,13 @@ class AndroidSocialApi(context: Context) : SocialApi {
         }
     }
 
-    override suspend fun fetchFollowersAsync(pageDelay: Long): Deferred<Result<List<Profile>>> = fetchFollowsAsync(pageDelay, FollowType.Followers)
+    override suspend fun fetchFollowersAsync(pageDelay: Long): Deferred<Result<List<Profile>>> = fetchFollowsAsync(pageDelay,
+        FollowType.Followers
+    )
 
-    override suspend fun fetchFollowingsAsync(pageDelay: Long): Deferred<Result<List<Profile>>> = fetchFollowsAsync(pageDelay, FollowType.Followings)
+    override suspend fun fetchFollowingsAsync(pageDelay: Long): Deferred<Result<List<Profile>>> = fetchFollowsAsync(pageDelay,
+        FollowType.Followings
+    )
 
     private enum class FollowType {
         Followers,

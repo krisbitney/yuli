@@ -1,0 +1,35 @@
+CREATE TABLE profile (
+    username TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    picUrl TEXT NOT NULL,
+    follower INTEGER NOT NULL,
+    following INTEGER NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM profile;
+
+selectFollowers:
+SELECT *
+FROM profile
+WHERE follower > 0;
+
+selectFollowings:
+SELECT *
+FROM profile
+WHERE following > 0;
+
+selectUnfollowers:
+SELECT *
+FROM profile
+WHERE follower = 0 AND following > 0;
+
+selectSubscribers:
+SELECT *
+FROM profile
+WHERE follower > 0 AND following = 0;
+
+insertOrReplace:
+INSERT OR REPLACE INTO profile(username, name, picUrl, follower, following)
+VALUES (?, ?, ?, ?, ?);

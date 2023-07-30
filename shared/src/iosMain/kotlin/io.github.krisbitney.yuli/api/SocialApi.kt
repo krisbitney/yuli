@@ -1,13 +1,13 @@
-package api
+package io.github.krisbitney.yuli.api
 
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
-import models.Profile
-import models.User
+import io.github.krisbitney.yuli.models.Profile
+import io.github.krisbitney.yuli.models.User
 
-actual object SocialApiFactory {
+actual class SocialApiFactory {
     actual fun get(): SocialApi = SwiftSocialApi()
 }
 

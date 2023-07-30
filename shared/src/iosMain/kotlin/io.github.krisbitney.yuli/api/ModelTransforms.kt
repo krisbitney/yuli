@@ -1,7 +1,7 @@
-package api
+package io.github.krisbitney.yuli.api
 
-import models.Profile
-import models.User
+import io.github.krisbitney.yuli.models.Profile
+import io.github.krisbitney.yuli.models.User
 
 fun yuli_ios.User.toUser(): User = User(
     username = this.username ?: "",

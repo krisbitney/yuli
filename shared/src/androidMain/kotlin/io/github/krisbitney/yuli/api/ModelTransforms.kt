@@ -1,7 +1,7 @@
-package api
+package io.github.krisbitney.yuli.api
 
-import models.Profile
-import models.User
+import io.github.krisbitney.yuli.models.Profile
+import io.github.krisbitney.yuli.models.User
 import com.github.instagram4j.instagram4j.models.user.User as jvmUser
 import com.github.instagram4j.instagram4j.models.user.Profile as jvmProfile
 

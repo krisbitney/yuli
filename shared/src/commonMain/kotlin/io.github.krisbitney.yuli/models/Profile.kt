@@ -1,4 +1,4 @@
-package models
+package io.github.krisbitney.yuli.models
 
 data class Profile(
     val username: String,

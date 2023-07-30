@@ -1,4 +1,4 @@
-package api
+package io.github.krisbitney.yuli.api
 
 import kotlin.random.Random
 import kotlin.random.nextLong

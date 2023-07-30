@@ -3,27 +3,31 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("org.jetbrains.compose")
-//    id("com.squareup.sqldelight")
+    id("app.cash.sqldelight") version "2.0.0"
 }
 
 kotlin {
     android()
     listOf(
         iosArm64(),
-        iosSimulatorArm64(),
-        iosX64()
+        iosSimulatorArm64()
     ).forEach {
         it.compilations.getByName("main") {
             cinterops {
                 val yuli_ios by creating {
-//                    val fwTarget = if (it.name == "iosArm64") "ios-arm64" else "ios-arm64_x86_64-simulator"
-                    val fwDir = "src/nativeInterop/frameworks/yuli_ios.xcframework/ios-arm64_x86_64-simulator/yuli_ios.framework"
+                    val fwTarget = if (it.name == "iosArm64") "ios-arm64" else "ios-arm64_x86_64-simulator"
+                    val fwDir = "src/nativeInterop/frameworks/yuli_ios.xcframework/$fwTarget/yuli_ios.framework"
                     defFile("src/nativeInterop/cinterop/yuli_ios.def")
                     includeDirs("$fwDir/Headers")
                     compilerOpts("-F$fwDir", "-framework", "yuli_ios")
                 }
             }
         }
+//        it.binaries.framework {
+//            baseName = "shared"
+//            isStatic = true
+//            linkerOpts.add("-lsqlite3")
+//        }
     }
 
     cocoapods {
@@ -39,10 +43,6 @@ kotlin {
         extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 
-    val coroutinesVersion = "1.7.2"
-//    val sqlDelightVersion = "1.5.5"
-    val dateTimeVersion = "0.4.0"
-
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -51,9 +51,8 @@ kotlin {
                 implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-//                implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:$dateTimeVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
             }
         }
         val androidMain by getting {
@@ -61,20 +60,18 @@ kotlin {
                 api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.1")
-//                implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
+                implementation("app.cash.sqldelight:android-driver:2.0.0")
                 implementation("com.github.instagram4j:instagram4j:2.0.7")
             }
         }
-        val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
         val iosMain by creating {
             dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
-//                implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
+                implementation("app.cash.sqldelight:native-driver:2.0.0")
             }
         }
     }
@@ -100,23 +97,10 @@ android {
     }
 }
 
-//val downloads: Provider<Directory> = project.layout.buildDirectory.dir("downloads")
-//val frameworks = File("src/nativeInterop/frameworks")
-//val downloadYuliIosApi = tasks.register<Download>("downloadYuliIosApi") {
-//    src("https://raw.githubusercontent.com/krisbitney/yuli-ios-api/main/yuli_ios.zip")
-//    dest(downloads.get().asFile)
-//    overwrite(false)
-//}
-//val unpackYuliIosApi = tasks.register<Copy>("unpackYuliIosApi") {
-//    from(zipTree("${downloads.get().asFile}/yuli_ios.zip"))
-//    into(frameworks)
-//    dependsOn(downloadYuliIosApi)
-//}
-//tasks.withType<org.jetbrains.kotlin.gradle.tasks.CInteropProcess>().configureEach {
-//    dependsOn(unpackYuliIosApi)
-//    mustRunAfter(unpackYuliIosApi)
-//}
-//tasks.build {
-//    dependsOn(unpackYuliIosApi)
-//    mustRunAfter(unpackYuliIosApi)
-//}
+sqldelight {
+    databases {
+        create("SocialDatabase") {
+            packageName.set("io.github.krisbitney.yuli.database")
+        }
+    }
+}
