@@ -23,11 +23,6 @@ kotlin {
                 }
             }
         }
-//        it.binaries.framework {
-//            baseName = "shared"
-//            isStatic = true
-//            linkerOpts.add("-lsqlite3")
-//        }
     }
 
     cocoapods {
@@ -39,8 +34,8 @@ kotlin {
         framework {
             baseName = "shared"
             isStatic = true
+//            linkerOpts.add("-lsqlite3")
         }
-        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
     }
 
     sourceSets {
