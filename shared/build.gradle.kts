@@ -1,6 +1,5 @@
 plugins {
     kotlin("multiplatform")
-    kotlin("native.cocoapods")
     id("com.android.library")
     id("org.jetbrains.compose")
     id("app.cash.sqldelight") version "2.0.0"
@@ -23,15 +22,7 @@ kotlin {
                 }
             }
         }
-    }
-
-    cocoapods {
-        version = "1.0.0"
-        summary = "Yuli app"
-        homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "14.1"
-        podfile = project.file("../iosApp/Podfile")
-        framework {
+        it.binaries.framework {
             baseName = "shared"
             isStatic = true
 //            linkerOpts.add("-lsqlite3")
