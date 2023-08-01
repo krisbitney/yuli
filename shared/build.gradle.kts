@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
+    // remove sqldelight plugin to fix null pointer exception bug
     id("app.cash.sqldelight") version "2.0.0"
 }
 
@@ -11,21 +12,9 @@ kotlin {
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
-        it.compilations.getByName("main") {
-            cinterops {
-                val yuli_ios by creating {
-                    val fwTarget = if (it.name == "iosArm64") "ios-arm64" else "ios-arm64_x86_64-simulator"
-                    val fwDir = "src/nativeInterop/frameworks/yuli_ios.xcframework/$fwTarget/yuli_ios.framework"
-                    defFile("src/nativeInterop/cinterop/yuli_ios.def")
-                    includeDirs("$fwDir/Headers")
-                    compilerOpts("-F$fwDir", "-framework", "yuli_ios")
-                }
-            }
-        }
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
-//            linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -46,8 +35,6 @@ kotlin {
                 api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.1")
-                implementation("app.cash.sqldelight:android-driver:2.0.0")
-                implementation("com.github.instagram4j:instagram4j:2.0.7")
             }
         }
         val iosArm64Main by getting
@@ -56,9 +43,6 @@ kotlin {
             dependsOn(commonMain)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
-            dependencies {
-                implementation("app.cash.sqldelight:native-driver:2.0.0")
-            }
         }
     }
 }
@@ -80,13 +64,5 @@ android {
     }
     kotlin {
         jvmToolchain(11)
-    }
-}
-
-sqldelight {
-    databases {
-        create("SocialDatabase") {
-            packageName.set("io.github.krisbitney.yuli.database")
-        }
     }
 }
