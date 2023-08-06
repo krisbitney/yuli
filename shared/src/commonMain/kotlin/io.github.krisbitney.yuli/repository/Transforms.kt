@@ -5,7 +5,7 @@ import io.github.krisbitney.yuli.models.User
 import io.github.krisbitney.yuli.database.models.User as DbUser
 import io.github.krisbitney.yuli.database.models.Profile as DbProfile
 
-fun User.toDbUser(isLoggedIn: Boolean): DbUser = DbUser(
+fun User.toDbUser(): DbUser = DbUser(
     username = this.username,
     name = this.name,
     picUrl = this.picUrl,

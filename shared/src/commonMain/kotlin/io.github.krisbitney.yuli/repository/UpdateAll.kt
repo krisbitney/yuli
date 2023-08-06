@@ -25,7 +25,7 @@ suspend fun <C>updateAll(context: C): Result<Unit> = withContext(Dispatchers.IO)
     val user = withTimeout(requestTimeout) {
         api.fetchUser()
     }.getOrElse { return@withContext Result.failure(it) }
-    db.userQueries.replace(user.toDbUser(true))
+    db.userQueries.replace(user.toDbUser())
     randomizeDelay(requestDelay)
 
     // fetch followers
