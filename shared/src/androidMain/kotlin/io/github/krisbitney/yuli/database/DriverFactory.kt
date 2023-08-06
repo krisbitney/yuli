@@ -5,12 +5,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 
-actual class DriverFactory(private val context: Context) {
+actual object DriverFactory {
 
-    actual fun createDriver(): SqlDriver {
+    actual fun <C>createDriver(context: C): SqlDriver {
         return AndroidSqliteDriver(
             schema = SocialDatabase.Schema,
-            context = context,
+            context = context as Context,
             name = "social.db",
             callback = object : AndroidSqliteDriver.Callback(SocialDatabase.Schema) {
                 override fun onOpen(db: SupportSQLiteDatabase) {

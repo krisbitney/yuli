@@ -9,9 +9,8 @@ fun jvmUser.toUser(): User = User(
     username = this.username,
     name = this.full_name,
     picUrl = this.profile_pic_url,
-    followerCount = this.follower_count,
-    followingCount = this.following_count,
-    mediaCount = this.media_count
+    followerCount = this.follower_count.toLong(),
+    followingCount = this.following_count.toLong()
 )
 
 fun jvmProfile.toProfile(): Profile = Profile(

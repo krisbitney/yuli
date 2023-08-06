@@ -2,34 +2,33 @@ CREATE TABLE profile (
     username TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     picUrl TEXT NOT NULL,
-    follower INTEGER NOT NULL,
-    following INTEGER NOT NULL
+    follower INTEGER AS Boolean NOT NULL,
+    following INTEGER AS Boolean NOT NULL
 );
 
 selectAll:
 SELECT *
 FROM profile;
 
-selectFollowers:
+selectMutuals:
 SELECT *
 FROM profile
-WHERE follower > 0;
+WHERE follower > 0 AND following > 0;
 
-selectFollowings:
-SELECT *
-FROM profile
-WHERE following > 0;
-
-selectUnfollowers:
+selectNonfollowers:
 SELECT *
 FROM profile
 WHERE follower = 0 AND following > 0;
 
-selectSubscribers:
+selectFans:
 SELECT *
 FROM profile
 WHERE follower > 0 AND following = 0;
 
 insertOrReplace:
 INSERT OR REPLACE INTO profile(username, name, picUrl, follower, following)
+VALUES (?, ?, ?, ?, ?);
+
+insertIfNotExists:
+INSERT OR IGNORE INTO profile(username, name, picUrl, follower, following)
 VALUES (?, ?, ?, ?, ?);

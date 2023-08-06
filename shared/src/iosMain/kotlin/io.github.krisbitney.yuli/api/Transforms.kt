@@ -7,9 +7,8 @@ fun yuli_ios.User.toUser(): User = User(
     username = this.username ?: "",
     name = this.name ?: "",
     picUrl = this.picUrl ?: "",
-    followerCount = this.followerCount.toInt(),
-    followingCount = this.followingCount.toInt(),
-    mediaCount = this.mediaCount.toInt()
+    followerCount = this.followerCount,
+    followingCount = this.followingCount
 )
 
 fun yuli_ios.Profile.toProfile(): Profile = Profile(
