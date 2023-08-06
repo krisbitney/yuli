@@ -9,8 +9,6 @@ import io.github.krisbitney.yuli.database.SocialDatabase
 import io.github.krisbitney.yuli.database.createDatabase
 import io.github.krisbitney.yuli.models.Event
 import io.github.krisbitney.yuli.models.Profile
-import io.github.krisbitney.yuli.models.toDbUser
-import io.github.krisbitney.yuli.models.toProfile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -107,11 +105,15 @@ private suspend fun restoreSession(
     api: SocialApi,
     db: SocialDatabase
 ): Result<Unit> = withContext(Dispatchers.IO) {
-    val user = db.userQueries.selectAll().executeAsOneOrNull()
+    val state = db.stateQueries.selectAll().executeAsOneOrNull()
         ?: return@withContext Result.failure(Exception("User has never logged in"))
 
-    if (!user.isLoggedIn) {
+    if (!state.isLoggedIn) {
         return@withContext Result.failure(Exception("User is not logged in"))
+    }
+
+    if (state.isLocked) {
+        return@withContext Result.failure(Exception("User is locked out"))
     }
 
     val isRestored = api.restoreSession()
@@ -120,7 +122,7 @@ private suspend fun restoreSession(
     }
 
     if (!isRestored.getOrThrow()) {
-        db.userQueries.replace(user.copy(isLoggedIn = false))
+        db.stateQueries.replace(state.copy(isLoggedIn = false))
         return@withContext Result.failure(Exception("Session could not be restored. User must log in again."))
     }
 

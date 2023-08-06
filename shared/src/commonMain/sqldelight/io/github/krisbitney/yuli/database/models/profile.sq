@@ -6,10 +6,6 @@ CREATE TABLE profile (
     following INTEGER AS Boolean NOT NULL
 );
 
-selectAll:
-SELECT *
-FROM profile;
-
 selectMutuals:
 SELECT *
 FROM profile
@@ -27,8 +23,4 @@ WHERE follower > 0 AND following = 0;
 
 insertOrReplace:
 INSERT OR REPLACE INTO profile(username, name, picUrl, follower, following)
-VALUES (?, ?, ?, ?, ?);
-
-insertIfNotExists:
-INSERT OR IGNORE INTO profile(username, name, picUrl, follower, following)
 VALUES (?, ?, ?, ?, ?);

@@ -3,8 +3,7 @@ CREATE TABLE user (
     name TEXT NOT NULL,
     picUrl TEXT NOT NULL,
     followerCount INTEGER NOT NULL,
-    followingCount INTEGER NOT NULL,
-    isLoggedIn INTEGER AS Boolean NOT NULL
+    followingCount INTEGER NOT NULL
 );
 
 selectAll:
@@ -12,5 +11,5 @@ SELECT *
 FROM user;
 
 replace:
-REPLACE INTO user(username, name, picUrl, followerCount, followingCount, isLoggedIn)
+REPLACE INTO user(username, name, picUrl, followerCount, followingCount)
 VALUES ?;

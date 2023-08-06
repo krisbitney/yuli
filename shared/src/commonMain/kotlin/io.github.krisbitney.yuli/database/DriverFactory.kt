@@ -5,7 +5,7 @@ import app.cash.sqldelight.EnumColumnAdapter
 import app.cash.sqldelight.db.SqlDriver
 import io.github.krisbitney.yuli.database.models.Event
 import io.github.krisbitney.yuli.database.models.Profile
-import io.github.krisbitney.yuli.database.models.User
+import io.github.krisbitney.yuli.database.models.State
 
 expect object DriverFactory {
     fun <C>createDriver(context: C): SqlDriver
@@ -22,8 +22,9 @@ fun <C>createDatabase(context: C): SocialDatabase {
             followerAdapter = BooleanColumnAdapter,
             followingAdapter = BooleanColumnAdapter
         ),
-        userAdapter = User.Adapter(
-            isLoggedInAdapter = BooleanColumnAdapter
+        stateAdapter = State.Adapter(
+            isLoggedInAdapter = BooleanColumnAdapter,
+            isLockedAdapter = BooleanColumnAdapter
         )
     )
 }
