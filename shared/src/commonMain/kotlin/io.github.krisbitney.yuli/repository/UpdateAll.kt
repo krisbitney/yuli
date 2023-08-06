@@ -105,13 +105,14 @@ private suspend fun restoreSession(
     api: SocialApi,
     db: SocialDatabase
 ): Result<Unit> = withContext(Dispatchers.IO) {
-    val state = db.stateQueries.selectAll().executeAsOneOrNull()
+    val state = db.stateQueries.select().executeAsOneOrNull()
         ?: return@withContext Result.failure(Exception("User has never logged in"))
 
     if (!state.isLoggedIn) {
         return@withContext Result.failure(Exception("User is not logged in"))
     }
 
+    // TODO: determine when an account is locked out
     if (state.isLocked) {
         return@withContext Result.failure(Exception("User is locked out"))
     }

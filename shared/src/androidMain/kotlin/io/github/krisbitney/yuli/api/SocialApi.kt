@@ -23,6 +23,7 @@ class AndroidSocialApi(context: Context) : SocialApi {
     private var insta: IGClient? = null
     private var username: String? = null
 
+    // TODO: move exception handling logic to shared code
     override suspend fun login(username: String, password: String): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
             if (client.exists()) client.delete()

@@ -5,7 +5,7 @@ CREATE TABLE state (
     lastUpdate INTEGER NOT NULL
 );
 
-selectAll:
+select:
 SELECT *
 FROM state;
 

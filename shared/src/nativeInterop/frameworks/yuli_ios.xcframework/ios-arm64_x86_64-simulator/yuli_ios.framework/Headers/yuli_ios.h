@@ -30,15 +30,6 @@
 
 @end
 
-@interface KeychainItem : NSObject
-
-@property (nonatomic, readonly) NSString* id;
-@property (nonatomic, readonly) NSString* label;
-
-- (instancetype)initWithId:(NSString*)id label:(NSString*)label;
-
-@end
-
 @protocol SocialApi <NSObject>
 
 - (void)login:(NSString*)username password:(NSString*)password completion:(void (^)(BOOL, NSString* _Nullable))completion;
@@ -58,3 +49,5 @@
 - (void)fetchFollowings:(int64_t)pageDelay completion:(void (^)(NSArray<Profile*>* _Nullable, NSString* _Nullable))completion;
 
 @end
+
+
