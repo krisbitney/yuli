@@ -23,7 +23,6 @@ class AndroidSocialApi(context: Context) : SocialApi {
     private var insta: IGClient? = null
     private var username: String? = null
 
-    // TODO: move exception handling logic to shared code
     override suspend fun login(username: String, password: String): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
             if (client.exists()) client.delete()
@@ -36,15 +35,10 @@ class AndroidSocialApi(context: Context) : SocialApi {
                 ig.serialize(client, cookie)
                 insta = ig
             } catch (e: IGLoginException) {
+                // TODO: Do I need this?
                 val revised: Exception = if (e.loginResponse.two_factor_info != null) {
                     Exception("This account requires 2-factor-authentication.")
-                } else if (e.message!!.contains("few minutes")) {
-                    Exception("Wait a few minutes and try again.")
-                } else if (e.message!!.contains("password")) {
-                    Exception("Username or password is incorrect")
-                } else if (e.message!!.contains("challenge")) {
-                    Exception("You account is locked. Open https://i.instagram.com/challenge to verify your account.")
-                }  else {
+                } else {
                     e
                 }
                 return@withContext Result.failure(revised)

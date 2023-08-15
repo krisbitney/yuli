@@ -5,6 +5,7 @@ import io.github.krisbitney.yuli.models.Event
 import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
 import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
@@ -30,14 +31,18 @@ class Repository(val db: SocialDatabase) {
         .executeAsList()
         .map { it.toProfile() }
 
-    fun getEvents(): List<Event> = db.eventQueries
-        .selectEvents(0)
-        .executeAsList()
-        .map { it.toEvent() }
+    fun getAllEvents(): List<Event> = getEvents(
+        Instant.DISTANT_PAST.epochSeconds,
+        Instant.DISTANT_FUTURE.epochSeconds
+    )
 
-    // TODO: get events for a specific day or time period
-    fun getTodayEvents(): List<Event> = db.eventQueries
-        .selectEvents(beginningOfTodayUnixTimestamp())
+    fun getTodayEvents(): List<Event> = getEvents(
+        beginningOfTodayUnixTimestamp(),
+        Instant.DISTANT_FUTURE.epochSeconds
+    )
+
+    private fun getEvents(beginning: Long, end: Long): List<Event> = db.eventQueries
+        .selectEvents(beginning, end)
         .executeAsList()
         .map { it.toEvent() }
 

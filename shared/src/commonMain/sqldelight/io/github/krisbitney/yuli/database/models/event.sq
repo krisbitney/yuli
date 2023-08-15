@@ -11,7 +11,7 @@ selectEvents:
 SELECT event.username, profile.name, profile.picUrl, event.kind, event.timestamp
 FROM event
 LEFT JOIN profile ON event.username = profile.username
-WHERE timestamp > :fromUnixTime
+WHERE timestamp > :fromUnixTime AND timestamp < :toUnixTime
 ORDER BY timestamp DESC;
 
 insert:

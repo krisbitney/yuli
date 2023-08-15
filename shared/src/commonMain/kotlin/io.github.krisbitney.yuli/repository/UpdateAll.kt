@@ -1,11 +1,9 @@
 package io.github.krisbitney.yuli.repository
 
-import io.github.krisbitney.yuli.api.SocialApi
 import io.github.krisbitney.yuli.api.SocialApiFactory
 import io.github.krisbitney.yuli.api.randomizeDelay
 import io.github.krisbitney.yuli.api.requestDelay
 import io.github.krisbitney.yuli.api.requestTimeout
-import io.github.krisbitney.yuli.database.SocialDatabase
 import io.github.krisbitney.yuli.database.createDatabase
 import io.github.krisbitney.yuli.models.Event
 import io.github.krisbitney.yuli.models.Profile
@@ -15,11 +13,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.datetime.Clock
 
-suspend fun <C>updateAll(context: C): Result<Unit> = withContext(Dispatchers.IO) {
+// TODO: add background tasks (after testing)
+suspend fun <C> updateAll(context: C): Result<Unit> = withContext(Dispatchers.IO) {
     val api = SocialApiFactory.get(context)
     val db = createDatabase(context)
 
-    restoreSession(api, db).onFailure { return@withContext Result.failure(it) }
+    LoginManager(api, db).restoreSession().onFailure { return@withContext Result.failure(it) }
 
     // fetch and store user
     val user = withTimeout(requestTimeout) {
@@ -42,15 +41,7 @@ suspend fun <C>updateAll(context: C): Result<Unit> = withContext(Dispatchers.IO)
     // organize followers and followings
     val follows = followSetAlgebra(followers, followings)
 
-    // assess change events
-    val previous = Follows(
-        fans = db.profileQueries.selectFans().executeAsList().map { it.toProfile() },
-        mutuals = db.profileQueries.selectMutuals().executeAsList().map { it.toProfile() },
-        nonfollowers = db.profileQueries.selectNonfollowers().executeAsList().map { it.toProfile() }
-    )
-    val events = deriveFollowEvents(previous, follows)
-
-    // store followers
+    // store follows
     db.transaction {
         follows.fans.forEach { fan ->
             db.profileQueries.insertOrReplace(
@@ -81,6 +72,15 @@ suspend fun <C>updateAll(context: C): Result<Unit> = withContext(Dispatchers.IO)
         }
     }
 
+    // assess change events
+    val previous = Follows(
+        fans = db.profileQueries.selectFans().executeAsList().map { it.toProfile() },
+        mutuals = db.profileQueries.selectMutuals().executeAsList().map { it.toProfile() },
+        nonfollowers = db.profileQueries.selectNonfollowers().executeAsList()
+            .map { it.toProfile() }
+    )
+    val events = deriveFollowEvents(previous, follows)
+
     // store events
     db.transaction {
         events.forEach { event ->
@@ -100,35 +100,6 @@ private data class Follows(
     val mutuals: List<Profile>,
     val nonfollowers: List<Profile>,
 )
-
-private suspend fun restoreSession(
-    api: SocialApi,
-    db: SocialDatabase
-): Result<Unit> = withContext(Dispatchers.IO) {
-    val state = db.stateQueries.select().executeAsOneOrNull()
-        ?: return@withContext Result.failure(Exception("User has never logged in"))
-
-    if (!state.isLoggedIn) {
-        return@withContext Result.failure(Exception("User is not logged in"))
-    }
-
-    // TODO: determine when an account is locked out
-    if (state.isLocked) {
-        return@withContext Result.failure(Exception("User is locked out"))
-    }
-
-    val isRestored = api.restoreSession()
-    if (isRestored.isFailure) {
-        return@withContext Result.failure(isRestored.exceptionOrNull()!!)
-    }
-
-    if (!isRestored.getOrThrow()) {
-        db.stateQueries.replace(state.copy(isLoggedIn = false))
-        return@withContext Result.failure(Exception("Session could not be restored. User must log in again."))
-    }
-
-    Result.success(Unit)
-}
 
 private fun followSetAlgebra(
     followers: List<Profile>,
@@ -153,18 +124,68 @@ private fun deriveFollowEvents(previous: Follows, current: Follows): List<Event>
 
     return previousAll.union(currentAll).mapNotNull {
         when {
-            it in previous.fans && it in current.mutuals -> Event(it, Event.Kind.FAN_TO_MUTUAL, time)
+            it in previous.fans && it in current.mutuals -> Event(
+                it,
+                Event.Kind.FAN_TO_MUTUAL,
+                time
+            )
+
             it in previous.fans && it !in currentAll -> Event(it, Event.Kind.FAN_TO_NONE, time)
-            it in previous.nonfollowers && it in current.mutuals -> Event(it, Event.Kind.NONFOLLOWER_TO_MUTUAL, time)
-            it in previous.nonfollowers && it !in currentAll -> Event(it, Event.Kind.NONFOLLOWER_TO_NONE, time)
-            it in previous.mutuals && it in current.nonfollowers -> Event(it, Event.Kind.MUTUAL_TO_NONFOLLOWER, time)
-            it in previous.mutuals && it in current.fans -> Event(it, Event.Kind.MUTUAL_TO_FAN, time)
-            it in current.nonfollowers && it !in previousAll -> Event(it, Event.Kind.NONE_TO_NONFOLLOWER, time)
+            it in previous.nonfollowers && it in current.mutuals -> Event(
+                it,
+                Event.Kind.NONFOLLOWER_TO_MUTUAL,
+                time
+            )
+
+            it in previous.nonfollowers && it !in currentAll -> Event(
+                it,
+                Event.Kind.NONFOLLOWER_TO_NONE,
+                time
+            )
+
+            it in previous.mutuals && it in current.nonfollowers -> Event(
+                it,
+                Event.Kind.MUTUAL_TO_NONFOLLOWER,
+                time
+            )
+
+            it in previous.mutuals && it in current.fans -> Event(
+                it,
+                Event.Kind.MUTUAL_TO_FAN,
+                time
+            )
+
+            it in current.nonfollowers && it !in previousAll -> Event(
+                it,
+                Event.Kind.NONE_TO_NONFOLLOWER,
+                time
+            )
+
             it in current.fans && it !in previousAll -> Event(it, Event.Kind.NONE_TO_FAN, time)
-            it in previous.nonfollowers && it in current.fans -> Event(it, Event.Kind.NONFOLLOWER_TO_FAN, time)
-            it in previous.fans && it in current.nonfollowers -> Event(it, Event.Kind.FAN_TO_NONFOLLOWER, time)
-            it in current.mutuals && it !in previousAll -> Event(it, Event.Kind.NONE_TO_MUTUAL, time)
-            it in previous.mutuals && it !in currentAll -> Event(it, Event.Kind.MUTUAL_TO_NONE, time)
+            it in previous.nonfollowers && it in current.fans -> Event(
+                it,
+                Event.Kind.NONFOLLOWER_TO_FAN,
+                time
+            )
+
+            it in previous.fans && it in current.nonfollowers -> Event(
+                it,
+                Event.Kind.FAN_TO_NONFOLLOWER,
+                time
+            )
+
+            it in current.mutuals && it !in previousAll -> Event(
+                it,
+                Event.Kind.NONE_TO_MUTUAL,
+                time
+            )
+
+            it in previous.mutuals && it !in currentAll -> Event(
+                it,
+                Event.Kind.MUTUAL_TO_NONE,
+                time
+            )
+
             else -> null
         }
     }
