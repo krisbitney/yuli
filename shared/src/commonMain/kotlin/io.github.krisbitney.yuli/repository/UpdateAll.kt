@@ -1,10 +1,10 @@
 package io.github.krisbitney.yuli.repository
 
-import io.github.krisbitney.yuli.api.SocialApiFactory
+import io.github.krisbitney.yuli.api.SocialApi
 import io.github.krisbitney.yuli.api.randomizeDelay
 import io.github.krisbitney.yuli.api.requestDelay
 import io.github.krisbitney.yuli.api.requestTimeout
-import io.github.krisbitney.yuli.database.createDatabase
+import io.github.krisbitney.yuli.database.SocialDatabase
 import io.github.krisbitney.yuli.models.Event
 import io.github.krisbitney.yuli.models.Profile
 import kotlinx.coroutines.Dispatchers
@@ -14,17 +14,18 @@ import kotlinx.coroutines.withTimeout
 import kotlinx.datetime.Clock
 
 // TODO: add background tasks (after testing)
-suspend fun <C> updateAll(context: C): Result<Unit> = withContext(Dispatchers.IO) {
-    val api = SocialApiFactory.get(context)
-    val db = createDatabase(context)
+@OptIn(ExperimentalStdlibApi::class)
+suspend fun updateAll(
+    username: String,
+    api: SocialApi,
+    db: SocialDatabase
+): Result<Unit> = withContext(Dispatchers.IO) {
+    val user = LoginManager(api, db)
+        .restoreSession(username)
+        .getOrElse { return@withContext Result.failure(it) }
 
-    LoginManager(api, db).restoreSession().onFailure { return@withContext Result.failure(it) }
-
-    // fetch and store user
-    val user = withTimeout(requestTimeout) {
-        api.fetchUser()
-    }.getOrElse { return@withContext Result.failure(it) }
-    db.userQueries.replace(user.toDbUser())
+    // store user
+    db.insertOrReplaceUser(user)
     randomizeDelay(requestDelay)
 
     // fetch followers
@@ -38,67 +39,42 @@ suspend fun <C> updateAll(context: C): Result<Unit> = withContext(Dispatchers.IO
         api.fetchFollowings(requestDelay)
     }.getOrElse { return@withContext Result.failure(it) }
 
+    // get previous follows before update
+    val previous = Follows(
+        fans = db.selectFans().toSet(),
+        mutuals = db.selectMutuals().toSet(),
+        nonfollowers = db.selectNonfollowers().toSet()
+    )
+
     // organize followers and followings
     val follows = followSetAlgebra(followers, followings)
 
-    // store follows
-    db.transaction {
-        follows.fans.forEach { fan ->
-            db.profileQueries.insertOrReplace(
-                username = fan.username,
-                name = fan.name,
-                picUrl = fan.picUrl,
-                follower = true,
-                following = false
-            )
-        }
-        follows.mutuals.forEach { mutual ->
-            db.profileQueries.insertOrReplace(
-                username = mutual.username,
-                name = mutual.name,
-                picUrl = mutual.picUrl,
-                follower = true,
-                following = true
-            )
-        }
-        follows.nonfollowers.forEach { nonfollower ->
-            db.profileQueries.insertOrReplace(
-                username = nonfollower.username,
-                name = nonfollower.name,
-                picUrl = nonfollower.picUrl,
-                follower = false,
-                following = true
-            )
-        }
+    // calculate former follows
+    val previousAll = previous.fans + previous.mutuals + previous.nonfollowers
+    val formerFollows = (previousAll - follows.fans - follows.mutuals - follows.nonfollowers).onEach {
+        it.follower = false
+        it.following = false
     }
 
+    // store updated follows
+    db.insertOrReplaceProfile(follows.fans)
+    db.insertOrReplaceProfile(follows.mutuals)
+    db.insertOrReplaceProfile(follows.nonfollowers)
+    db.insertOrReplaceProfile(formerFollows)
+
     // assess change events
-    val previous = Follows(
-        fans = db.profileQueries.selectFans().executeAsList().map { it.toProfile() },
-        mutuals = db.profileQueries.selectMutuals().executeAsList().map { it.toProfile() },
-        nonfollowers = db.profileQueries.selectNonfollowers().executeAsList()
-            .map { it.toProfile() }
-    )
     val events = deriveFollowEvents(previous, follows)
 
     // store events
-    db.transaction {
-        events.forEach { event ->
-            db.eventQueries.insert(
-                username = event.profile.username,
-                kind = event.kind,
-                timestamp = event.timestamp
-            )
-        }
-    }
+    db.insertEvent(events)
 
     Result.success(Unit)
 }
 
 private data class Follows(
-    val fans: List<Profile>,
-    val mutuals: List<Profile>,
-    val nonfollowers: List<Profile>,
+    val fans: Set<Profile>,
+    val mutuals: Set<Profile>,
+    val nonfollowers: Set<Profile>
 )
 
 private fun followSetAlgebra(
@@ -108,18 +84,21 @@ private fun followSetAlgebra(
     val followersSet = followers.toSet()
     val followingsSet = followings.toSet()
     val fans = followersSet - followingsSet
-    val mutuals = followersSet.intersect(followingsSet)
+    val mutuals = followersSet.intersect(followingsSet).onEach {
+        it.follower = true
+        it.following = true
+    }
     val nonfollowers = followingsSet - followersSet
     return Follows(
-        fans = fans.toList(),
-        mutuals = mutuals.toList(),
-        nonfollowers = nonfollowers.toList()
+        fans = fans,
+        mutuals = mutuals,
+        nonfollowers = nonfollowers
     )
 }
 
 private fun deriveFollowEvents(previous: Follows, current: Follows): List<Event> {
-    val previousAll = previous.fans.union(previous.mutuals).union(previous.nonfollowers)
-    val currentAll = current.fans.union(current.mutuals).union(current.nonfollowers)
+    val previousAll = previous.fans + previous.mutuals + previous.nonfollowers
+    val currentAll = current.fans + current.mutuals + current.nonfollowers
     val time = Clock.System.now().epochSeconds
 
     return previousAll.union(currentAll).mapNotNull {

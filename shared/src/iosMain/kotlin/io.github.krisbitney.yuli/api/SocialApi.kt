@@ -8,7 +8,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 actual object SocialApiFactory {
-    actual fun <C>get(context: C): SocialApi = SwiftSocialApi()
+    actual fun get(androidSecureStorageDir: String?): SocialApi = SwiftSocialApi()
 }
 
 class SwiftSocialApi : SocialApi {
@@ -19,7 +19,7 @@ class SwiftSocialApi : SocialApi {
         var isLoggedIn: Result<Unit> = Result.failure(Exception("'isLoggedIn' failed to initialize"))
         try {
             var isComplete = false
-            api.login(username, password) { isSuccess: Boolean, error: String? ->
+            api.loginWithUsername(username, password) { isSuccess: Boolean, error: String? ->
                 isLoggedIn = if (isSuccess) {
                     Result.success(Unit)
                 } else if (error != null) {
@@ -42,7 +42,7 @@ class SwiftSocialApi : SocialApi {
         var isRestored: Result<Boolean> = Result.failure(Exception("'isRestored' failed to initialize"))
         try {
             var isComplete = false
-            api.restoreSession { isSuccess: Boolean, error: String? ->
+            api.restoreSessionWithCompletion { isSuccess: Boolean, error: String? ->
                 isRestored = if (error == null) {
                     Result.success(isSuccess)
                 } else {
@@ -63,7 +63,7 @@ class SwiftSocialApi : SocialApi {
         var user: Result<User> = Result.failure(Exception("'user' failed to initialize"))
         try {
             var isComplete = false
-            api.fetchUserProfile { iosUser: yuli_ios.User?, error: String? ->
+            api.fetchUserProfileWithCompletion { iosUser: yuli_ios.User?, error: String? ->
                 user = if (iosUser != null) {
                     Result.success(iosUser.toUser())
                 } else if (error != null) {
@@ -86,11 +86,11 @@ class SwiftSocialApi : SocialApi {
         var followers: Result<List<Profile>> = Result.failure(Exception("'followers' failed to initialize"))
         try {
             var isComplete = false
-            api.fetchFollowers(pageDelay) { iosFollowers: List<*>?, error: String? ->
+            api.fetchFollowersWithPageDelay(pageDelay) { iosFollowers: List<*>?, error: String? ->
                 followers = if (iosFollowers != null) {
                     iosFollowers
                         .filterIsInstance<yuli_ios.Profile>()
-                        .map { it.toProfile() }
+                        .map { it.toProfile(follower = true) }
                         .let { Result.success(it) }
                 } else if (error != null) {
                     Result.failure(Exception(error))
@@ -112,11 +112,11 @@ class SwiftSocialApi : SocialApi {
         var followings: Result<List<Profile>> = Result.failure(Exception("'followings' failed to initialize"))
         try {
             var isComplete = false
-            api.fetchFollowers(pageDelay) { iosFollowings: List<*>?, error: String? ->
+            api.fetchFollowersWithPageDelay(pageDelay) { iosFollowings: List<*>?, error: String? ->
                 followings = if (iosFollowings != null) {
                     iosFollowings
                         .filterIsInstance<yuli_ios.Profile>()
-                        .map { it.toProfile() }
+                        .map { it.toProfile(following = true) }
                         .let { Result.success(it) }
                 } else if (error != null) {
                     Result.failure(Exception(error))

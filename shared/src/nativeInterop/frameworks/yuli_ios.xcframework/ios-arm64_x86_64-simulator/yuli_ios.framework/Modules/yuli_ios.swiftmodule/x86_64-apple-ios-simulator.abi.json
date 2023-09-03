@@ -31,105 +31,6 @@
         "printedName": "SwiftSocialApi",
         "children": [
           {
-            "kind": "Var",
-            "name": "cancellables",
-            "printedName": "cancellables",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Set",
-                "printedName": "Swift.Set<Combine.AnyCancellable>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "AnyCancellable",
-                    "printedName": "Combine.AnyCancellable",
-                    "usr": "s:7Combine14AnyCancellableC"
-                  }
-                ],
-                "usr": "s:Sh"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:8yuli_ios14SwiftSocialApiC12cancellables33_0E71D9261AB1B6B964CA7DD8041041CFLLShy7Combine14AnyCancellableCGvp",
-            "mangledName": "$s8yuli_ios14SwiftSocialApiC12cancellables33_0E71D9261AB1B6B964CA7DD8041041CFLLShy7Combine14AnyCancellableCGvp",
-            "moduleName": "yuli_ios",
-            "isInternal": true,
-            "declAttributes": [
-              "HasInitialValue",
-              "HasStorage",
-              "AccessControl"
-            ],
-            "fixedbinaryorder": 0,
-            "hasStorage": true
-          },
-          {
-            "kind": "Var",
-            "name": "username",
-            "printedName": "username",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "Swift.String?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "String",
-                    "printedName": "Swift.String",
-                    "usr": "s:SS"
-                  }
-                ],
-                "usr": "s:Sq"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:8yuli_ios14SwiftSocialApiC8username33_0E71D9261AB1B6B964CA7DD8041041CFLLSSSgvp",
-            "mangledName": "$s8yuli_ios14SwiftSocialApiC8username33_0E71D9261AB1B6B964CA7DD8041041CFLLSSSgvp",
-            "moduleName": "yuli_ios",
-            "isInternal": true,
-            "declAttributes": [
-              "HasInitialValue",
-              "HasStorage",
-              "AccessControl"
-            ],
-            "fixedbinaryorder": 1,
-            "hasStorage": true
-          },
-          {
-            "kind": "Var",
-            "name": "secret",
-            "printedName": "secret",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Optional",
-                "printedName": "Swiftagram.Secret?",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Secret",
-                    "printedName": "Swiftagram.Secret",
-                    "usr": "s:10Swiftagram6SecretV"
-                  }
-                ],
-                "usr": "s:Sq"
-              }
-            ],
-            "declKind": "Var",
-            "usr": "s:8yuli_ios14SwiftSocialApiC6secret33_0E71D9261AB1B6B964CA7DD8041041CFLL10Swiftagram6SecretVSgvp",
-            "mangledName": "$s8yuli_ios14SwiftSocialApiC6secret33_0E71D9261AB1B6B964CA7DD8041041CFLL10Swiftagram6SecretVSgvp",
-            "moduleName": "yuli_ios",
-            "isInternal": true,
-            "declAttributes": [
-              "HasInitialValue",
-              "HasStorage",
-              "AccessControl"
-            ],
-            "fixedbinaryorder": 2,
-            "hasStorage": true
-          },
-          {
             "kind": "Function",
             "name": "login",
             "printedName": "login(username:password:completion:)",
@@ -195,10 +96,10 @@
             "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)loginWithUsername:password:completion:",
             "mangledName": "$s8yuli_ios14SwiftSocialApiC5login8username8password10completionySS_SSySb_SSSgtctF",
             "moduleName": "yuli_ios",
-            "isOpen": true,
             "objc_name": "loginWithUsername:password:completion:",
             "declAttributes": [
-              "ObjC"
+              "ObjC",
+              "AccessControl"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -256,10 +157,10 @@
             "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)restoreSessionWithCompletion:",
             "mangledName": "$s8yuli_ios14SwiftSocialApiC14restoreSession10completionyySb_SSSgtc_tF",
             "moduleName": "yuli_ios",
-            "isOpen": true,
             "objc_name": "restoreSessionWithCompletion:",
             "declAttributes": [
-              "ObjC"
+              "ObjC",
+              "AccessControl"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -325,10 +226,10 @@
             "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchUserProfileWithCompletion:",
             "mangledName": "$s8yuli_ios14SwiftSocialApiC16fetchUserProfile10completionyyAA0G0CSg_SSSgtc_tF",
             "moduleName": "yuli_ios",
-            "isOpen": true,
             "objc_name": "fetchUserProfileWithCompletion:",
             "declAttributes": [
-              "ObjC"
+              "ObjC",
+              "AccessControl"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -408,10 +309,10 @@
             "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchFollowersWithPageDelay:completion:",
             "mangledName": "$s8yuli_ios14SwiftSocialApiC14fetchFollowers9pageDelay10completionys5Int64V_ySayAA7ProfileCGSg_SSSgtctF",
             "moduleName": "yuli_ios",
-            "isOpen": true,
             "objc_name": "fetchFollowersWithPageDelay:completion:",
             "declAttributes": [
-              "ObjC"
+              "ObjC",
+              "AccessControl"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -491,10 +392,10 @@
             "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi(im)fetchFollowingsWithPageDelay:completion:",
             "mangledName": "$s8yuli_ios14SwiftSocialApiC15fetchFollowings9pageDelay10completionys5Int64V_ySayAA7ProfileCGSg_SSSgtctF",
             "moduleName": "yuli_ios",
-            "isOpen": true,
             "objc_name": "fetchFollowingsWithPageDelay:completion:",
             "declAttributes": [
-              "ObjC"
+              "ObjC",
+              "AccessControl"
             ],
             "funcSelfKind": "NonMutating"
           },
@@ -529,8 +430,9 @@
         "usr": "c:@M@yuli_ios@objc(cs)SwiftSocialApi",
         "mangledName": "$s8yuli_ios14SwiftSocialApiC",
         "moduleName": "yuli_ios",
-        "isOpen": true,
         "declAttributes": [
+          "AccessControl",
+          "ObjCMembers",
           "ObjC"
         ],
         "superclassUsr": "c:objc(cs)NSObject",
@@ -635,9 +537,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 0,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -693,9 +595,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 1,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -759,9 +661,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 2,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -817,9 +719,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 3,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -867,9 +769,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 4,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -917,9 +819,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 5,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -1016,8 +918,8 @@
             "usr": "c:@M@yuli_ios@objc(cs)User(im)initWithUsername:name:picUrl:followerCount:followingCount:mediaCount:",
             "mangledName": "$s8yuli_ios4UserC8username4name6picUrl13followerCount09followingI005mediaI0ACSS_SSSgAJS3itcfc",
             "moduleName": "yuli_ios",
-            "objc_name": "initWithUsername:name:picUrl:followerCount:followingCount:mediaCount:",
             "declAttributes": [
+              "AccessControl",
               "ObjC"
             ],
             "init_kind": "Designated"
@@ -1053,8 +955,9 @@
         "usr": "c:@M@yuli_ios@objc(cs)User",
         "mangledName": "$s8yuli_ios4UserC",
         "moduleName": "yuli_ios",
-        "isOpen": true,
         "declAttributes": [
+          "AccessControl",
+          "ObjCMembers",
           "ObjC"
         ],
         "superclassUsr": "c:objc(cs)NSObject",
@@ -1137,9 +1040,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 0,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -1195,9 +1098,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 1,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -1261,9 +1164,9 @@
             "declAttributes": [
               "Final",
               "HasStorage",
+              "AccessControl",
               "ObjC"
             ],
-            "fixedbinaryorder": 2,
             "isLet": true,
             "hasStorage": true,
             "accessors": [
@@ -1350,8 +1253,8 @@
             "usr": "c:@M@yuli_ios@objc(cs)Profile(im)initWithUsername:name:picUrl:",
             "mangledName": "$s8yuli_ios7ProfileC8username4name6picUrlACSS_SSSgAGtcfc",
             "moduleName": "yuli_ios",
-            "objc_name": "initWithUsername:name:picUrl:",
             "declAttributes": [
+              "AccessControl",
               "ObjC"
             ],
             "init_kind": "Designated"
@@ -1387,8 +1290,9 @@
         "usr": "c:@M@yuli_ios@objc(cs)Profile",
         "mangledName": "$s8yuli_ios7ProfileC",
         "moduleName": "yuli_ios",
-        "isOpen": true,
         "declAttributes": [
+          "AccessControl",
+          "ObjCMembers",
           "ObjC"
         ],
         "superclassUsr": "c:objc(cs)NSObject",
@@ -1844,6 +1748,7 @@
         "genericSig": "<τ_0_0 : AnyObject>",
         "sugared_genericSig": "<Self : AnyObject>",
         "declAttributes": [
+          "AccessControl",
           "ObjC"
         ]
       }
@@ -1854,14 +1759,14 @@
     {
       "filePath": "\/Users\/kris\/XcodeProjects\/yuli_ios\/Sources\/yuli_ios\/Types.swift",
       "kind": "StringLiteral",
-      "offset": 56,
+      "offset": 70,
       "length": 4,
       "value": "\"yuli_ios.User\""
     },
     {
       "filePath": "\/Users\/kris\/XcodeProjects\/yuli_ios\/Sources\/yuli_ios\/Types.swift",
       "kind": "StringLiteral",
-      "offset": 618,
+      "offset": 653,
       "length": 7,
       "value": "\"yuli_ios.Profile\""
     }

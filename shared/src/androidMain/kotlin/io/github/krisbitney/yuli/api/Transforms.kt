@@ -13,8 +13,10 @@ fun jvmUser.toUser(): User = User(
     followingCount = this.following_count.toLong()
 )
 
-fun jvmProfile.toProfile(): Profile = Profile(
+fun jvmProfile.toProfile(follower: Boolean = false, following: Boolean = false): Profile = Profile(
     username = this.username,
     name = this.full_name,
-    picUrl = this.profile_pic_url
+    picUrl = this.profile_pic_url,
+    follower = follower,
+    following = following
 )

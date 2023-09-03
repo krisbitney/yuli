@@ -2,30 +2,37 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
-    id("app.cash.sqldelight") version "2.0.0"
+    id("io.realm.kotlin") version "1.10.0"
 }
 
 kotlin {
-    android()
+    androidTarget()
     listOf(
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
+        val fwTarget = if (it.name == "iosArm64") "ios-arm64" else "ios-arm64_x86_64-simulator"
+        val fwDir = File(projectDir, "src/nativeInterop/frameworks/yuli_ios.xcframework/$fwTarget").absolutePath
+        val compilerLinkerOpts = listOf("-F$fwDir", "-framework", "yuli_ios")
+
         it.compilations.getByName("main") {
-            cinterops {
-                val yuli_ios by creating {
-                    val fwTarget = if (it.name == "iosArm64") "ios-arm64" else "ios-arm64_x86_64-simulator"
-                    val fwDir = "src/nativeInterop/frameworks/yuli_ios.xcframework/$fwTarget/yuli_ios.framework"
-                    defFile("src/nativeInterop/cinterop/yuli_ios.def")
-                    includeDirs("$fwDir/Headers")
-                    compilerOpts("-F$fwDir", "-framework", "yuli_ios")
-                }
+            val yuli_ios by cinterops.creating {
+                defFile("src/nativeInterop/cinterop/yuli_ios.def")
+                includeDirs("$fwDir/yuli_ios.framework/Headers")
+                compilerOpts(compilerLinkerOpts)
             }
+        }
+        it.binaries.all {
+            linkerOpts(compilerLinkerOpts)
         }
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
         }
+    }
+
+    tasks.named("linkDebugFrameworkIosSimulatorArm64").configure {
+        outputs.cacheIf { false }
     }
 
     sourceSets {
@@ -38,6 +45,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("io.realm.kotlin:library-base:1.10.0")
             }
         }
         val androidMain by getting {
@@ -45,7 +53,6 @@ kotlin {
                 api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.1")
-                implementation("app.cash.sqldelight:android-driver:2.0.0")
                 implementation("com.github.instagram4j:instagram4j:2.0.7")
             }
         }
@@ -55,8 +62,11 @@ kotlin {
             dependsOn(commonMain)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+        }
+        val commonTest by getting {
             dependencies {
-                implementation("app.cash.sqldelight:native-driver:2.0.0")
+                implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
             }
         }
     }
@@ -75,17 +85,17 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlin {
         jvmToolchain(11)
     }
 }
 
-sqldelight {
-    databases {
-        create("SocialDatabase") {
-            packageName.set("io.github.krisbitney.yuli.database")
-        }
+// print stdout during tests
+tasks.withType<Test> {
+    this.testLogging {
+        this.showStandardStreams = true
     }
 }
+

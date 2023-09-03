@@ -1,6 +1,5 @@
 package io.github.krisbitney.yuli.api
 
-import android.content.Context
 import com.github.instagram4j.instagram4j.IGClient
 import com.github.instagram4j.instagram4j.actions.users.UserAction
 import com.github.instagram4j.instagram4j.exceptions.IGLoginException
@@ -12,12 +11,15 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 actual object SocialApiFactory {
-    actual fun <C>get(context: C): SocialApi = AndroidSocialApi(context as Context)
+    actual fun get(androidSecureStorageDir: String?): SocialApi = AndroidSocialApi(androidSecureStorageDir!!)
 }
 
-class AndroidSocialApi(context: Context) : SocialApi {
+class AndroidSocialApi(storageDir: String) : SocialApi {
 
-    private val cacheDir = File(context.filesDir, "cache")
+    // TODO: use more secure method of storing credentials -- encryption?
+    private val cacheDir = File(storageDir, "cache").also {
+        if (!it.exists()) it.mkdirs()
+    }
     private val client = File(cacheDir, "ClientObject.ser")
     private val cookie = File(cacheDir, "LoginSession.ser")
     private var insta: IGClient? = null
@@ -31,9 +33,10 @@ class AndroidSocialApi(context: Context) : SocialApi {
                 val ig = IGClient.builder()
                     .username(username)
                     .password(password)
-                    .simulatedLogin()
+                    .login()
                 ig.serialize(client, cookie)
                 insta = ig
+                this@AndroidSocialApi.username = username
             } catch (e: IGLoginException) {
                 // TODO: Do I need this?
                 val revised: Exception = if (e.loginResponse.two_factor_info != null) {
@@ -50,6 +53,7 @@ class AndroidSocialApi(context: Context) : SocialApi {
         if (client.exists() && cookie.exists()) {
             try {
                 insta = IGClient.deserialize(client, cookie)
+                this@AndroidSocialApi.username = username
             } catch (e: Exception) {
                 return@withContext Result.failure(e)
             }
@@ -89,7 +93,10 @@ class AndroidSocialApi(context: Context) : SocialApi {
             delay(randomizeDelay(pageDelay))
             it.users
         }.map {
-            it.toProfile()
+            when (target) {
+                FollowType.Follower -> it.toProfile(follower = true)
+                FollowType.Following -> it.toProfile(following = true)
+            }
         }.let {
             Result.success(it)
         }

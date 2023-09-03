@@ -5,11 +5,12 @@ plugins {
 }
 
 kotlin {
-    android()
+    androidTarget()
     sourceSets {
         val androidMain by getting {
             dependencies {
                 implementation(project(":shared"))
+//                compileOnly("io.realm.kotlin:library-base:1.10.0")
             }
         }
     }

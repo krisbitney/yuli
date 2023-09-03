@@ -230,6 +230,8 @@ using UInt = size_t;
 #if __has_warning("-Watimport-in-framework-header")
 #pragma clang diagnostic ignored "-Watimport-in-framework-header"
 #endif
+@import Foundation;
+@import ObjectiveC;
 #endif
 
 #endif
@@ -250,6 +252,54 @@ using UInt = size_t;
 #endif
 
 #if defined(__OBJC__)
+@class NSString;
+
+SWIFT_CLASS("_TtC8yuli_ios7Profile")
+@interface Profile : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull username;
+@property (nonatomic, readonly, copy) NSString * _Nullable name;
+@property (nonatomic, readonly, copy) NSString * _Nullable picUrl;
+- (nonnull instancetype)initWithUsername:(NSString * _Nonnull)username name:(NSString * _Nullable)name picUrl:(NSString * _Nullable)picUrl OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
+@class User;
+
+SWIFT_PROTOCOL("_TtP8yuli_ios9SocialApi_")
+@protocol SocialApi
+- (void)loginWithUsername:(NSString * _Nonnull)username password:(NSString * _Nonnull)password completion:(void (^ _Nonnull)(BOOL, NSString * _Nullable))completion;
+- (void)restoreSessionWithCompletion:(void (^ _Nonnull)(BOOL, NSString * _Nullable))completion;
+- (void)fetchUserProfileWithCompletion:(void (^ _Nonnull)(User * _Nullable, NSString * _Nullable))completion;
+- (void)fetchFollowersWithPageDelay:(int64_t)pageDelay completion:(void (^ _Nonnull)(NSArray<Profile *> * _Nullable, NSString * _Nullable))completion;
+- (void)fetchFollowingsWithPageDelay:(int64_t)pageDelay completion:(void (^ _Nonnull)(NSArray<Profile *> * _Nullable, NSString * _Nullable))completion;
+@end
+
+
+SWIFT_CLASS("_TtC8yuli_ios14SwiftSocialApi")
+@interface SwiftSocialApi : NSObject <SocialApi>
+- (void)loginWithUsername:(NSString * _Nonnull)username password:(NSString * _Nonnull)password completion:(void (^ _Nonnull)(BOOL, NSString * _Nullable))completion;
+- (void)restoreSessionWithCompletion:(void (^ _Nonnull)(BOOL, NSString * _Nullable))completion;
+- (void)fetchUserProfileWithCompletion:(void (^ _Nonnull)(User * _Nullable, NSString * _Nullable))completion;
+- (void)fetchFollowersWithPageDelay:(int64_t)pageDelay completion:(void (^ _Nonnull)(NSArray<Profile *> * _Nullable, NSString * _Nullable))completion;
+- (void)fetchFollowingsWithPageDelay:(int64_t)pageDelay completion:(void (^ _Nonnull)(NSArray<Profile *> * _Nullable, NSString * _Nullable))completion;
+- (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+SWIFT_CLASS("_TtC8yuli_ios4User")
+@interface User : NSObject
+@property (nonatomic, readonly, copy) NSString * _Nonnull username;
+@property (nonatomic, readonly, copy) NSString * _Nullable name;
+@property (nonatomic, readonly, copy) NSString * _Nullable picUrl;
+@property (nonatomic, readonly) NSInteger followerCount;
+@property (nonatomic, readonly) NSInteger followingCount;
+@property (nonatomic, readonly) NSInteger mediaCount;
+- (nonnull instancetype)initWithUsername:(NSString * _Nonnull)username name:(NSString * _Nullable)name picUrl:(NSString * _Nullable)picUrl followerCount:(NSInteger)followerCount followingCount:(NSInteger)followingCount mediaCount:(NSInteger)mediaCount OBJC_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 #endif
 #if defined(__cplusplus)
 #endif
