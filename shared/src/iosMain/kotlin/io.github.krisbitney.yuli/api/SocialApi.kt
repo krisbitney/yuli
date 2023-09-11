@@ -6,14 +6,17 @@ import io.github.krisbitney.yuli.models.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import cocoapods.yuli_ios.SwiftSocialApi
+import cocoapods.yuli_ios.Profile as SwiftProfile
+import cocoapods.yuli_ios.User as SwiftUser
 
 actual object SocialApiFactory {
-    actual fun get(androidSecureStorageDir: String?): SocialApi = SwiftSocialApi()
+    actual fun get(androidSecureStorageDir: String?): SocialApi = IosSocialApi()
 }
 
-class SwiftSocialApi : SocialApi {
+class IosSocialApi : SocialApi {
 
-    private val api = yuli_ios.SwiftSocialApi()
+    private val api = SwiftSocialApi()
 
     override suspend fun login(username: String, password: String): Result<Unit> = withContext(Dispatchers.IO) {
         var isLoggedIn: Result<Unit> = Result.failure(Exception("'isLoggedIn' failed to initialize"))
@@ -63,7 +66,7 @@ class SwiftSocialApi : SocialApi {
         var user: Result<User> = Result.failure(Exception("'user' failed to initialize"))
         try {
             var isComplete = false
-            api.fetchUserProfileWithCompletion { iosUser: yuli_ios.User?, error: String? ->
+            api.fetchUserProfileWithCompletion { iosUser: SwiftUser?, error: String? ->
                 user = if (iosUser != null) {
                     Result.success(iosUser.toUser())
                 } else if (error != null) {
@@ -89,7 +92,7 @@ class SwiftSocialApi : SocialApi {
             api.fetchFollowersWithPageDelay(pageDelay) { iosFollowers: List<*>?, error: String? ->
                 followers = if (iosFollowers != null) {
                     iosFollowers
-                        .filterIsInstance<yuli_ios.Profile>()
+                        .filterIsInstance<SwiftProfile>()
                         .map { it.toProfile(follower = true) }
                         .let { Result.success(it) }
                 } else if (error != null) {
@@ -115,7 +118,7 @@ class SwiftSocialApi : SocialApi {
             api.fetchFollowersWithPageDelay(pageDelay) { iosFollowings: List<*>?, error: String? ->
                 followings = if (iosFollowings != null) {
                     iosFollowings
-                        .filterIsInstance<yuli_ios.Profile>()
+                        .filterIsInstance<SwiftProfile>()
                         .map { it.toProfile(following = true) }
                         .let { Result.success(it) }
                 } else if (error != null) {

@@ -2,8 +2,10 @@ package io.github.krisbitney.yuli.api
 
 import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
+import cocoapods.yuli_ios.Profile as SwiftProfile
+import cocoapods.yuli_ios.User as SwiftUser
 
-fun yuli_ios.User.toUser(): User = User(
+fun SwiftUser.toUser(): User = User(
     username = this.username(),
     name = this.name() ?: "",
     picUrl = this.picUrl() ?: "",
@@ -11,7 +13,7 @@ fun yuli_ios.User.toUser(): User = User(
     followingCount = this.followingCount()
 )
 
-fun yuli_ios.Profile.toProfile(follower: Boolean = false, following: Boolean = false): Profile = Profile(
+fun SwiftProfile.toProfile(follower: Boolean = false, following: Boolean = false): Profile = Profile(
     username = this.username(),
     name = this.name() ?: "",
     picUrl = this.picUrl() ?: "",

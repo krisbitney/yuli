@@ -40,6 +40,4 @@ class User(
     override fun toString(): String {
         return "User(username='$username', name='$name', picUrl='$picUrl', followerCount=$followerCount, followingCount=$followingCount)"
     }
-
-
 }

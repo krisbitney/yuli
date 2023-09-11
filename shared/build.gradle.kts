@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
+    kotlin("native.cocoapods")
     id("io.realm.kotlin") version "1.10.0"
 }
 
@@ -11,28 +12,23 @@ kotlin {
         iosArm64(),
         iosSimulatorArm64()
     ).forEach {
-        val fwTarget = if (it.name == "iosArm64") "ios-arm64" else "ios-arm64_x86_64-simulator"
-        val fwDir = File(projectDir, "src/nativeInterop/frameworks/yuli_ios.xcframework/$fwTarget").absolutePath
-        val compilerLinkerOpts = listOf("-F$fwDir", "-framework", "yuli_ios")
-
-        it.compilations.getByName("main") {
-            val yuli_ios by cinterops.creating {
-                defFile("src/nativeInterop/cinterop/yuli_ios.def")
-                includeDirs("$fwDir/yuli_ios.framework/Headers")
-                compilerOpts(compilerLinkerOpts)
-            }
-        }
-        it.binaries.all {
-            linkerOpts(compilerLinkerOpts)
-        }
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
         }
     }
 
-    tasks.named("linkDebugFrameworkIosSimulatorArm64").configure {
-        outputs.cacheIf { false }
+    cocoapods {
+        version = "1.0.0"
+        summary = "Some description for the Shared Module"
+        homepage = "Link to the Shared Module homepage"
+        ios.deploymentTarget = "13.0"
+
+        pod("yuli_ios") {
+            version = "1.0.0"
+            source = path(project.file("/Users/kris/XcodeProjects/yuli_ios"))
+            extraOpts = listOf("-compiler-option", "-fmodules")
+        }
     }
 
     sourceSets {
@@ -69,6 +65,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
             }
         }
+        val androidInstrumentedTest by getting
+        val iosSimulatorArm64Test by getting
     }
 }
 
@@ -99,3 +97,12 @@ tasks.withType<Test> {
     }
 }
 
+tasks.register("copyFramework") {
+    doLast {
+        val srcFile = File("$projectDir/src/nativeInterop/frameworks/yuli_ios.xcframework/ios-arm64_x86_64-simulator/yuli_ios.framework/yuli_ios")
+        val destDir = File("$buildDir/bin/iosSimulatorArm64/debugTest/Frameworks/yuli_ios.framework")
+        destDir.mkdirs() // Create destination directory if it doesn't exist
+        srcFile.copyTo(File(destDir, "yuli_ios"), overwrite = true)
+    }
+}
+tasks.getByName("iosSimulatorArm64Test").dependsOn("copyFramework")
