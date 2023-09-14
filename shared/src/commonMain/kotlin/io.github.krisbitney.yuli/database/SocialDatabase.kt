@@ -28,6 +28,14 @@ class SocialDatabase : AutoCloseable {
     )
     private val realm = Realm.open(configuration)
 
+    fun countFollowers(): Long {
+        return realm.query<Profile>("follower > 0").count().find()
+    }
+
+    fun countFollowing(): Long {
+        return realm.query<Profile>("following > 0").count().find()
+    }
+
     // TODO: should these use 1 and 0 or true and false?
     fun selectMutuals(): List<Profile> {
         return realm.query<Profile>("follower > 0 AND following > 0").find()

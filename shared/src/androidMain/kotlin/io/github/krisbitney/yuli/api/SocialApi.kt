@@ -20,6 +20,7 @@ class AndroidSocialApi(storageDir: String) : SocialApi {
     private val cacheDir = File(storageDir, "cache").also {
         if (!it.exists()) it.mkdirs()
     }
+    // TODO: store cookies by username so i can support multiple logins?
     private val client = File(cacheDir, "ClientObject.ser")
     private val cookie = File(cacheDir, "LoginSession.ser")
     private var insta: IGClient? = null
@@ -49,7 +50,7 @@ class AndroidSocialApi(storageDir: String) : SocialApi {
         }
     }
 
-    override suspend fun restoreSession(): Result<Boolean> = withContext(Dispatchers.IO) {
+    override suspend fun restoreSession(username: String): Result<Boolean> = withContext(Dispatchers.IO) {
         if (client.exists() && cookie.exists()) {
             try {
                 insta = IGClient.deserialize(client, cookie)

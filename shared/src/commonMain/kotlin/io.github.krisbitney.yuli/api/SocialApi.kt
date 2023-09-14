@@ -9,7 +9,7 @@ expect object SocialApiFactory {
 
 interface SocialApi {
     suspend fun login(username: String, password: String): Result<Unit>
-    suspend fun restoreSession(): Result<Boolean>
+    suspend fun restoreSession(username: String): Result<Boolean>
     suspend fun fetchUser(): Result<User>
     suspend fun fetchFollowers(pageDelay: Long): Result<List<Profile>>
     suspend fun fetchFollowings(pageDelay: Long): Result<List<Profile>>

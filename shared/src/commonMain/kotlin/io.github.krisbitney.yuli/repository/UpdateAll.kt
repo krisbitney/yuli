@@ -28,14 +28,27 @@ suspend fun updateAll(
     db.insertOrReplaceUser(user)
     randomizeDelay(requestDelay)
 
+    // TODO: refactor timeout calculations into separate function
     // fetch followers
-    val followers = withTimeout(requestTimeout * user.followerCount) {
+    val lastFollowerCount = db.countFollowers()
+    val lastFollowerTimeout = if (lastFollowerCount == 0L) {
+        Long.MAX_VALUE
+    } else {
+        (lastFollowerCount * 1.1 * requestTimeout).toLong()
+    }
+    val followers = withTimeout(lastFollowerTimeout) {
         api.fetchFollowers(requestDelay)
     }.getOrElse { return@withContext Result.failure(it) }
     randomizeDelay(requestDelay)
 
     // fetch followings
-    val followings = withTimeout(requestTimeout * user.followingCount) {
+    val lastFollowingCount = db.countFollowing()
+    val lastFollowingTimeout = if (lastFollowingCount == 0L) {
+        Long.MAX_VALUE
+    } else {
+        (lastFollowingCount * 1.1 * requestTimeout).toLong()
+    }
+    val followings = withTimeout(lastFollowingTimeout) {
         api.fetchFollowings(requestDelay)
     }.getOrElse { return@withContext Result.failure(it) }
 

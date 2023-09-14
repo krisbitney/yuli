@@ -1,21 +1,12 @@
 package io.github.krisbitney.yuli
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import io.github.krisbitney.yuli.ui.HomeScreen
 
 @Composable
 fun App() {
     MaterialTheme {
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Card {
-                Text("Hello World!")
-            }
-        }
+        HomeScreen()
     }
 }

@@ -63,7 +63,7 @@ class LoginManager(private val api: SocialApi, private val db: SocialDatabase) {
             return@withContext Result.failure(Exception("Your account is locked. Open https://i.instagram.com/challenge to verify your account."))
         }
 
-        val isRestored = api.restoreSession().getOrElse {
+        val isRestored = api.restoreSession(username).getOrElse {
             return@withContext Result.failure(it)
         }
 

@@ -7,11 +7,9 @@ class User(
     @PrimaryKey
     var username: String,
     var name: String,
-    var picUrl: String,
-    var followerCount: Long,
-    var followingCount: Long,
+    var picUrl: String
 ) : RealmObject {
-    constructor() : this("", "", "", 0, 0)
+    constructor() : this("", "", "")
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -22,8 +20,6 @@ class User(
         if (username != other.username) return false
         if (name != other.name) return false
         if (picUrl != other.picUrl) return false
-        if (followerCount != other.followerCount) return false
-        if (followingCount != other.followingCount) return false
 
         return true
     }
@@ -32,12 +28,10 @@ class User(
         var result = username.hashCode()
         result = 31 * result + name.hashCode()
         result = 31 * result + picUrl.hashCode()
-        result = 31 * result + followerCount.hashCode()
-        result = 31 * result + followingCount.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "User(username='$username', name='$name', picUrl='$picUrl', followerCount=$followerCount, followingCount=$followingCount)"
+        return "User(username='$username', name='$name', picUrl='$picUrl')"
     }
 }

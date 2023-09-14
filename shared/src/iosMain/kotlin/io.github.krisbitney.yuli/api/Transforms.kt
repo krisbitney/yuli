@@ -8,15 +8,12 @@ import cocoapods.yuli_ios.User as SwiftUser
 fun SwiftUser.toUser(): User = User(
     username = this.username(),
     name = this.name() ?: "",
-    picUrl = this.picUrl() ?: "",
-    followerCount = this.followerCount(),
-    followingCount = this.followingCount()
+    picUrl = this.picUrl() ?: ""
 )
 
 fun SwiftProfile.toProfile(follower: Boolean = false, following: Boolean = false): Profile = Profile(
     username = this.username(),
     name = this.name() ?: "",
-    picUrl = this.picUrl() ?: "",
     follower = follower,
     following = following
 )

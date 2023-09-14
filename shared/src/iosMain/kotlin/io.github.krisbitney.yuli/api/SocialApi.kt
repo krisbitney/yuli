@@ -41,7 +41,7 @@ class IosSocialApi : SocialApi {
         isLoggedIn
     }
 
-    override suspend fun restoreSession(): Result<Boolean> = withContext(Dispatchers.IO) {
+    override suspend fun restoreSession(username: String): Result<Boolean> = withContext(Dispatchers.IO) {
         var isRestored: Result<Boolean> = Result.failure(Exception("'isRestored' failed to initialize"))
         try {
             var isComplete = false

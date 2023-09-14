@@ -20,14 +20,11 @@ class ApiTest {
         username = "kris_makes_apps",
         name = "Kris B",
         picUrl = "",
-        followerCount = 0,
-        followingCount = 0
     )
 
     private val yuliaProfile = Profile(
         username = "automagically__now",
         name = "YЮлия Кейс",
-        picUrl = "",
         follower = true,
         following = true,
     )
@@ -60,7 +57,7 @@ class ApiTest {
     }
 
     fun testRestoreSession() = runTest {
-        val result = api.restoreSession()
+        val result = api.restoreSession(username)
         assertNull(result.exceptionOrNull())
         assertTrue(result.getOrThrow())
     }
