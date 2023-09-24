@@ -10,3 +10,11 @@ val requestDelay = 3000L
 fun randomizeDelay(delayMs: Long): Long {
     return Random.nextLong(delayMs - 1000L until delayMs + 1000L)
 }
+
+fun followFetchTimeout(lastCount: Long): Long {
+    return if (lastCount == 0L) {
+        Long.MAX_VALUE
+    } else {
+        (lastCount * 1.1 * requestTimeout).toLong()
+    }
+}

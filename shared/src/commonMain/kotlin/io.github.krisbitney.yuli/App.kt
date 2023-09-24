@@ -1,12 +1,12 @@
 package io.github.krisbitney.yuli
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import io.github.krisbitney.yuli.ui.HomeScreen
+import io.github.krisbitney.yuli.ui.theme.YuliTheme
 
 @Composable
 fun App() {
-    MaterialTheme {
+    YuliTheme {
         HomeScreen()
     }
 }

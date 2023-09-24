@@ -31,6 +31,9 @@ kotlin {
         }
     }
 
+    val decomposeVersion = "2.1.0"
+    val mviKotlinVersion = "3.2.1"
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -42,6 +45,11 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("io.realm.kotlin:library-base:1.10.0")
+                implementation("com.arkivanov.decompose:decompose:$decomposeVersion-compose-experimental")
+                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion-compose-experimental")
+                implementation("com.arkivanov.mvikotlin:mvikotlin:$mviKotlinVersion")
+                implementation("com.arkivanov.mvikotlin:mvikotlin-main:$mviKotlinVersion")
+                implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:$mviKotlinVersion")
             }
         }
         val androidMain by getting {

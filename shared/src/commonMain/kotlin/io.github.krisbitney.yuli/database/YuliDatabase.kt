@@ -9,9 +9,9 @@ import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.UpdatePolicy
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
@@ -22,7 +22,7 @@ import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
 @ExperimentalStdlibApi
-class SocialDatabase : AutoCloseable {
+class YuliDatabase : AutoCloseable {
     private val configuration = RealmConfiguration.create(
         schema = setOf(User::class, UserState::class, Profile::class, Event::class)
     )
@@ -34,6 +34,22 @@ class SocialDatabase : AutoCloseable {
 
     fun countFollowing(): Long {
         return realm.query<Profile>("following > 0").count().find()
+    }
+
+    fun countMutuals(): Flow<Long> {
+        return realm.query<Profile>("follower > 0 AND following > 0").count().asFlow()
+    }
+
+    fun countNonfollowers(): Flow<Long> {
+        return realm.query<Profile>("follower = 0 AND following > 0").count().asFlow()
+    }
+
+    fun countFans(): Flow<Long> {
+        return realm.query<Profile>("follower > 0 AND following = 0").count().asFlow()
+    }
+
+    fun countFormerConnections(): Flow<Long> {
+        return realm.query<Profile>("follower = 0 AND following = 0").count().asFlow()
     }
 
     // TODO: should these use 1 and 0 or true and false?
@@ -65,8 +81,8 @@ class SocialDatabase : AutoCloseable {
         }
     }
 
-    fun selectUser(username: String): User? {
-        return realm.query<User>("username = $0", username).find().firstOrNull()
+    fun selectUser(): User? {
+        return realm.query<User>().first().find()
     }
 
     suspend fun insertOrReplaceUser(user: User) = withContext(Dispatchers.IO) {
@@ -75,8 +91,8 @@ class SocialDatabase : AutoCloseable {
         }
     }
 
-    fun selectState(username: String): UserState? {
-        return realm.query<UserState>("username = $0", username).find().firstOrNull()
+    fun selectState(): UserState? {
+        return realm.query<UserState>().first().find()
     }
 
     suspend fun insertOrReplaceState(state: UserState) = withContext(Dispatchers.IO) {
