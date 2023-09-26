@@ -1,4 +1,4 @@
-package io.github.krisbitney.yuli.ui
+package io.github.krisbitney.yuli.ui.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

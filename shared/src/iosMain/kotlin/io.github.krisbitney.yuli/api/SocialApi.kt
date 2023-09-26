@@ -63,12 +63,12 @@ class IosSocialApi : SocialApi {
     }
 
     override suspend fun fetchUser(): Result<User> = withContext(Dispatchers.IO) {
-        var user: Result<User> = Result.failure(Exception("'user' failed to initialize"))
+        var user: Result<SwiftUser> = Result.failure(Exception("'user' failed to initialize"))
         try {
             var isComplete = false
             api.fetchUserProfileWithCompletion { iosUser: SwiftUser?, error: String? ->
                 user = if (iosUser != null) {
-                    Result.success(iosUser.toUser())
+                    Result.success(iosUser)
                 } else if (error != null) {
                     Result.failure(Exception(error))
                 } else {
@@ -82,7 +82,7 @@ class IosSocialApi : SocialApi {
         } catch (e: Exception) {
             user = Result.failure(e)
         }
-        user
+        user.map { it.toUser() }
     }
 
     override suspend fun fetchFollowers(pageDelay: Long): Result<List<Profile>> = withContext(Dispatchers.IO) {

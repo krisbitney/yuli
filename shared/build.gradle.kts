@@ -33,6 +33,7 @@ kotlin {
 
     val decomposeVersion = "2.1.0"
     val mviKotlinVersion = "3.2.1"
+    val ktorVersion = "2.3.4"
 
     sourceSets {
         val commonMain by getting {
@@ -45,6 +46,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("io.realm.kotlin:library-base:1.10.0")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion-compose-experimental")
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion-compose-experimental")
                 implementation("com.arkivanov.mvikotlin:mvikotlin:$mviKotlinVersion")
@@ -58,6 +60,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.1")
                 implementation("com.github.instagram4j:instagram4j:2.0.7")
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
             }
         }
         val iosArm64Main by getting
@@ -66,6 +69,9 @@ kotlin {
             dependsOn(commonMain)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+            }
         }
         val commonTest by getting {
             dependencies {

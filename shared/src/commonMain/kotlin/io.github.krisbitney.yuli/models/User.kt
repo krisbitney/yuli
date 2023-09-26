@@ -1,5 +1,6 @@
 package io.github.krisbitney.yuli.models
 
+import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
 
@@ -7,9 +8,9 @@ class User(
     @PrimaryKey
     var username: String,
     var name: String,
-    var picUrl: String
+    var pic: RealmList<Byte>?
 ) : RealmObject {
-    constructor() : this("", "", "")
+    constructor() : this("", "", null)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -19,7 +20,7 @@ class User(
 
         if (username != other.username) return false
         if (name != other.name) return false
-        if (picUrl != other.picUrl) return false
+        if (pic != other.pic) return false
 
         return true
     }
@@ -27,11 +28,11 @@ class User(
     override fun hashCode(): Int {
         var result = username.hashCode()
         result = 31 * result + name.hashCode()
-        result = 31 * result + picUrl.hashCode()
+        result = 31 * result + pic.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "User(username='$username', name='$name', picUrl='$picUrl')"
+        return "User(username='$username', name='$name', pic='$pic')"
     }
 }

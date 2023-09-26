@@ -58,6 +58,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         // update state
         if (user.isSuccess) {
             db.insertOrReplaceState(state.copy(isLoggedIn = true, isLocked = false))
+            db.insertOrReplaceUser(user.getOrThrow())
         }
 
         user
@@ -88,6 +89,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
         if (user.isSuccess) {
             db.insertOrReplaceState(state.copy(isLoggedIn = true, isLocked = false))
+            db.insertOrReplaceUser(user.getOrThrow())
         }
 
         user
@@ -99,13 +101,10 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
     // TODO: add background tasks (after testing)
     @OptIn(ExperimentalStdlibApi::class)
-    suspend fun updateAll(username: String): Result<Unit> = withContext(Dispatchers.IO) {
-        val user = ApiHandler(api, db)
+    suspend fun updateFollows(username: String): Result<Unit> = withContext(Dispatchers.IO) {
+        ApiHandler(api, db)
             .restoreSession(username)
             .getOrElse { return@withContext Result.failure(it) }
-
-        // store user
-        db.insertOrReplaceUser(user)
         randomizeDelay(requestDelay)
 
         // fetch followers
