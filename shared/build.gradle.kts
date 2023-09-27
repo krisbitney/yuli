@@ -61,6 +61,7 @@ kotlin {
                 api("androidx.core:core-ktx:1.10.1")
                 implementation("com.github.instagram4j:instagram4j:2.0.7")
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("androidx.security:security-crypto-ktx:1.1.0-alpha06")
             }
         }
         val iosArm64Main by getting

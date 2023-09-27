@@ -4,7 +4,7 @@ import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
 
 expect object SocialApiFactory {
-    fun get(androidSecureStorageDir: String?): SocialApi
+    fun <C> get(context: C): SocialApi
 }
 
 interface SocialApi {

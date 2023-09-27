@@ -1,28 +1,51 @@
 package io.github.krisbitney.yuli.api
 
+import android.content.Context
+import androidx.security.crypto.EncryptedFile
+import androidx.security.crypto.MasterKey
 import com.github.instagram4j.instagram4j.IGClient
 import com.github.instagram4j.instagram4j.actions.users.UserAction
 import com.github.instagram4j.instagram4j.exceptions.IGLoginException
-import kotlinx.coroutines.delay
+import io.github.krisbitney.yuli.IGClientEncryptedDeserializer
 import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
+import io.github.krisbitney.yuli.serializeEncrypted
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.File
 
+
 actual object SocialApiFactory {
-    actual fun get(androidSecureStorageDir: String?): SocialApi = AndroidSocialApi(androidSecureStorageDir!!)
+    actual fun <C> get(context: C): SocialApi = AndroidSocialApi(context as Context)
 }
 
-class AndroidSocialApi(storageDir: String) : SocialApi {
+class AndroidSocialApi(context: Context) : SocialApi {
 
-    // TODO: use more secure method of storing credentials -- encryption?
-    private val cacheDir = File(storageDir, "cache").also {
+    private val masterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
+
+    private val cacheDir = File(context.filesDir, "cache").also {
         if (!it.exists()) it.mkdirs()
     }
-    // TODO: store cookies by username so i can support multiple logins?
+
     private val client = File(cacheDir, "ClientObject.ser")
+    private val encryptedClient = EncryptedFile.Builder(
+            context,
+            client,
+            masterKey,
+            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+        ).build()
+
     private val cookie = File(cacheDir, "LoginSession.ser")
+    private val encryptedCookie = EncryptedFile.Builder(
+            context,
+            cookie,
+            masterKey,
+            EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+        ).build()
+
     private var insta: IGClient? = null
     private var username: String? = null
 
@@ -35,8 +58,7 @@ class AndroidSocialApi(storageDir: String) : SocialApi {
                     .username(username)
                     .password(password)
                     .login()
-                ig.serialize(client, cookie)
-                insta = ig
+                ig.serializeEncrypted(encryptedClient, encryptedCookie)
                 this@AndroidSocialApi.username = username
             } catch (e: IGLoginException) {
                 // TODO: Do I need this?
@@ -53,7 +75,7 @@ class AndroidSocialApi(storageDir: String) : SocialApi {
     override suspend fun restoreSession(username: String): Result<Boolean> = withContext(Dispatchers.IO) {
         if (client.exists() && cookie.exists()) {
             try {
-                insta = IGClient.deserialize(client, cookie)
+                insta = IGClientEncryptedDeserializer.deserialize(encryptedClient, encryptedCookie)
                 this@AndroidSocialApi.username = username
             } catch (e: Exception) {
                 return@withContext Result.failure(e)

@@ -10,3 +10,5 @@ fun App() {
         HomeScreen()
     }
 }
+
+// TODO: Localization

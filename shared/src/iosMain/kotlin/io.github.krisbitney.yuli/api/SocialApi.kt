@@ -11,7 +11,8 @@ import cocoapods.yuli_ios.Profile as SwiftProfile
 import cocoapods.yuli_ios.User as SwiftUser
 
 actual object SocialApiFactory {
-    actual fun get(androidSecureStorageDir: String?): SocialApi = IosSocialApi()
+    // context is unused in ios
+    actual fun <C> get(context: C): SocialApi = IosSocialApi()
 }
 
 class IosSocialApi : SocialApi {
