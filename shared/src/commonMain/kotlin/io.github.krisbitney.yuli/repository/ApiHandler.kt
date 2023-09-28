@@ -130,9 +130,9 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         // organize followers and followings
         val follows = followSetAlgebra(followers, followings)
 
-        // calculate former follows
+        // calculate former connections
         val previousAll = previous.fans + previous.mutuals + previous.nonfollowers
-        val formerFollows = (previousAll - follows.fans - follows.mutuals - follows.nonfollowers).onEach {
+        val formerConnections = (previousAll - follows.fans - follows.mutuals - follows.nonfollowers).onEach {
             it.follower = false
             it.following = false
         }
@@ -141,7 +141,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         db.insertOrReplaceProfile(follows.fans)
         db.insertOrReplaceProfile(follows.mutuals)
         db.insertOrReplaceProfile(follows.nonfollowers)
-        db.insertOrReplaceProfile(formerFollows)
+        db.insertOrReplaceProfile(formerConnections)
 
         // assess change events
         val events = deriveFollowEvents(previous, follows)
@@ -172,76 +172,31 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
     }
 
     private fun deriveFollowEvents(previous: Follows, current: Follows): List<Event> {
-        val previousAll = previous.fans + previous.mutuals + previous.nonfollowers
-        val currentAll = current.fans + current.mutuals + current.nonfollowers
         val time = Clock.System.now().epochSeconds
 
-        return previousAll.union(currentAll).mapNotNull {
-            when {
-                it in previous.fans && it in current.mutuals -> Event(
-                    it,
-                    Event.Kind.FAN_TO_MUTUAL,
-                    time
-                )
+        val currentFollowers = current.fans + current.mutuals
+        val previousFollowers = previous.fans + previous.mutuals
+        val gainedFollowers = currentFollowers - previousFollowers
+        val lostFollowers = previousFollowers - currentFollowers
 
-                it in previous.fans && it !in currentAll -> Event(it, Event.Kind.FAN_TO_NONE, time)
-                it in previous.nonfollowers && it in current.mutuals -> Event(
-                    it,
-                    Event.Kind.NONFOLLOWER_TO_MUTUAL,
-                    time
-                )
+        val currentFollowings = current.mutuals + current.nonfollowers
+        val previousFollowings = previous.mutuals + previous.nonfollowers
+        val startedFollowing = currentFollowings - previousFollowings
+        val stoppedFollowing = previousFollowings - currentFollowings
 
-                it in previous.nonfollowers && it !in currentAll -> Event(
-                    it,
-                    Event.Kind.NONFOLLOWER_TO_NONE,
-                    time
-                )
+        val events: MutableList<Event> = mutableListOf()
 
-                it in previous.mutuals && it in current.nonfollowers -> Event(
-                    it,
-                    Event.Kind.MUTUAL_TO_NONFOLLOWER,
-                    time
-                )
+        events.addAll(gainedFollowers.map { it.toEvent(Event.Kind.GAINED_FOLLOWER, time) })
+        events.addAll(lostFollowers.map { it.toEvent(Event.Kind.LOST_FOLLOWER, time) })
+        events.addAll(startedFollowing.map { it.toEvent(Event.Kind.STARTED_FOLLOWING, time) })
+        events.addAll(stoppedFollowing.map { it.toEvent(Event.Kind.STOPPED_FOLLOWING, time) })
 
-                it in previous.mutuals && it in current.fans -> Event(
-                    it,
-                    Event.Kind.MUTUAL_TO_FAN,
-                    time
-                )
-
-                it in current.nonfollowers && it !in previousAll -> Event(
-                    it,
-                    Event.Kind.NONE_TO_NONFOLLOWER,
-                    time
-                )
-
-                it in current.fans && it !in previousAll -> Event(it, Event.Kind.NONE_TO_FAN, time)
-                it in previous.nonfollowers && it in current.fans -> Event(
-                    it,
-                    Event.Kind.NONFOLLOWER_TO_FAN,
-                    time
-                )
-
-                it in previous.fans && it in current.nonfollowers -> Event(
-                    it,
-                    Event.Kind.FAN_TO_NONFOLLOWER,
-                    time
-                )
-
-                it in current.mutuals && it !in previousAll -> Event(
-                    it,
-                    Event.Kind.NONE_TO_MUTUAL,
-                    time
-                )
-
-                it in previous.mutuals && it !in currentAll -> Event(
-                    it,
-                    Event.Kind.MUTUAL_TO_NONE,
-                    time
-                )
-
-                else -> null
-            }
-        }
+        return events
     }
+
+    private fun Profile.toEvent(kind: Event.Kind, time: Long) = Event(
+        profile = this,
+        kind = kind,
+        timestamp = time
+    )
 }

@@ -22,5 +22,8 @@ fun HomeScreen() {
         Card {
             Text("Former Connections")
         }
+        Card {
+            Text("History")
+        }
     }
 }

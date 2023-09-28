@@ -15,7 +15,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.File
 
-
 actual object SocialApiFactory {
     actual fun <C> get(context: C): SocialApi = AndroidSocialApi(context as Context)
 }
