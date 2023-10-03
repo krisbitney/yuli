@@ -6,17 +6,16 @@ import kotlinx.coroutines.flow.Flow
 interface YuliHome {
     val model: Flow<Model>
 
-    fun onGroupClicked()
-
+    // TODO: should variables be State to avoid recomposing the whole page on change to one?
     data class Model(
-        val user: User,
+        val user: User?,
         val mutualsCount: Long,
         val nonfollowersCount: Long,
         val fansCount: Long,
         val formerConnectionsCount: Long,
     )
 
-//    sealed class Output {
-//        data class Selected(val id: Long) : Output()
-//    }
+    sealed class Output {
+        data object Home : Output()
+    }
 }

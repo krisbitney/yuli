@@ -1,5 +1,6 @@
 package io.github.krisbitney.yuli.models
 
+import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
@@ -8,9 +9,9 @@ class User(
     @PrimaryKey
     var username: String,
     var name: String,
-    var pic: RealmList<Byte>?
+    var pic: RealmList<Byte>
 ) : RealmObject {
-    constructor() : this("", "", null)
+    constructor() : this("", "", realmListOf())
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

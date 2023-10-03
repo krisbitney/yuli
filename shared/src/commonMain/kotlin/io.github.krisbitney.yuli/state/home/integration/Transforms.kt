@@ -1,10 +1,11 @@
 package io.github.krisbitney.yuli.state.home.integration
 
-import io.github.krisbitney.yuli.state.home.YuliHome.Model
-import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.State
+import io.github.krisbitney.yuli.state.home.YuliHome
+import io.github.krisbitney.yuli.state.home.store.YuliHomeStore
 
-internal val stateToModel: (State) -> Model = {
-    Model(
+
+internal val stateToModel: (YuliHomeStore.State) -> YuliHome.Model = {
+    YuliHome.Model(
         user = it.user,
         mutualsCount = it.mutualsCount,
         nonfollowersCount = it.nonfollowersCount,

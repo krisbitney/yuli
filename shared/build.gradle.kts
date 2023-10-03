@@ -3,6 +3,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     kotlin("native.cocoapods")
+    kotlin("plugin.serialization")
     id("io.realm.kotlin") version "1.10.0"
 }
 
@@ -31,7 +32,7 @@ kotlin {
         }
     }
 
-    val decomposeVersion = "2.1.0"
+    val decomposeVersion = "2.2.0-compose-experimental-alpha01"
     val mviKotlinVersion = "3.2.1"
     val ktorVersion = "2.3.4"
 
@@ -45,10 +46,11 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
                 implementation("io.realm.kotlin:library-base:1.10.0")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("com.arkivanov.decompose:decompose:$decomposeVersion-compose-experimental")
-                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion-compose-experimental")
+                implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
+                implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
                 implementation("com.arkivanov.mvikotlin:mvikotlin:$mviKotlinVersion")
                 implementation("com.arkivanov.mvikotlin:mvikotlin-main:$mviKotlinVersion")
                 implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:$mviKotlinVersion")

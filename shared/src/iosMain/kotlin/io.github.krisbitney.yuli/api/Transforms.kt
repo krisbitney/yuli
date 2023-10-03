@@ -2,6 +2,7 @@ package io.github.krisbitney.yuli.api
 
 import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
+import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.ext.toRealmList
 import cocoapods.yuli_ios.Profile as SwiftProfile
 import cocoapods.yuli_ios.User as SwiftUser
@@ -11,7 +12,7 @@ suspend fun SwiftUser.toUser(): User = User(
     name = this.name() ?: "",
     pic = this.picUrl()?.let {
         downloadImage(it).getOrNull()?.toList()?.toRealmList()
-    }
+    } ?: realmListOf()
 )
 
 fun SwiftProfile.toProfile(follower: Boolean = false, following: Boolean = false): Profile = Profile(
