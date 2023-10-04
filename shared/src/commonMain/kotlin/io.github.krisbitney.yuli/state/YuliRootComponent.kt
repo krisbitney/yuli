@@ -8,6 +8,9 @@ import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import io.github.krisbitney.yuli.database.YuliDatabase
+import io.github.krisbitney.yuli.repository.ApiHandler
+import io.github.krisbitney.yuli.state.home.YuliHome
+import io.github.krisbitney.yuli.state.home.integration.YuliHomeComponent
 import io.github.krisbitney.yuli.state.login.YuliLogin
 import io.github.krisbitney.yuli.state.login.integration.YuliLoginComponent
 import kotlinx.serialization.Serializable
@@ -15,23 +18,34 @@ import kotlinx.serialization.Serializable
 @OptIn(ExperimentalStdlibApi::class)
 class YuliRootComponent(
     private val componentContext: ComponentContext,
-    private val yuliHome: (ComponentContext, (YuliLogin.Output) -> Unit ) -> YuliLogin,
+    private val yuliHome: (ComponentContext, (YuliHome.Output) -> Unit ) -> YuliHome,
+    private val yuliLogin: (ComponentContext, (YuliLogin.Output) -> Unit ) -> YuliLogin,
 ) : YuliRoot, ComponentContext by componentContext {
 
      constructor(
          componentContext: ComponentContext,
          storeFactory: StoreFactory,
-         database: YuliDatabase
+         database: YuliDatabase,
+         apiHandler: ApiHandler
     ) : this(
         componentContext = componentContext,
         yuliHome = { childContext, output ->
-            YuliLoginComponent(
+            YuliHomeComponent(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 database = database,
                 output = output
             )
         },
+        yuliLogin = { childContext, output ->
+            YuliLoginComponent(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                database = database,
+                apiHandler = apiHandler,
+                output = output
+            )
+        }
     )
 
     private val navigation = StackNavigation<Configuration>()
@@ -47,17 +61,26 @@ class YuliRootComponent(
     private fun createChild(configuration: Configuration, componentContext: ComponentContext): YuliRoot.Child =
         when (configuration) {
             is Configuration.Home -> YuliRoot.Child.Home(yuliHome(componentContext, ::onHomeOutput))
+            is Configuration.Login -> YuliRoot.Child.Login(yuliLogin(componentContext, ::onLoginOutput))
         }
 
     // TODO: Does Home need an Output?
-    private fun onHomeOutput(output: YuliLogin.Output): Unit =
+    private fun onHomeOutput(output: YuliHome.Output): Unit =
         when (output) {
-            is YuliLogin.Output.Login -> navigation.push(Configuration.Home)
+            is YuliHome.Output.Home -> navigation.push(Configuration.Home)
+        }
+
+    // TODO: Does Login need an Output?
+    private fun onLoginOutput(output: YuliLogin.Output): Unit =
+        when (output) {
+            is YuliLogin.Output.Login -> navigation.push(Configuration.Login)
         }
 
     @Serializable
     private sealed class Configuration {
         @Serializable
         data object Home : Configuration()
+        @Serializable
+        data object Login : Configuration()
     }
 }
