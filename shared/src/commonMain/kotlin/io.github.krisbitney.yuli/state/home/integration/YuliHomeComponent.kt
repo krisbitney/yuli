@@ -1,6 +1,7 @@
 package io.github.krisbitney.yuli.state.home.integration
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
@@ -9,9 +10,13 @@ import io.github.krisbitney.yuli.state.home.YuliHome.Output
 import io.github.krisbitney.yuli.state.home.YuliHome.Model
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStoreProvider
 import io.github.krisbitney.yuli.database.YuliDatabase
+import io.github.krisbitney.yuli.state.utils.map
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.isActive
 
 @OptIn(ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class YuliHomeComponent (
@@ -28,5 +33,14 @@ class YuliHomeComponent (
         ).provide()
     }
 
-    override val model: Flow<Model> = store.stateFlow.mapLatest(stateToModel)
+    private val scope = CoroutineScope(Dispatchers.Default)
+    override val model: StateFlow<Model> = store.stateFlow.map(scope, stateToModel)
+
+    init {
+        lifecycle.doOnDestroy {
+            if (scope.isActive) {
+                scope.cancel()
+            }
+        }
+    }
 }

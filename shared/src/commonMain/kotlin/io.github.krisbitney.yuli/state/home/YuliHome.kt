@@ -1,10 +1,10 @@
 package io.github.krisbitney.yuli.state.home
 
 import io.github.krisbitney.yuli.models.User
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface YuliHome {
-    val model: Flow<Model>
+    val model: StateFlow<Model>
 
     // TODO: should variables be State to avoid recomposing the whole page on change to one?
     data class Model(
