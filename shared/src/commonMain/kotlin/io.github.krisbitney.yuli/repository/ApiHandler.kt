@@ -29,13 +29,17 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         username: String,
         password: String
     ): Result<User> = withContext(Dispatchers.IO) {
-        val state = db.selectState()
-            ?: UserState(username, isLoggedIn = false, isLocked = false, 0)
+        val maybeOldUser = db.selectUser()
+
+        val initialState = when (maybeOldUser?.username) {
+            username -> db.selectState()!!
+            else -> UserState(username, isLoggedIn = false, isLocked = false, 0)
+        }
 
         val isLoggedIn = api.login(username, password)
         if (isLoggedIn.isFailure) {
             val e = isLoggedIn.exceptionOrNull()!!
-            var newState = state.copy(isLoggedIn = false, isLocked = false)
+            var newState = initialState.copy(isLoggedIn = false, isLocked = false)
             val exception = if (e.message!!.contains("factor")) {
                 Exception("This account requires 2-factor-authentication.")
             } else if (e.message!!.contains("few minutes")) {
@@ -55,9 +59,11 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         // fetch user to check login success
         val user = withTimeout(requestTimeout) { api.fetchUser() }
 
-        // update state
+        // update database
         if (user.isSuccess) {
-            db.insertOrReplaceState(state.copy(isLoggedIn = true, isLocked = false))
+            // TODO: implement with endSession
+            if (maybeOldUser?.username != username) { db.clear() }
+            db.insertOrReplaceState(initialState.copy(isLoggedIn = true, isLocked = false))
             db.insertOrReplaceUser(user.getOrThrow())
         }
 

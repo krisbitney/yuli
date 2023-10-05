@@ -30,7 +30,7 @@ internal class YuliLoginStoreProvider(
         ) {}
 
     private sealed class Msg {
-        data class SetUsername(val username: String) : Msg()
+        data class SetUsername(val username: String?) : Msg()
         data class SuccessfulLogin(val user: User) : Msg()
         data class FailedLogin(val message: String) : Msg()
     }
@@ -49,6 +49,7 @@ internal class YuliLoginStoreProvider(
         override fun executeIntent(intent: Intent, getState: () -> State): Unit =
             when (intent) {
                 is Intent.Login -> login(intent.username, intent.password)
+                is Intent.SetUsername -> dispatch(Msg.SetUsername(intent.username))
             }
 
         fun login(username: String, password: String) {

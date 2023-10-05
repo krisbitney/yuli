@@ -7,6 +7,7 @@ import io.github.krisbitney.yuli.models.UserState
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.UpdatePolicy
+import io.realm.kotlin.delete
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.Dispatchers
@@ -129,6 +130,16 @@ class YuliDatabase : AutoCloseable {
         Instant.DISTANT_FUTURE.epochSeconds
     )
 
+    suspend fun clear() = withContext(Dispatchers.IO) {
+        realm.write {
+            delete<Event>()
+            delete<Profile>()
+            delete<User>()
+            delete<UserState>()
+        }
+    }
+
+    // TODO: move this to events state file
     private fun beginningOfTodayUnixTimestamp(): Long {
         val now = Clock.System.now()
         val localToday = now.toLocalDateTime(TimeZone.currentSystemDefault()).date

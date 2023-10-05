@@ -9,6 +9,7 @@ internal interface YuliLoginStore : Store<Intent, State, Nothing> {
 
     sealed class Intent {
         data class Login(val username: String, val password: String) : Intent()
+        data class SetUsername(val username: String?) : Intent()
     }
 
     data class State(

@@ -1,9 +1,10 @@
 package io.github.krisbitney.yuli.state.login.integration
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
-import com.arkivanov.essenty.lifecycle.doOnPause
-import com.arkivanov.essenty.lifecycle.doOnResume
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
@@ -17,15 +18,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class YuliLoginComponent (
@@ -46,6 +40,9 @@ class YuliLoginComponent (
 
     private val scope = CoroutineScope(Dispatchers.Default)
     override val model: StateFlow<YuliLogin.Model> = store.stateFlow.map(scope, stateToModel)
+    override var showWarning by mutableStateOf(false)
+    override var usernameInput by mutableStateOf("")
+    override var passwordInput by mutableStateOf("")
 
     init {
         lifecycle.doOnDestroy {
@@ -55,8 +52,23 @@ class YuliLoginComponent (
         }
     }
 
-    override suspend fun onLoginClicked() {
-        // TODO: Get username and password from input boxes
-        store.accept(YuliLoginStore.Intent.Login("", ""))
+    override fun onLoginClicked(username: String, password: String) {
+        store.accept(YuliLoginStore.Intent.Login(username, password))
+        // TODO: handle updating data and navigation to home screen
     }
+
+    override fun onCloseClicked() {
+        // TODO: handle navigation to home screen
+    }
+
+    override fun showConfirmation() {
+        showWarning = true
+    }
+
+    override fun onConfirmationClosed() {
+        usernameInput = model.value.username ?: ""
+        store.accept(YuliLoginStore.Intent.SetUsername(null))
+        showWarning = false
+    }
+
 }

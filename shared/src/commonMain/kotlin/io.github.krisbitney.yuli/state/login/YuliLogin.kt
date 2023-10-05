@@ -5,8 +5,17 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface YuliLogin {
     val model: StateFlow<Model>
+    var showWarning: Boolean
+    var usernameInput: String
+    var passwordInput: String
 
-    suspend fun onLoginClicked()
+    fun onLoginClicked(username: String, password: String)
+
+    fun onCloseClicked()
+
+    fun showConfirmation()
+
+    fun onConfirmationClosed()
 
     data class Model(
         val username: String? = null,
