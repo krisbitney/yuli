@@ -70,10 +70,13 @@ class YuliRootComponent(
             is YuliHome.Output.Home -> navigation.push(Configuration.Home)
         }
 
-    // TODO: Does Login need an Output?
     private fun onLoginOutput(output: YuliLogin.Output): Unit =
         when (output) {
-            is YuliLogin.Output.Login -> navigation.push(Configuration.Login)
+            is YuliLogin.Output.Login -> {
+                // TODO: pass user to Home?
+                navigation.push(Configuration.Home)
+            }
+            is YuliLogin.Output.Closed -> navigation.push(Configuration.Home)
         }
 
     @Serializable

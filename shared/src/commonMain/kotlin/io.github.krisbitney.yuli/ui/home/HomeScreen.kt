@@ -4,11 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import io.github.krisbitney.yuli.state.home.YuliHome
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(component: YuliHome) {
     Column {
         UserHeadline(
             fullName = "Kris Bitney",

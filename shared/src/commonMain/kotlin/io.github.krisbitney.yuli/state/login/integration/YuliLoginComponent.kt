@@ -20,6 +20,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 
 @OptIn(ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class YuliLoginComponent (
@@ -27,7 +29,7 @@ class YuliLoginComponent (
     storeFactory: StoreFactory,
     database: YuliDatabase,
     apiHandler: ApiHandler,
-    output: (YuliLogin.Output) -> Unit
+    private val output: (YuliLogin.Output) -> Unit
 ) : YuliLogin, ComponentContext by componentContext {
 
     private val store = instanceKeeper.getStore {
@@ -40,6 +42,7 @@ class YuliLoginComponent (
 
     private val scope = CoroutineScope(Dispatchers.Default)
     override val model: StateFlow<YuliLogin.Model> = store.stateFlow.map(scope, stateToModel)
+
     override var showWarning by mutableStateOf(false)
     override var usernameInput by mutableStateOf("")
     override var passwordInput by mutableStateOf("")
@@ -53,12 +56,23 @@ class YuliLoginComponent (
     }
 
     override fun onLoginClicked(username: String, password: String) {
-        store.accept(YuliLoginStore.Intent.Login(username, password))
-        // TODO: handle updating data and navigation to home screen
+        scope.launch {
+            store.accept(YuliLoginStore.Intent.Login(username, password))
+            withTimeoutOrNull<Unit>(5000) {
+                model.collect {
+                    if (it.loggedInUser != null || it.errorMsg != null) {
+                        cancel()
+                    }
+                }
+            }
+            model.value.loggedInUser?.let {
+                output(YuliLogin.Output.Login(it))
+            }
+        }
     }
 
     override fun onCloseClicked() {
-        // TODO: handle navigation to home screen
+        output(YuliLogin.Output.Closed)
     }
 
     override fun showConfirmation() {

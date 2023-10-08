@@ -1,3 +1,5 @@
+package io.github.krisbitney.yuli.ui.login
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
@@ -14,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.state.login.YuliLogin
-import io.github.krisbitney.yuli.ui.login.ConfirmationBox
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 

@@ -31,8 +31,7 @@ internal class YuliLoginStoreProvider(
 
     private sealed class Msg {
         data class SetUsername(val username: String?) : Msg()
-        data class SuccessfulLogin(val user: User) : Msg()
-        data class FailedLogin(val message: String) : Msg()
+        data class SetLoginAttempt(val loggedInUser: User?, val errorMsg: String?) : Msg()
     }
 
     private inner class ExecutorImpl : CoroutineExecutor<Intent, Unit, State, Msg, Nothing>() {
@@ -48,19 +47,19 @@ internal class YuliLoginStoreProvider(
 
         override fun executeIntent(intent: Intent, getState: () -> State): Unit =
             when (intent) {
-                is Intent.Login -> login(intent.username, intent.password)
+                is Intent.Login -> {
+                    dispatch(Msg.SetLoginAttempt(null, null))
+                    login(intent.username, intent.password)
+                }
                 is Intent.SetUsername -> dispatch(Msg.SetUsername(intent.username))
             }
 
         fun login(username: String, password: String) {
             scope.launch {
-                val result = withContext(Dispatchers.IO) { apiHandler.createSession(username, password) }
-                if (result.isSuccess) {
-                    dispatch(Msg.SuccessfulLogin(result.getOrThrow()))
-                } else {
-                    val message = result.exceptionOrNull()!!.message ?: "Unknown error occurred"
-                    dispatch(Msg.FailedLogin(message))
+                val result = withContext(Dispatchers.IO) {
+                    apiHandler.createSession(username, password)
                 }
+                dispatch(Msg.SetLoginAttempt(result.getOrNull(), result.exceptionOrNull()?.message))
             }
         }
     }
@@ -69,8 +68,10 @@ internal class YuliLoginStoreProvider(
         override fun State.reduce(msg: Msg): State =
             when (msg) {
                 is Msg.SetUsername -> copy(username = msg.username)
-                is Msg.SuccessfulLogin -> copy(loginUser = msg.user)
-                is Msg.FailedLogin -> copy(errorMsg = msg.message)
+                is Msg.SetLoginAttempt -> copy(
+                    loggedInUser = msg.loggedInUser,
+                    errorMsg = msg.errorMsg
+                )
             }
     }
 

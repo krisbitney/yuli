@@ -16,6 +16,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.datetime.Clock
 
+// TODO: withTimeouts will throw instead of returning Result.failure
+
 @OptIn(ExperimentalStdlibApi::class)
 class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
@@ -36,7 +38,9 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
             else -> UserState(username, isLoggedIn = false, isLocked = false, 0)
         }
 
-        val isLoggedIn = api.login(username, password)
+        val isLoggedIn = withTimeout(requestTimeout) {
+            api.login(username, password)
+        }
         if (isLoggedIn.isFailure) {
             val e = isLoggedIn.exceptionOrNull()!!
             var newState = initialState.copy(isLoggedIn = false, isLocked = false)
@@ -61,7 +65,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
         // update database
         if (user.isSuccess) {
-            // TODO: implement with endSession
+            // TODO: implement with endSession?
             if (maybeOldUser?.username != username) { db.clear() }
             db.insertOrReplaceState(initialState.copy(isLoggedIn = true, isLocked = false))
             db.insertOrReplaceUser(user.getOrThrow())

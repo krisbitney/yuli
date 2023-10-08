@@ -19,11 +19,12 @@ interface YuliLogin {
 
     data class Model(
         val username: String? = null,
-        val loginUser: User? = null,
+        val loggedInUser: User? = null,
         val errorMsg: String? = null,
     )
 
     sealed class Output {
         data class Login(val user: User) : Output()
+        data object Closed : Output()
     }
 }
