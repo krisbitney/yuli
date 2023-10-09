@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import io.github.krisbitney.yuli.ui.utils.toPainter
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -17,18 +18,20 @@ import org.jetbrains.compose.resources.painterResource
 fun UserHeadline(
     fullName: String,
     username: String,
-    followersCount: Int,
-    profilePictureUrl: String
+    followersCount: Long,
+    pic: List<Byte>?
 ) {
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomStart
     ) {
+
         Image(
-            painter = painterResource(res = profilePictureUrl),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
+            painter = pic?.toPainter() ?: painterResource("avatar_placeholder.png"),
+            contentDescription = "User avatar",
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier.fillMaxWidth().wrapContentHeight()
         )
 
         Row(

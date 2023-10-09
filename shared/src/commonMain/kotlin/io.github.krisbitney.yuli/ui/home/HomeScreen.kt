@@ -21,17 +21,27 @@ fun HomeScreen(component: YuliHome) {
         contentAlignment = Alignment.Center
     ) {
         Column {
-            UserHeadline(
-                fullName = "Kris Bitney",
-                username = "krisbitney",
-                followersCount = 0,
-                profilePictureUrl = "https://pbs.twimg.com/profile_images/1441195726437872640/6Z6Z1Z3-_400x400.jpg"
-            )
+            if (model.value.user != null) {
+                UserHeadline(
+                    fullName = model.value.user?.name ?: "",
+                    username = model.value.user?.username ?: "",
+                    followersCount = model.value.mutualsCount + model.value.fansCount,
+                    pic = model.value.user?.pic
+                )
+            // TODO: Add login required screen
+            } else {
+                UserHeadline(
+                    fullName = "",
+                    username = "",
+                    followersCount = 0,
+                    pic = null
+                )
+            }
             Column(Modifier.fillMaxWidth()) {
-                GroupCard("Mutuals", 0)
-                GroupCard("Non-followers", 0)
-                GroupCard("Fans", 0)
-                GroupCard("Former Connections", 0)
+                GroupCard("Mutuals", model.value.mutualsCount)
+                GroupCard("Non-followers", model.value.nonfollowersCount)
+                GroupCard("Fans", model.value.fansCount)
+                GroupCard("Former Connections", model.value.formerConnectionsCount)
             }
             HistoryCard()
         }
