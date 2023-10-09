@@ -22,6 +22,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
+// TODO: handle realm open/close on each use to avoid memory leaks
 @ExperimentalStdlibApi
 class YuliDatabase : AutoCloseable {
     private val configuration = RealmConfiguration.create(

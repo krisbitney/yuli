@@ -22,7 +22,7 @@ import org.jetbrains.compose.resources.painterResource
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun LoginScreen(component: YuliLogin) {
-    val model = component.model.collectAsState().value
+    val model = component.model.collectAsState()
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -44,7 +44,7 @@ fun LoginScreen(component: YuliLogin) {
             Image(painter = painterResource("ic_launcher-playstore.png"), contentDescription = "App Logo")
 
             // Username Input or Display
-            if (model.username == null) {
+            if (model.value.username == null) {
                 BasicTextField(
                     value = component.usernameInput,
                     onValueChange = { component.usernameInput = it },
@@ -53,7 +53,7 @@ fun LoginScreen(component: YuliLogin) {
                 )
             } else {
                 // Stylized Username
-                Text(text = model.username)
+                Text(text = model.value.username ?: "")
                 // Button to login with a different username
                 Button(onClick = { component.showConfirmation() }) {
                     Text("Change User")
@@ -83,8 +83,8 @@ fun LoginScreen(component: YuliLogin) {
             }
 
             // Error Message
-            if (model.errorMsg != null) {
-                Text(text = model.errorMsg, color = Color.Red)
+            if (model.value.errorMsg != null) {
+                Text(text = model.value.errorMsg ?: "", color = Color.Red)
             }
         }
     }

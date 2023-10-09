@@ -20,6 +20,7 @@ kotlin {
     }
 
     cocoapods {
+        name = "shared"
         version = "1.0.0"
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
@@ -32,8 +33,8 @@ kotlin {
         }
     }
 
-    val decomposeVersion = "2.2.0-compose-experimental-alpha01"
-    val mviKotlinVersion = "3.2.1"
+    val decomposeVersion = extra["decompose.version"] as String
+    val mviKotlinVersion = extra["mvi.version"] as String
     val ktorVersion = "2.3.4"
 
     sourceSets {
@@ -113,13 +114,3 @@ tasks.withType<Test> {
         this.showStandardStreams = true
     }
 }
-
-tasks.register("copyFramework") {
-    doLast {
-        val srcFile = File("$projectDir/src/nativeInterop/frameworks/yuli_ios.xcframework/ios-arm64_x86_64-simulator/yuli_ios.framework/yuli_ios")
-        val destDir = File("$buildDir/bin/iosSimulatorArm64/debugTest/Frameworks/yuli_ios.framework")
-        destDir.mkdirs() // Create destination directory if it doesn't exist
-        srcFile.copyTo(File(destDir, "yuli_ios"), overwrite = true)
-    }
-}
-tasks.getByName("iosSimulatorArm64Test").dependsOn("copyFramework")

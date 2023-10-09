@@ -1,6 +1,5 @@
 package io.github.krisbitney.yuli.ui
 
-import io.github.krisbitney.yuli.state.YuliRootComponent
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
@@ -12,7 +11,7 @@ import io.github.krisbitney.yuli.ui.home.HomeScreen
 import io.github.krisbitney.yuli.ui.login.LoginScreen
 
 @Composable
-fun RootContent(component: YuliRootComponent) {
+fun RootContent(component: YuliRoot) {
     Children(
         stack = component.childStack,
         animation = stackAnimation(fade() + scale()),

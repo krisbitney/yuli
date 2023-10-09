@@ -6,10 +6,17 @@ plugins {
 
 kotlin {
     androidTarget()
+
+    val decomposeVersion = extra["decompose.version"] as String
+    val mviKotlinVersion = extra["mvi.version"] as String
+
     sourceSets {
         val androidMain by getting {
             dependencies {
                 implementation(project(":shared"))
+                implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
+                implementation("com.arkivanov.mvikotlin:mvikotlin:$mviKotlinVersion")
+                implementation("com.arkivanov.mvikotlin:mvikotlin-main:$mviKotlinVersion")
 //                compileOnly("io.realm.kotlin:library-base:1.10.0")
             }
         }
