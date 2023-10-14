@@ -13,17 +13,18 @@ expect object BackgroundTaskLauncher {
 object BackgroundTasks {
     @OptIn(ExperimentalStdlibApi::class)
     suspend fun <C> launchUpdateFollowsTask(context: C): Result<String> = withContext(Dispatchers.IO) {
-        val api = SocialApiFactory.get(context)
-        val db = YuliDatabase()
-        val username = db.selectUser()?.username
-        if (username == null) {
-            val e = Exception("No user logged in")
-            return@withContext Result.failure(e)
+        YuliDatabase().use { db ->
+            val api = SocialApiFactory.get(context)
+            val username = db.selectUser()?.username
+            if (username == null) {
+                val e = Exception("No user logged in")
+                return@use Result.failure(e)
+            }
+            // TODO: use message from api
+            val updateResult = ApiHandler(api, db).updateFollows(username).getOrElse {
+                return@use Result.failure(it)
+            }
+            return@use Result.success("Follows Updated!")
         }
-        // TODO: use message from api
-        val updateResult = ApiHandler(api, db).updateFollows(username).getOrElse {
-            return@withContext Result.failure(it)
-        }
-        return@withContext Result.success("Follows Updated!")
     }
 }

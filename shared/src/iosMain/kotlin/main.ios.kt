@@ -9,20 +9,42 @@ import io.github.krisbitney.yuli.repository.ApiHandler
 import io.github.krisbitney.yuli.repository.BackgroundTaskLauncher
 import io.github.krisbitney.yuli.state.YuliRootComponent
 import platform.UIKit.UIViewController
+import platform.UIKit.addChildViewController
+import platform.UIKit.didMoveToParentViewController
 
-@OptIn(ExperimentalStdlibApi::class)
 fun MainViewController(): UIViewController {
     BackgroundTaskLauncher.registerTasks()
+    return LifecycleManagingViewController()
+}
 
-    // prepare root component
-    val lifecycle = LifecycleRegistry()
-    val db = YuliDatabase()
-    val api = SocialApiFactory.get(null)
-    val rootComponent = YuliRootComponent(
-        componentContext = DefaultComponentContext(lifecycle),
-        storeFactory = DefaultStoreFactory(),
-        database = db,
-        apiHandler = ApiHandler(api, db)
-    )
-    return ComposeUIViewController { App(rootComponent) }
+@OptIn(ExperimentalStdlibApi::class)
+class LifecycleManagingViewController : UIViewController(null, null) {
+
+    lateinit var db: YuliDatabase
+
+    override fun viewDidLoad() {
+        super.viewDidLoad()
+
+        // create app
+        val lifecycle = LifecycleRegistry()
+        db = YuliDatabase()
+        val api = SocialApiFactory.get(null)
+        val rootComponent = YuliRootComponent(
+            componentContext = DefaultComponentContext(lifecycle),
+            storeFactory = DefaultStoreFactory(),
+            database = db,
+            apiHandler = ApiHandler(api, db)
+        )
+        val app = ComposeUIViewController { App(rootComponent) }
+
+        // handle lifecycle delegation
+        addChildViewController(app)
+        view.addSubview(app.view)
+        app.didMoveToParentViewController(this)
+    }
+
+    override fun viewWillDisappear(animated: Boolean) {
+        super.viewWillDisappear(animated)
+        db.close()
+    }
 }

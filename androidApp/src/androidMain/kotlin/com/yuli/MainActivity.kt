@@ -15,10 +15,12 @@ import io.github.krisbitney.yuli.state.YuliRootComponent
 @OptIn(ExperimentalStdlibApi::class)
 class MainActivity : AppCompatActivity() {
 
+    lateinit var db: YuliDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val db = YuliDatabase()
+        db = YuliDatabase()
         val api = SocialApiFactory.get(this)
         val rootComponent = YuliRootComponent(
             componentContext = defaultComponentContext(),
@@ -30,5 +32,10 @@ class MainActivity : AppCompatActivity() {
         setContent {
             MainView(rootComponent)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        db.close()
     }
 }
