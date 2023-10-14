@@ -59,12 +59,13 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.7.2")
+                api("androidx.activity:activity-compose:1.8.0")
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.10.1")
+                api("androidx.core:core-ktx:1.12.0")
                 implementation("com.github.instagram4j:instagram4j:2.0.7")
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
                 implementation("androidx.security:security-crypto-ktx:1.1.0-alpha06")
+                implementation("androidx.work:work-runtime-ktx:2.8.1")
             }
         }
         val iosArm64Main by getting

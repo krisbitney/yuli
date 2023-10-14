@@ -23,7 +23,7 @@ class YuliHomeComponent (
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
     database: YuliDatabase,
-    output: (Output) -> Unit
+    private val output: (Output) -> Unit,
 ) : YuliHome, ComponentContext by componentContext {
 
     private val store = instanceKeeper.getStore {

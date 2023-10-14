@@ -22,21 +22,13 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
-// TODO: handle realm open/close on each use to avoid memory leaks
+// TODO: handle realm open/close on each use to avoid memory leaks, or possibly use singleton and close on app exit
 @ExperimentalStdlibApi
 class YuliDatabase : AutoCloseable {
     private val configuration = RealmConfiguration.create(
         schema = setOf(User::class, UserState::class, Profile::class, Event::class)
     )
     private val realm = Realm.open(configuration)
-
-    fun countFollowers(): Long {
-        return realm.query<Profile>("follower > 0").count().find()
-    }
-
-    fun countFollowing(): Long {
-        return realm.query<Profile>("following > 0").count().find()
-    }
 
     fun countMutuals(): Flow<Long> {
         return realm.query<Profile>("follower > 0 AND following > 0").count().asFlow()

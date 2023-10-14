@@ -18,8 +18,8 @@ import kotlinx.serialization.Serializable
 @OptIn(ExperimentalStdlibApi::class)
 class YuliRootComponent(
     private val componentContext: ComponentContext,
-    private val yuliHome: (ComponentContext, (YuliHome.Output) -> Unit ) -> YuliHome,
-    private val yuliLogin: (ComponentContext, (YuliLogin.Output) -> Unit ) -> YuliLogin,
+    private val yuliHome: (ComponentContext, (YuliHome.Output) -> Unit) -> YuliHome,
+    private val yuliLogin: (ComponentContext, (YuliLogin.Output) -> Unit) -> YuliLogin,
 ) : YuliRoot, ComponentContext by componentContext {
 
      constructor(
@@ -53,7 +53,7 @@ class YuliRootComponent(
     override val childStack: Value<ChildStack<*, YuliRoot.Child>> = childStack(
         source = navigation,
         serializer = Configuration.serializer(),
-        initialConfiguration = Configuration.Home,
+        initialConfiguration = Configuration.Login,
         handleBackButton = true,
         childFactory = ::createChild
     )
@@ -64,7 +64,7 @@ class YuliRootComponent(
             is Configuration.Login -> YuliRoot.Child.Login(yuliLogin(componentContext, ::onLoginOutput))
         }
 
-    // TODO: Does Home need an Output?
+    // TODO: Update as I add more screens
     private fun onHomeOutput(output: YuliHome.Output): Unit =
         when (output) {
             is YuliHome.Output.Home -> navigation.push(Configuration.Home)
@@ -73,7 +73,6 @@ class YuliRootComponent(
     private fun onLoginOutput(output: YuliLogin.Output): Unit =
         when (output) {
             is YuliLogin.Output.Login -> {
-                // TODO: pass user to Home?
                 navigation.push(Configuration.Home)
             }
             is YuliLogin.Output.Closed -> navigation.push(Configuration.Home)

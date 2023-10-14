@@ -1,7 +1,6 @@
 package io.github.krisbitney.yuli.repository
 
 import io.github.krisbitney.yuli.api.SocialApi
-import io.github.krisbitney.yuli.api.followFetchTimeout
 import io.github.krisbitney.yuli.api.randomizeDelay
 import io.github.krisbitney.yuli.api.requestDelay
 import io.github.krisbitney.yuli.api.requestTimeout
@@ -109,7 +108,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         TODO("Not yet implemented")
     }
 
-    // TODO: add background tasks (after testing)
+    // TODO: return something to say in notification
     @OptIn(ExperimentalStdlibApi::class)
     suspend fun updateFollows(username: String): Result<Unit> = withContext(Dispatchers.IO) {
         ApiHandler(api, db)
@@ -118,17 +117,15 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         randomizeDelay(requestDelay)
 
         // fetch followers
-        val lastFollowerTimeout = followFetchTimeout(db.countFollowers())
-        val followers = withTimeout(lastFollowerTimeout) {
-            api.fetchFollowers(requestDelay)
-        }.getOrElse { return@withContext Result.failure(it) }
+        val followers = api.fetchFollowers(requestDelay).getOrElse {
+            return@withContext Result.failure(it)
+        }
         randomizeDelay(requestDelay)
 
         // fetch followings
-        val lastFollowingTimeout = followFetchTimeout(db.countFollowing())
-        val followings = withTimeout(lastFollowingTimeout) {
-            api.fetchFollowings(requestDelay)
-        }.getOrElse { return@withContext Result.failure(it) }
+        val followings = api.fetchFollowings(requestDelay).getOrElse {
+            return@withContext Result.failure(it)
+        }
 
         // get previous follows before update
         val previous = Follows(

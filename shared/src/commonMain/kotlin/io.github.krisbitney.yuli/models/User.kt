@@ -1,14 +1,18 @@
 package io.github.krisbitney.yuli.models
 
 import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.serializers.RealmListKSerializer
 import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey
+import kotlinx.serialization.Serializable
 
+@Serializable
 class User(
     @PrimaryKey
     var username: String,
     var name: String,
+    @Serializable(RealmListKSerializer::class)
     var pic: RealmList<Byte>
 ) : RealmObject {
     constructor() : this("", "", realmListOf())

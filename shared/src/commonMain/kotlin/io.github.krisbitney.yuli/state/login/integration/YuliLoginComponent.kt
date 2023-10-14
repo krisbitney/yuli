@@ -66,6 +66,7 @@ class YuliLoginComponent (
                 }
             }
             model.value.loggedInUser?.let {
+                // TODO: start background task to fetch follower data
                 output(YuliLogin.Output.Login(it))
             }
         }
