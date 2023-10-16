@@ -18,38 +18,23 @@ import org.jetbrains.compose.resources.painterResource
 fun UserHeadline(
     fullName: String,
     username: String,
-    followersCount: Long,
     pic: List<Byte>?
 ) {
-
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.CenterStart
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
         Image(
             painter = pic?.toPainter() ?: painterResource("avatar_placeholder.png"),
             contentDescription = "User avatar",
             contentScale = ContentScale.None,
         )
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(text = fullName, fontWeight = FontWeight.Bold)
-                Text(text = "@$username")
-            }
-
-            Text(
-                text = "Followers: $followersCount",
-                modifier = Modifier.padding(16.dp),
-                fontWeight = FontWeight.Bold
-            )
+            Text(text = fullName, fontWeight = FontWeight.Bold)
+            Text(text = "@$username")
         }
     }
 }
