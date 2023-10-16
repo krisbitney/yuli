@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.push
+import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import io.github.krisbitney.yuli.database.YuliDatabase
@@ -53,7 +54,7 @@ class YuliRootComponent(
     override val childStack: Value<ChildStack<*, YuliRoot.Child>> = childStack(
         source = navigation,
         serializer = Configuration.serializer(),
-        initialConfiguration = Configuration.Login,
+        initialConfiguration = Configuration.Home,
         handleBackButton = true,
         childFactory = ::createChild
     )
@@ -72,10 +73,7 @@ class YuliRootComponent(
 
     private fun onLoginOutput(output: YuliLogin.Output): Unit =
         when (output) {
-            is YuliLogin.Output.Login -> {
-                navigation.push(Configuration.Home)
-            }
-            is YuliLogin.Output.Closed -> navigation.push(Configuration.Home)
+            is YuliLogin.Output.Close -> navigation.replaceCurrent(Configuration.Home)
         }
 
     @Serializable

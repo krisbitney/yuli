@@ -13,8 +13,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 
-actual object BackgroundTaskLauncher {
-    actual fun <C> updateFollowsAndNotify(context: C) {
+internal actual object BackgroundTaskLauncher {
+    actual fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
         val workRequest = OneTimeWorkRequestBuilder<UpdateFollowsWorker>().build()
         WorkManager.getInstance(context as Context).enqueue(workRequest)
     }
@@ -48,6 +48,7 @@ class UpdateFollowsWorker(
         val notification = NotificationCompat.Builder(applicationContext, notificationChannelID)
             .setContentTitle("Updating Follows")
             .setTicker("Updating Follows")
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentText(progress)
             .setOngoing(true)
             .addAction(android.R.drawable.ic_delete, "Cancel", intent)
@@ -63,6 +64,7 @@ class UpdateFollowsWorker(
         val notification = NotificationCompat.Builder(applicationContext, notificationChannelID)
             .setContentTitle("Updated Followers!")
             .setContentText(message)
+            .setSmallIcon(android.R.drawable.btn_star_big_on)
             .build()
         NotificationManagerCompat.from(applicationContext).notify(1, notification)
     }

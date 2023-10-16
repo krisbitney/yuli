@@ -30,45 +30,39 @@ class YuliDatabase : AutoCloseable {
     private val realm = Realm.open(configuration)
 
     fun countMutuals(): Flow<Long> {
-        return realm.query<Profile>("follower > 0 AND following > 0").count().asFlow()
+        return realm.query<Profile>("follower == true AND following == true").count().asFlow()
     }
 
     fun countNonfollowers(): Flow<Long> {
-        return realm.query<Profile>("follower = 0 AND following > 0").count().asFlow()
+        return realm.query<Profile>("follower == false AND following == true").count().asFlow()
     }
 
     fun countFans(): Flow<Long> {
-        return realm.query<Profile>("follower > 0 AND following = 0").count().asFlow()
+        return realm.query<Profile>("follower == true AND following == false").count().asFlow()
     }
 
     fun countFormerConnections(): Flow<Long> {
-        return realm.query<Profile>("follower = 0 AND following = 0").count().asFlow()
+        return realm.query<Profile>("follower == false AND following == false").count().asFlow()
     }
 
     // TODO: should these use 1 and 0 or true and false?
     fun selectMutuals(): List<Profile> {
-        return realm.query<Profile>("follower > 0 AND following > 0").find()
+        return realm.query<Profile>("follower == true AND following == true").find()
     }
 
     fun selectNonfollowers(): List<Profile> {
-        return realm.query<Profile>("follower = 0 AND following > 0").find()
+        return realm.query<Profile>("follower == false AND following == true").find()
     }
 
     fun selectFans(): List<Profile> {
-        return realm.query<Profile>("follower > 0 AND following = 0").find()
+        return realm.query<Profile>("follower == true AND following == false").find()
     }
     
     fun selectFormer(): List<Profile> {
-        return realm.query<Profile>("follower = 0 AND following = 0").find()
+        return realm.query<Profile>("follower == false AND following == false").find()
     }
 
-    suspend fun insertOrReplaceProfile(profile: Profile) = withContext(Dispatchers.IO) {
-        realm.write {
-            copyToRealm(profile, UpdatePolicy.ALL)
-        }
-    }
-
-    suspend fun insertOrReplaceProfile(profiles: Collection<Profile>) = withContext(Dispatchers.IO) {
+    suspend fun insertOrReplaceProfiles(profiles: Collection<Profile>) = withContext(Dispatchers.IO) {
         realm.write {
             profiles.forEach { copyToRealm(it, UpdatePolicy.ALL) }
         }
@@ -100,15 +94,10 @@ class YuliDatabase : AutoCloseable {
             .find()
     }
 
-    suspend fun insertEvent(event: Event) = withContext(Dispatchers.IO) {
+    suspend fun insertEvents(events: Collection<Event>) = withContext(Dispatchers.IO) {
         realm.write {
-            copyToRealm(event)
-        }
-    }
-
-    suspend fun insertEvent(events: Collection<Event>) = withContext(Dispatchers.IO) {
-        realm.write {
-            events.forEach { copyToRealm(it) }
+            // TODO: this re-inserts each Profile; need to avoid (use username instead of Profile?)
+            events.forEach { copyToRealm(it, UpdatePolicy.ALL) }
         }
     }
 

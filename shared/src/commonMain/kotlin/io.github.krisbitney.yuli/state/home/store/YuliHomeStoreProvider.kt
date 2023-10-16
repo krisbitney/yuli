@@ -51,8 +51,6 @@ internal class YuliHomeStoreProvider(
                 if (user != null) {
                     dispatch(Action.WithUser(user))
                     dispatch(Action.CountFollows)
-                } else {
-                    // TODO: handle case where user is not logged in
                 }
             }
         }
@@ -72,7 +70,6 @@ internal class YuliHomeStoreProvider(
             }
         }
 
-        // TODO: implement (e.g. handle case where user is not logged in)
         override fun executeIntent(intent: Intent, getState: () -> State): Unit =
             when (intent) {
                 is Intent.OpenSettings -> Unit

@@ -1,7 +1,6 @@
 package io.github.krisbitney.yuli.state.login.store
 
 import com.arkivanov.mvikotlin.core.store.Store
-import io.github.krisbitney.yuli.models.User
 import io.github.krisbitney.yuli.state.login.store.YuliLoginStore.Intent
 import io.github.krisbitney.yuli.state.login.store.YuliLoginStore.State
 
@@ -14,7 +13,7 @@ internal interface YuliLoginStore : Store<Intent, State, Nothing> {
 
     data class State(
         val username: String? = null,
-        val loggedInUser: User? = null,
+        val isLoggedIn: Boolean = false,
         val errorMsg: String? = null
     )
 }

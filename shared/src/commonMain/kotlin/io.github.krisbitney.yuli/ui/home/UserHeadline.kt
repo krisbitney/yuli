@@ -24,14 +24,13 @@ fun UserHeadline(
 
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomStart
+        contentAlignment = Alignment.CenterStart
     ) {
 
         Image(
             painter = pic?.toPainter() ?: painterResource("avatar_placeholder.png"),
             contentDescription = "User avatar",
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier.fillMaxWidth().wrapContentHeight()
+            contentScale = ContentScale.None,
         )
 
         Row(

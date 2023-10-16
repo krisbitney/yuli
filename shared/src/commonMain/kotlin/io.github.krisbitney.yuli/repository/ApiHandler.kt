@@ -20,6 +20,11 @@ import kotlinx.datetime.Clock
 @OptIn(ExperimentalStdlibApi::class)
 class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
+    val inBackground = LaunchInBackground(api.context)
+    inner class LaunchInBackground(private val context: Any?) {
+        fun updateFollowsAndNotify() = BackgroundTaskLauncher.updateFollowsAndNotify(context)
+    }
+
     private data class Follows(
         val fans: Set<Profile>,
         val mutuals: Set<Profile>,
@@ -40,6 +45,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         val isLoggedIn = withTimeout(requestTimeout) {
             api.login(username, password)
         }
+
         if (isLoggedIn.isFailure) {
             val e = isLoggedIn.exceptionOrNull()!!
             var newState = initialState.copy(isLoggedIn = false, isLocked = false)
@@ -145,16 +151,16 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         }
 
         // store updated follows
-        db.insertOrReplaceProfile(follows.fans)
-        db.insertOrReplaceProfile(follows.mutuals)
-        db.insertOrReplaceProfile(follows.nonfollowers)
-        db.insertOrReplaceProfile(formerConnections)
+        db.insertOrReplaceProfiles(follows.fans)
+        db.insertOrReplaceProfiles(follows.mutuals)
+        db.insertOrReplaceProfiles(follows.nonfollowers)
+        db.insertOrReplaceProfiles(formerConnections)
 
         // assess change events
         val events = deriveFollowEvents(previous, follows)
 
         // store events
-        db.insertEvent(events)
+        db.insertEvents(events)
 
         Result.success(Unit)
     }

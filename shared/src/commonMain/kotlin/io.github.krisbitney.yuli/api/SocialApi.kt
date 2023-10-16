@@ -4,10 +4,11 @@ import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
 
 expect object SocialApiFactory {
-    fun <C> get(context: C): SocialApi
+    fun <AndroidContext> get(context: AndroidContext): SocialApi
 }
 
 interface SocialApi {
+    val context: Any?
     suspend fun login(username: String, password: String): Result<Unit>
     suspend fun restoreSession(username: String): Result<Boolean>
     suspend fun fetchUser(): Result<User>

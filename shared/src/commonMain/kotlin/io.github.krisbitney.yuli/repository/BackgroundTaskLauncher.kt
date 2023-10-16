@@ -6,13 +6,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
-expect object BackgroundTaskLauncher {
-    fun <C> updateFollowsAndNotify(context: C)
+internal expect object BackgroundTaskLauncher {
+    fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext)
 }
 
-object BackgroundTasks {
+internal object BackgroundTasks {
     @OptIn(ExperimentalStdlibApi::class)
-    suspend fun <C> launchUpdateFollowsTask(context: C): Result<String> = withContext(Dispatchers.IO) {
+    suspend fun <AndroidContext> launchUpdateFollowsTask(context: AndroidContext): Result<String> = withContext(Dispatchers.IO) {
         YuliDatabase().use { db ->
             val api = SocialApiFactory.get(context)
             val username = db.selectUser()?.username

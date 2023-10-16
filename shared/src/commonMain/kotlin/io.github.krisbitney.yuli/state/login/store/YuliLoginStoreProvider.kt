@@ -31,7 +31,7 @@ internal class YuliLoginStoreProvider(
 
     private sealed class Msg {
         data class SetUsername(val username: String?) : Msg()
-        data class SetLoginAttempt(val loggedInUser: User?, val errorMsg: String?) : Msg()
+        data class SetLoginAttempt(val isLoggedIn: Boolean, val errorMsg: String?) : Msg()
     }
 
     private inner class ExecutorImpl : CoroutineExecutor<Intent, Unit, State, Msg, Nothing>() {
@@ -48,7 +48,7 @@ internal class YuliLoginStoreProvider(
         override fun executeIntent(intent: Intent, getState: () -> State): Unit =
             when (intent) {
                 is Intent.Login -> {
-                    dispatch(Msg.SetLoginAttempt(null, null))
+                    dispatch(Msg.SetLoginAttempt(false, null))
                     login(intent.username, intent.password)
                 }
                 is Intent.SetUsername -> dispatch(Msg.SetUsername(intent.username))
@@ -59,7 +59,10 @@ internal class YuliLoginStoreProvider(
                 val result = withContext(Dispatchers.IO) {
                     apiHandler.createSession(username, password)
                 }
-                dispatch(Msg.SetLoginAttempt(result.getOrNull(), result.exceptionOrNull()?.message))
+                if (result.isSuccess) {
+                    apiHandler.inBackground.updateFollowsAndNotify()
+                }
+                dispatch(Msg.SetLoginAttempt(result.isSuccess, result.exceptionOrNull()?.message))
             }
         }
     }
@@ -69,7 +72,7 @@ internal class YuliLoginStoreProvider(
             when (msg) {
                 is Msg.SetUsername -> copy(username = msg.username)
                 is Msg.SetLoginAttempt -> copy(
-                    loggedInUser = msg.loggedInUser,
+                    isLoggedIn = msg.isLoggedIn,
                     errorMsg = msg.errorMsg
                 )
             }

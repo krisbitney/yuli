@@ -14,7 +14,9 @@ fun <T, R> StateFlow<T>.map(
 ): StateFlow<R> {
     val mappedStateFlow = MutableStateFlow(transform(this.value))
     scope.launch {
-        this@map.mapLatest(transform).collect { mappedStateFlow.value = it }
+        this@map.mapLatest(transform).collect {
+            mappedStateFlow.value = it
+        }
     }
     return mappedStateFlow
 }

@@ -16,10 +16,10 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 actual object SocialApiFactory {
-    actual fun <C> get(context: C): SocialApi = AndroidSocialApi(context as Context)
+    actual fun <AndroidContext> get(context: AndroidContext): SocialApi = AndroidSocialApi(context as Context)
 }
 
-class AndroidSocialApi(context: Context) : SocialApi {
+class AndroidSocialApi(override val context: Context) : SocialApi {
 
     private val masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -53,11 +53,11 @@ class AndroidSocialApi(context: Context) : SocialApi {
             if (client.exists()) client.delete()
             if (cookie.exists()) cookie.delete()
             try {
-                val ig = IGClient.builder()
+                insta = IGClient.builder()
                     .username(username)
                     .password(password)
                     .login()
-                ig.serializeEncrypted(encryptedClient, encryptedCookie)
+                insta?.serializeEncrypted(encryptedClient, encryptedCookie)
                 this@AndroidSocialApi.username = username
             } catch (e: IGLoginException) {
                 // TODO: Do I need this?

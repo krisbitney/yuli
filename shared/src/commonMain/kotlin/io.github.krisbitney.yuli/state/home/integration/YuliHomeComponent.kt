@@ -36,6 +36,8 @@ class YuliHomeComponent (
     private val scope = CoroutineScope(Dispatchers.Default)
     override val model: StateFlow<Model> = store.stateFlow.map(scope, stateToModel)
 
+    // TODO: if user is not logged in, navigate to login screen
+
     init {
         lifecycle.doOnDestroy {
             if (scope.isActive) {

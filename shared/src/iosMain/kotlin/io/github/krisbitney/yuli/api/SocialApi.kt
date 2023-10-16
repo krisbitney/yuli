@@ -12,10 +12,12 @@ import cocoapods.yuli_ios.User as SwiftUser
 
 actual object SocialApiFactory {
     // context is unused in ios
-    actual fun <C> get(context: C): SocialApi = IosSocialApi()
+    actual fun <AndroidContext> get(context: AndroidContext): SocialApi = IosSocialApi()
 }
 
 class IosSocialApi : SocialApi {
+
+    override val context = null
 
     private val api = SwiftSocialApi()
 

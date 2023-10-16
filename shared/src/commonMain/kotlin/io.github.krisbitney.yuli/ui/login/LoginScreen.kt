@@ -1,6 +1,7 @@
 package io.github.krisbitney.yuli.ui.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -8,11 +9,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.state.login.YuliLogin
@@ -25,8 +28,8 @@ fun LoginScreen(component: YuliLogin) {
     val model = component.model.collectAsState()
 
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize().padding(16.dp, 64.dp),
+        contentAlignment = Alignment.TopCenter
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -41,7 +44,11 @@ fun LoginScreen(component: YuliLogin) {
             }
 
             // App Logo
-            Image(painter = painterResource("ic_launcher-playstore.png"), contentDescription = "App Logo")
+            Image(
+                painter = painterResource("ic_launcher-playstore.png"),
+                contentDescription = "App Logo",
+                modifier = Modifier.size(64.dp)
+            )
 
             // Username Input or Display
             if (model.value.username == null) {
@@ -49,7 +56,11 @@ fun LoginScreen(component: YuliLogin) {
                     value = component.usernameInput,
                     onValueChange = { component.usernameInput = it },
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(width = 2.dp, color = Color.Black) // Adding black outline
+                        .padding(8.dp), // Padding inside the box for better UX
+                    textStyle = TextStyle(color = Color.Black) // Black text for visibility
                 )
             } else {
                 // Stylized Username
@@ -74,17 +85,25 @@ fun LoginScreen(component: YuliLogin) {
                 value = component.passwordInput,
                 onValueChange = { component.passwordInput = it },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(width = 2.dp, color = Color.Black) // Adding black outline
+                    .padding(8.dp), // Padding inside the box for better UX
+                textStyle = TextStyle(color = Color.Black) // Black text for visibility
             )
+
+            // Error Message
+            if (model.value.errorMsg != null) {
+                Text(
+                    text = model.value.errorMsg ?: "",
+                    color = Color.Red,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
 
             // Login Button
             Button(onClick = { component.onLoginClicked(component.usernameInput, component.passwordInput) }) {
                 Text("Login")
-            }
-
-            // Error Message
-            if (model.value.errorMsg != null) {
-                Text(text = model.value.errorMsg ?: "", color = Color.Red)
             }
         }
     }

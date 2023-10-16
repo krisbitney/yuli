@@ -19,7 +19,7 @@ import platform.UserNotifications.UNMutableNotificationContent
 import platform.UserNotifications.UNNotificationRequest
 import platform.UserNotifications.UNUserNotificationCenter
 
-actual object BackgroundTaskLauncher {
+internal actual object BackgroundTaskLauncher {
 
     val updateFollowsTaskIdentifier = "io.github.krisbitney.yuli.updateFollows"
 
@@ -44,7 +44,7 @@ actual object BackgroundTaskLauncher {
     }
 
     @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
-    actual fun <C> updateFollowsAndNotify(context: C) {
+    actual fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
         val request = BGProcessingTaskRequest(updateFollowsTaskIdentifier)
         request.requiresNetworkConnectivity = true
         memScoped {

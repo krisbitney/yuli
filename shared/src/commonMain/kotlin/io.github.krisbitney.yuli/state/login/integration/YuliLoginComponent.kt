@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -21,7 +22,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class YuliLoginComponent (
@@ -48,6 +49,17 @@ class YuliLoginComponent (
     override var passwordInput by mutableStateOf("")
 
     init {
+        lifecycle.doOnCreate {
+            scope.launch {
+                model.collect {
+                    if (it.isLoggedIn) {
+                        withContext(Dispatchers.Main) {
+                            output(YuliLogin.Output.Close)
+                        }
+                    }
+                }
+            }
+        }
         lifecycle.doOnDestroy {
             if (scope.isActive) {
                 scope.cancel()
@@ -56,24 +68,12 @@ class YuliLoginComponent (
     }
 
     override fun onLoginClicked(username: String, password: String) {
-        scope.launch {
-            store.accept(YuliLoginStore.Intent.Login(username, password))
-            withTimeoutOrNull<Unit>(5000) {
-                model.collect {
-                    if (it.loggedInUser != null || it.errorMsg != null) {
-                        cancel()
-                    }
-                }
-            }
-            model.value.loggedInUser?.let {
-                // TODO: start background task to fetch follower data
-                output(YuliLogin.Output.Login(it))
-            }
-        }
+        store.accept(YuliLoginStore.Intent.Login(username.trim(), password.trim()))
+        // TODO: add loading indicator with a timeout that produces an error message if it takes too long
     }
 
     override fun onCloseClicked() {
-        output(YuliLogin.Output.Closed)
+        output(YuliLogin.Output.Close)
     }
 
     override fun showConfirmation() {
