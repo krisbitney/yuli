@@ -45,7 +45,6 @@ class YuliDatabase : AutoCloseable {
         return realm.query<Profile>("follower == false AND following == false").count().asFlow()
     }
 
-    // TODO: should these use 1 and 0 or true and false?
     fun selectMutuals(): List<Profile> {
         return realm.query<Profile>("follower == true AND following == true").find()
     }
@@ -96,7 +95,6 @@ class YuliDatabase : AutoCloseable {
 
     suspend fun insertEvents(events: Collection<Event>) = withContext(Dispatchers.IO) {
         realm.write {
-            // TODO: this re-inserts each Profile; need to avoid (use username instead of Profile?)
             events.forEach { copyToRealm(it, UpdatePolicy.ALL) }
         }
     }

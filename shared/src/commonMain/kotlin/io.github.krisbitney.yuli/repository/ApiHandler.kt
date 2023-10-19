@@ -12,10 +12,8 @@ import io.github.krisbitney.yuli.models.UserState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.datetime.Clock
-
-// TODO: withTimeouts will throw instead of returning Result.failure
 
 @OptIn(ExperimentalStdlibApi::class)
 class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
@@ -37,46 +35,21 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
     ): Result<User> = withContext(Dispatchers.IO) {
         val maybeOldUser = db.selectUser()
 
-        val initialState = when (maybeOldUser?.username) {
+        val state = when (maybeOldUser?.username) {
             username -> db.selectState()!!
             else -> UserState(username, isLoggedIn = false, isLocked = false, 0)
         }
 
-        val isLoggedIn = withTimeout(requestTimeout) {
+        val isLoggedIn = withTimeoutOrNull(requestTimeout) {
             api.login(username, password)
-        }
+        } ?: return@withContext Result.failure(Exception("Login timed out. Please try again."))
 
         if (isLoggedIn.isFailure) {
-            val e = isLoggedIn.exceptionOrNull()!!
-            var newState = initialState.copy(isLoggedIn = false, isLocked = false)
-            val exception = if (e.message!!.contains("factor")) {
-                Exception("This account requires 2-factor-authentication.")
-            } else if (e.message!!.contains("few minutes")) {
-                Exception("Please wait a few minutes and try again.")
-            } else if (e.message!!.contains("password")) {
-                Exception("Username or password is incorrect")
-            } else if (e.message!!.contains("challenge")) {
-                newState = newState.copy(isLocked = true)
-                Exception("Your account is locked. Open https://i.instagram.com/challenge to verify your account.")
-            }  else {
-                e
-            }
-            db.insertOrReplaceState(newState)
+            val exception = handleLoginException(isLoggedIn.exceptionOrNull()!!, state)
             return@withContext Result.failure(exception)
         }
 
-        // fetch user to check login success
-        val user = withTimeout(requestTimeout) { api.fetchUser() }
-
-        // update database
-        if (user.isSuccess) {
-            // TODO: implement with endSession?
-            if (maybeOldUser?.username != username) { db.clear() }
-            db.insertOrReplaceState(initialState.copy(isLoggedIn = true, isLocked = false))
-            db.insertOrReplaceUser(user.getOrThrow())
-        }
-
-        user
+        checkLogin(state, maybeOldUser?.username != username)
     }
 
     suspend fun restoreSession(username: String): Result<User> = withContext(Dispatchers.IO) {
@@ -100,18 +73,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
             return@withContext Result.failure(Exception("Session could not be restored. User must log in again."))
         }
 
-        val user = withTimeout(requestTimeout) { api.fetchUser() }
-
-        if (user.isSuccess) {
-            db.insertOrReplaceState(state.copy(isLoggedIn = true, isLocked = false))
-            db.insertOrReplaceUser(user.getOrThrow())
-        }
-
-        user
-    }
-
-    suspend fun endSession() {
-        TODO("Not yet implemented")
+        checkLogin(state, false)
     }
 
     // TODO: return something to say in notification
@@ -212,4 +174,39 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         kind = kind,
         timestamp = time
     )
+
+    // checks login; updates database and user state
+    private suspend fun checkLogin(initialState: UserState, isNewUserLogin: Boolean): Result<User> = withContext(Dispatchers.IO) {
+        val user = withTimeoutOrNull(requestTimeout) { api.fetchUser() }
+            ?: return@withContext Result.failure(Exception("Login timed out. Please try again."))
+
+        if (user.isSuccess) {
+            if (isNewUserLogin) { db.clear() }
+            db.insertOrReplaceState(initialState.copy(isLoggedIn = true, isLocked = false))
+            db.insertOrReplaceUser(user.getOrThrow())
+            user
+        } else {
+            val exception = handleLoginException(user.exceptionOrNull()!!, initialState)
+            Result.failure(exception)
+        }
+    }
+
+    // handles login exceptions; updates database and user state
+    private suspend fun handleLoginException(e: Throwable, initialState: UserState): Throwable = withContext(Dispatchers.IO) {
+        var newState = initialState.copy(isLoggedIn = false, isLocked = false)
+        val newException = if (e.message!!.contains("factor")) {
+            Exception("This account requires 2-factor-authentication.")
+        } else if (e.message!!.contains("few minutes")) {
+            Exception("Please wait a few minutes and try again.")
+        } else if (e.message!!.contains("password")) {
+            Exception("Username or password is incorrect")
+        } else if (e.message!!.contains("challenge")) {
+            newState = newState.copy(isLocked = true)
+            Exception("Your account is locked. Open https://i.instagram.com/challenge to verify your account.")
+        } else {
+            e
+        }
+        db.insertOrReplaceState(newState)
+        newException
+    }
 }

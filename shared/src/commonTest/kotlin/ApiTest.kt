@@ -10,6 +10,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Duration
+import io.realm.kotlin.ext.realmListOf
 
 class ApiTest {
     private val api = SocialApiFactory.get("./src/commonTest/kotlin/generated/")
@@ -19,7 +20,7 @@ class ApiTest {
     private val krisUser = User(
         username = "kris_makes_apps",
         name = "Kris B",
-        picUrl = "",
+        pic = realmListOf(),
     )
 
     private val yuliaProfile = Profile(
@@ -62,7 +63,6 @@ class ApiTest {
         assertTrue(result.getOrThrow())
     }
 
-    // TODO: followerCount and followingCount apparently are not available
     fun testFetchUser() = runTest {
         val result = api.fetchUser()
         assertNull(result.exceptionOrNull())

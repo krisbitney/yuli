@@ -5,15 +5,20 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mongodb.kbson.ObjectId
 
 class Event(
-    var profile: Profile?,
+    var username: String,
+    var name: String,
     var kindOrdinal: Int,
     var timestamp: Long
 ) : RealmObject {
     @PrimaryKey
     var _id: ObjectId = ObjectId()
 
-    constructor() : this(null, 0, 0)
-    constructor(profile: Profile?, kind: Kind, timestamp: Long) : this(profile, kind.ordinal, timestamp)
+    constructor() : this("", "", 0, 0)
+    constructor(
+        profile: Profile,
+        kind: Kind,
+        timestamp: Long
+    ) : this(profile.username, profile.name, kind.ordinal, timestamp)
 
     var kind: Kind
         get() = Kind.values()[kindOrdinal]
@@ -27,7 +32,6 @@ class Event(
     }
     
     fun message(): String  {
-        val name = profile?.name ?: "Someone"
         return when (this.kind) {
             Kind.GAINED_FOLLOWER -> "$name followed you"
             Kind.LOST_FOLLOWER -> "$name unfollowed you"
