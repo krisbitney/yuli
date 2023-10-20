@@ -19,7 +19,7 @@ import platform.UserNotifications.UNMutableNotificationContent
 import platform.UserNotifications.UNNotificationRequest
 import platform.UserNotifications.UNUserNotificationCenter
 
-internal actual object BackgroundTaskLauncher {
+actual object BackgroundTaskLauncher {
 
     val updateFollowsTaskIdentifier = "io.github.krisbitney.yuli.updateFollows"
 
@@ -56,21 +56,28 @@ internal actual object BackgroundTaskLauncher {
         }
     }
 
+    // TODO: is it possible to update progress intermittently?
     private suspend fun handleUpdateFollowsTask(task: BGTask) {
         task.expirationHandler = {
             // TODO: Cleanup code
         }
         val result = BackgroundTasks.launchUpdateFollowsTask(null)
-        val message: String = result.getOrElse { it.message ?: "Unknown Error" }
 
-        notifyOnFinish(result.isSuccess, message)
+        if (result.isSuccess) {
+            val updateFollowsSummary = result.getOrThrow()
+            val notificationMessage = BackgroundTasks.createUpdateFollowsNotificationMessage(updateFollowsSummary)
+            if (notificationMessage != null) {
+                notifyOnFinish(notificationMessage)
+            }
+        } else {
+            // TODO: handle error
+        }
 
         task.setTaskCompletedWithSuccess(result.isSuccess)
     }
 
     // TODO: make notification look good
-    // TODO: handle isSuccess = false
-    private fun notifyOnFinish(isSuccess: Boolean, message: String) {
+    private fun notifyOnFinish(message: String) {
         val content = UNMutableNotificationContent()
         content.setTitle("Updated Followers!")
         content.setBody(message)

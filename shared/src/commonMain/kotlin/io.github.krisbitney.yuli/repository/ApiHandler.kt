@@ -23,6 +23,11 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         fun updateFollowsAndNotify() = BackgroundTaskLauncher.updateFollowsAndNotify(context)
     }
 
+    data class UpdateFollowsSummary(
+        val gainedFollowers: Int,
+        val lostFollowers: Int
+    )
+
     private data class Follows(
         val fans: Set<Profile>,
         val mutuals: Set<Profile>,
@@ -76,24 +81,28 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         checkLogin(state, false)
     }
 
-    // TODO: return something to say in notification
     @OptIn(ExperimentalStdlibApi::class)
-    suspend fun updateFollows(username: String): Result<Unit> = withContext(Dispatchers.IO) {
+    suspend fun updateFollows(username: String, reportProgress: suspend (message: String) -> Unit = {}): Result<UpdateFollowsSummary> = withContext(Dispatchers.IO) {
+        reportProgress("Checking login status...")
         ApiHandler(api, db)
             .restoreSession(username)
             .getOrElse { return@withContext Result.failure(it) }
         randomizeDelay(requestDelay)
 
         // fetch followers
+        reportProgress("Downloading followers...")
         val followers = api.fetchFollowers(requestDelay).getOrElse {
             return@withContext Result.failure(it)
         }
         randomizeDelay(requestDelay)
 
         // fetch followings
+        reportProgress("Downloading followings...")
         val followings = api.fetchFollowings(requestDelay).getOrElse {
             return@withContext Result.failure(it)
         }
+
+        reportProgress("Finishing up...")
 
         // get previous follows before update
         val previous = Follows(
@@ -124,7 +133,15 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         // store events
         db.insertEvents(events)
 
-        Result.success(Unit)
+        // summarize changes
+        val gainedFollowers = events.filter { it.kind == Event.Kind.GAINED_FOLLOWER }.size
+        val lostFollowers = events.filter { it.kind == Event.Kind.LOST_FOLLOWER }.size
+        val summary = UpdateFollowsSummary(
+            gainedFollowers = gainedFollowers,
+            lostFollowers = lostFollowers
+        )
+
+        Result.success(summary)
     }
 
     private fun followSetAlgebra(

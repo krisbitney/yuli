@@ -6,13 +6,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
-internal expect object BackgroundTaskLauncher {
+expect object BackgroundTaskLauncher {
     fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext)
 }
 
-internal object BackgroundTasks {
+object BackgroundTasks {
     @OptIn(ExperimentalStdlibApi::class)
-    suspend fun <AndroidContext> launchUpdateFollowsTask(context: AndroidContext): Result<String> = withContext(Dispatchers.IO) {
+    suspend fun <AndroidContext> launchUpdateFollowsTask(context: AndroidContext, reportProgress: suspend (message: String) -> Unit = {}): Result<ApiHandler.UpdateFollowsSummary> = withContext(Dispatchers.IO) {
         YuliDatabase().use { db ->
             val api = SocialApiFactory.get(context)
             val username = db.selectUser()?.username
@@ -20,11 +20,19 @@ internal object BackgroundTasks {
                 val e = Exception("No user logged in")
                 return@use Result.failure(e)
             }
-            // TODO: use message from api
-            val updateResult = ApiHandler(api, db).updateFollows(username).getOrElse {
-                return@use Result.failure(it)
-            }
-            return@use Result.success("Follows Updated!")
+            ApiHandler(api, db).updateFollows(username, reportProgress)
+        }
+    }
+
+    fun createUpdateFollowsNotificationMessage(summary: ApiHandler.UpdateFollowsSummary): String? {
+        return if (summary.gainedFollowers == 0 && summary.lostFollowers == 0) {
+            null
+        } else if (summary.gainedFollowers == 0) {
+            "${summary.lostFollowers} unfollowed you since the last update."
+        } else if (summary.lostFollowers == 0) {
+            "You've gained ${summary.gainedFollowers} followers!"
+        } else {
+            "Since the last update, ${summary.gainedFollowers} people followed you and ${summary.lostFollowers} unfollowed you."
         }
     }
 }

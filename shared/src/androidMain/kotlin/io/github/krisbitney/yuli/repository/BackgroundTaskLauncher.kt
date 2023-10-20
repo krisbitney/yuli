@@ -13,7 +13,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 
-internal actual object BackgroundTaskLauncher {
+actual object BackgroundTaskLauncher {
     actual fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
         val workRequest = OneTimeWorkRequestBuilder<UpdateFollowsWorker>().build()
         WorkManager.getInstance(context as Context).enqueue(workRequest)
@@ -31,23 +31,31 @@ class UpdateFollowsWorker(
 
     override suspend fun doWork(): Result {
         createNotificationChannel()
-        setForeground(createForegroundInfo("Downloading Follows"))
-        val result = BackgroundTasks.launchUpdateFollowsTask(applicationContext)
-        val message: String = result.getOrElse { it.message ?: "Unknown Error" }
+        setForeground(createForegroundInfo("Checking for updates..."))
+        val result = BackgroundTasks.launchUpdateFollowsTask(applicationContext) {
+            setForeground(createForegroundInfo(it))
+        }
 
-        notifyOnFinish(result.isSuccess, message)
+        if (result.isSuccess) {
+            val updateFollowsSummary = result.getOrThrow()
+            val notificationMessage = BackgroundTasks.createUpdateFollowsNotificationMessage(updateFollowsSummary)
+            if (notificationMessage != null) {
+                notifyOnFinish(notificationMessage)
+            }
+        } else {
+            // TODO: handle error
+        }
 
         return if (result.isSuccess) Result.success() else Result.failure()
     }
 
-    // TODO: update progress in updateFollows
     private fun createForegroundInfo(progress: String): ForegroundInfo {
         // This PendingIntent can be used to cancel the worker
         val intent = WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
 
         val notification = NotificationCompat.Builder(applicationContext, notificationChannelID)
-            .setContentTitle("Updating Follows")
-            .setTicker("Updating Follows")
+            .setContentTitle("Updating Followers")
+            .setTicker("Checking for updates...")
             .setSmallIcon(android.R.drawable.ic_dialog_info)
             .setContentText(progress)
             .setOngoing(true)
@@ -58,9 +66,8 @@ class UpdateFollowsWorker(
     }
 
     // TODO: make notification look good
-    // TODO: handle isSuccess = false
     @SuppressLint("MissingPermission")
-    private fun notifyOnFinish(isSuccess: Boolean, message: String) {
+    private fun notifyOnFinish(message: String) {
         val notification = NotificationCompat.Builder(applicationContext, notificationChannelID)
             .setContentTitle("Updated Followers!")
             .setContentText(message)
