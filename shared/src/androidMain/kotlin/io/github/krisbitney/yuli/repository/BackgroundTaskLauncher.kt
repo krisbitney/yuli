@@ -40,17 +40,18 @@ class UpdateFollowsWorker(
             val updateFollowsSummary = result.getOrThrow()
             val notificationMessage = BackgroundTasks.createUpdateFollowsNotificationMessage(updateFollowsSummary)
             if (notificationMessage != null) {
-                notifyOnFinish(notificationMessage)
+                notifyOnFinish(true, notificationMessage)
             }
         } else {
-            // TODO: handle error
+            val notificationMessage = result.exceptionOrNull()?.message ?: "Unknown error"
+            notifyOnFinish(false, notificationMessage)
         }
 
         return if (result.isSuccess) Result.success() else Result.failure()
     }
 
     private fun createForegroundInfo(progress: String): ForegroundInfo {
-        // This PendingIntent can be used to cancel the worker
+        // This can be used to cancel the worker
         val intent = WorkManager.getInstance(applicationContext).createCancelPendingIntent(id)
 
         val notification = NotificationCompat.Builder(applicationContext, notificationChannelID)
@@ -67,13 +68,21 @@ class UpdateFollowsWorker(
 
     // TODO: make notification look good
     @SuppressLint("MissingPermission")
-    private fun notifyOnFinish(message: String) {
+    private fun notifyOnFinish(isSuccess: Boolean, message: String) {
         val notification = NotificationCompat.Builder(applicationContext, notificationChannelID)
-            .setContentTitle("Updated Followers!")
+            .setTicker(message)
             .setContentText(message)
-            .setSmallIcon(android.R.drawable.btn_star_big_on)
-            .build()
-        NotificationManagerCompat.from(applicationContext).notify(1, notification)
+        if (isSuccess) {
+            notification
+                .setContentTitle("Updated Followers!")
+                .setSmallIcon(android.R.drawable.btn_star_big_on)
+        } else {
+            notification
+                .setContentTitle("Update Failed")
+                .setSmallIcon(android.R.drawable.ic_dialog_alert)
+        }
+
+        NotificationManagerCompat.from(applicationContext).notify(1, notification.build())
     }
 
     private fun createNotificationChannel() {

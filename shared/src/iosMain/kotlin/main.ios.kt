@@ -13,6 +13,7 @@ import platform.UIKit.addChildViewController
 import platform.UIKit.didMoveToParentViewController
 
 fun MainViewController(): UIViewController {
+    BackgroundTaskLauncher.requestNotificationPermissions()
     BackgroundTaskLauncher.registerTasks()
     return LifecycleManagingViewController()
 }

@@ -27,12 +27,13 @@ actual object BackgroundTaskLauncher {
     // sound permission = 0x02
     val alertAndSoundPermission = 0x01.and(0x02).toULong()
 
+    fun requestNotificationPermissions() = UNUserNotificationCenter
+        .currentNotificationCenter()
+        .requestAuthorizationWithOptions(alertAndSoundPermission) { granted, error ->
+            // TODO: handle error?
+        }
+
     fun registerTasks() {
-        UNUserNotificationCenter
-            .currentNotificationCenter()
-            .requestAuthorizationWithOptions(alertAndSoundPermission) { granted, error ->
-                // TODO: handle error
-            }
         BGTaskScheduler.sharedScheduler.registerForTaskWithIdentifier(
             updateFollowsTaskIdentifier,
             null
@@ -63,32 +64,40 @@ actual object BackgroundTaskLauncher {
         }
         val result = BackgroundTasks.launchUpdateFollowsTask(null)
 
-        if (result.isSuccess) {
-            val updateFollowsSummary = result.getOrThrow()
-            val notificationMessage = BackgroundTasks.createUpdateFollowsNotificationMessage(updateFollowsSummary)
-            if (notificationMessage != null) {
-                notifyOnFinish(notificationMessage)
+        UNUserNotificationCenter.currentNotificationCenter()
+            .getNotificationSettingsWithCompletionHandler { settings ->
+                if (settings?.authorizationStatus == 2L || settings?.authorizationStatus == 3L) {
+                    if (result.isSuccess) {
+                        val updateFollowsSummary = result.getOrThrow()
+                        val notificationMessage = BackgroundTasks.createUpdateFollowsNotificationMessage(updateFollowsSummary)
+                        if (notificationMessage != null) {
+                            notifyOnFinish(true, notificationMessage)
+                        }
+                    } else {
+                        val notificationMessage = result.exceptionOrNull()?.message ?: "Unknown error"
+                        notifyOnFinish(false, notificationMessage)
+                    }
+                }
             }
-        } else {
-            // TODO: handle error
-        }
 
         task.setTaskCompletedWithSuccess(result.isSuccess)
     }
 
     // TODO: make notification look good
-    private fun notifyOnFinish(message: String) {
+    private fun notifyOnFinish(isSuccess: Boolean, message: String) {
         val content = UNMutableNotificationContent()
-        content.setTitle("Updated Followers!")
         content.setBody(message)
+        if (isSuccess) {
+            content.setTitle("Updated Followers!")
+        } else {
+            content.setTitle("Update Failed")
+        }
 
         val request = UNNotificationRequest.requestWithIdentifier(
             NSUUID().UUIDString,
             content,
             null
         )
-        UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request) { error ->
-            // TODO: Handle error
-        }
+        UNUserNotificationCenter.currentNotificationCenter().addNotificationRequest(request, null)
     }
 }
