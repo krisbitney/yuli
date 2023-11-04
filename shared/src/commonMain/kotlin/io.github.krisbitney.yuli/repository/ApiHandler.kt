@@ -6,6 +6,7 @@ import io.github.krisbitney.yuli.api.requestDelay
 import io.github.krisbitney.yuli.api.requestTimeout
 import io.github.krisbitney.yuli.database.YuliDatabase
 import io.github.krisbitney.yuli.models.Event
+import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
 import io.github.krisbitney.yuli.models.UserState
@@ -106,9 +107,9 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
         // get previous follows before update
         val previous = Follows(
-            fans = db.selectFans().toSet(),
-            mutuals = db.selectMutuals().toSet(),
-            nonfollowers = db.selectNonfollowers().toSet()
+            fans = db.selectProfiles(FollowType.FAN).toSet(),
+            mutuals = db.selectProfiles(FollowType.MUTUAL).toSet(),
+            nonfollowers = db.selectProfiles(FollowType.NONFOLLOWER).toSet()
         )
 
         // organize followers and followings

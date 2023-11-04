@@ -42,4 +42,9 @@ class Profile(
     override fun toString(): String {
         return "Profile(username='$username', name='$name', follower=$follower, following=$following)"
     }
+
+    enum class SortBy {
+        USERNAME,
+        NAME
+    }
 }

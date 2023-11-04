@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -33,7 +32,7 @@ fun HomeScreen(component: YuliHome) {
                     username = model.value.user?.username ?: "",
                     pic = model.value.user?.pic
                 )
-            // TODO: Add login required screen
+            // TODO: Add login required screen and button
             } else {
                 UserHeadline(
                     fullName = "Not Logged In",

@@ -5,6 +5,7 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
+import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.models.User
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.Intent
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.State
@@ -62,10 +63,10 @@ internal class YuliHomeStoreProvider(
             when (action) {
                 is Action.WithUser -> dispatch(Msg.SetUser(action.value))
                 is Action.CountFollows -> scope.launch {
-                    launchSubscription(database::countMutuals, Msg::SetMutualsCount)
-                    launchSubscription(database::countNonfollowers, Msg::SetNonFollowersCount)
-                    launchSubscription(database::countFans, Msg::SetFansCount)
-                    launchSubscription(database::countFormerConnections, Msg::SetFormerConnectionsCount)
+                    launchSubscription({ database.countFollows(FollowType.MUTUAL) }, Msg::SetMutualsCount)
+                    launchSubscription({ database.countFollows(FollowType.NONFOLLOWER) }, Msg::SetNonFollowersCount)
+                    launchSubscription({ database.countFollows(FollowType.FAN) }, Msg::SetFansCount)
+                    launchSubscription({ database.countFollows(FollowType.FORMER) }, Msg::SetFormerConnectionsCount)
                 }
             }
         }
@@ -101,12 +102,6 @@ internal class YuliHomeStoreProvider(
     interface Database {
         fun selectUser(): User?
 
-        fun countMutuals(): Flow<Long>
-
-        fun countNonfollowers(): Flow<Long>
-
-        fun countFans(): Flow<Long>
-
-        fun countFormerConnections(): Flow<Long>
+        fun countFollows(type: FollowType): Flow<Long>
     }
 }

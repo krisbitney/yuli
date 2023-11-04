@@ -1,6 +1,7 @@
 package io.github.krisbitney.yuli.database
 
 import io.github.krisbitney.yuli.models.Event
+import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
 import io.github.krisbitney.yuli.models.UserState
@@ -29,36 +30,24 @@ class YuliDatabase : AutoCloseable {
     )
     private val realm = Realm.open(configuration)
 
-    fun countMutuals(): Flow<Long> {
-        return realm.query<Profile>("follower == true AND following == true").count().asFlow()
+    fun countProfilesAsFlow(type: FollowType): Flow<Long> {
+        val query = when(type) {
+            FollowType.MUTUAL -> "follower == true AND following == true"
+            FollowType.NONFOLLOWER -> "follower == false AND following == true"
+            FollowType.FAN -> "follower == true AND following == false"
+            FollowType.FORMER -> "follower == false AND following == false"
+        }
+        return realm.query<Profile>(query).count().asFlow()
     }
 
-    fun countNonfollowers(): Flow<Long> {
-        return realm.query<Profile>("follower == false AND following == true").count().asFlow()
-    }
-
-    fun countFans(): Flow<Long> {
-        return realm.query<Profile>("follower == true AND following == false").count().asFlow()
-    }
-
-    fun countFormerConnections(): Flow<Long> {
-        return realm.query<Profile>("follower == false AND following == false").count().asFlow()
-    }
-
-    fun selectMutuals(): List<Profile> {
-        return realm.query<Profile>("follower == true AND following == true").find()
-    }
-
-    fun selectNonfollowers(): List<Profile> {
-        return realm.query<Profile>("follower == false AND following == true").find()
-    }
-
-    fun selectFans(): List<Profile> {
-        return realm.query<Profile>("follower == true AND following == false").find()
-    }
-    
-    fun selectFormer(): List<Profile> {
-        return realm.query<Profile>("follower == false AND following == false").find()
+    fun selectProfiles(type: FollowType): List<Profile> {
+        val query = when(type) {
+            FollowType.MUTUAL -> "follower == true AND following == true"
+            FollowType.NONFOLLOWER -> "follower == false AND following == true"
+            FollowType.FAN -> "follower == true AND following == false"
+            FollowType.FORMER -> "follower == false AND following == false"
+        }
+        return realm.query<Profile>(query).find()
     }
 
     suspend fun insertOrReplaceProfiles(profiles: Collection<Profile>) = withContext(Dispatchers.IO) {
