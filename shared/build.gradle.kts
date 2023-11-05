@@ -4,7 +4,7 @@ plugins {
     id("org.jetbrains.compose")
     kotlin("native.cocoapods")
     kotlin("plugin.serialization")
-    id("io.realm.kotlin") version "1.10.0"
+    id("io.realm.kotlin")
 }
 
 kotlin {
@@ -35,7 +35,8 @@ kotlin {
 
     val decomposeVersion = extra["decompose.version"] as String
     val mviKotlinVersion = extra["mvi.version"] as String
-    val ktorVersion = "2.3.4"
+    val realmVersion = extra["realm.version"] as String
+    val ktorVersion = "2.3.5"
 
     sourceSets {
         val commonMain by getting {
@@ -48,7 +49,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.0")
-                implementation("io.realm.kotlin:library-base:1.10.0")
+                implementation("io.realm.kotlin:library-base:$realmVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
@@ -83,7 +84,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-                implementation("io.realm.kotlin:library-base:1.10.0")
+                implementation("io.realm.kotlin:library-base:$realmVersion")
             }
         }
         val androidInstrumentedTest by getting
@@ -104,7 +105,7 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlin {
         jvmToolchain(11)
