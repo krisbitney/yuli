@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.StateFlow
 interface YuliFollows {
     val model: StateFlow<Model>
 
+    fun onBackClicked()
+
     fun sortFollows(sortBy: Profile.SortBy)
 
     data class Model(
