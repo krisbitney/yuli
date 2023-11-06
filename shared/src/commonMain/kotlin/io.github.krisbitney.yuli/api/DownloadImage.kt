@@ -9,9 +9,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
 suspend fun downloadImage(url: String): Result<ByteArray> = withContext(Dispatchers.IO) {
-    HttpClient {
-        engine { threadsCount = 1 }
-    }.use { client ->
+    HttpClient().use { client ->
         val response: HttpResponse = client.get(url)
         if (response.status.value == 200) {
             Result.success(response.readBytes())

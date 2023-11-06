@@ -9,7 +9,8 @@ interface YuliFollows {
     fun sortFollows(sortBy: Profile.SortBy)
 
     data class Model(
-        val follows: List<Profile>
+        val follows: List<Profile>,
+        val sortedBy: Profile.SortBy
     )
 
     sealed class Output {

@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 import cocoapods.yuli_ios.SwiftSocialApi
+import kotlinx.cinterop.ExperimentalForeignApi
 import cocoapods.yuli_ios.Profile as SwiftProfile
 import cocoapods.yuli_ios.User as SwiftUser
 
@@ -15,6 +16,7 @@ actual object SocialApiFactory {
     actual fun <AndroidContext> get(context: AndroidContext): SocialApi = IosSocialApi()
 }
 
+@OptIn(ExperimentalForeignApi::class)
 class IosSocialApi : SocialApi {
 
     override val context = null

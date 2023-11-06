@@ -48,6 +48,8 @@ class YuliFollowsComponent (
     }
 
     override fun sortFollows(sortBy: Profile.SortBy) {
-        store.accept(YuliFollowsStore.Intent.Sort(sortBy))
+        if (sortBy != model.value.sortedBy) {
+            store.accept(YuliFollowsStore.Intent.Sort(sortBy))
+        }
     }
 }

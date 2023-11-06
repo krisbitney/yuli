@@ -10,6 +10,7 @@ import io.github.krisbitney.yuli.state.home.YuliHome.Output
 import io.github.krisbitney.yuli.state.home.YuliHome.Model
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStoreProvider
 import io.github.krisbitney.yuli.database.YuliDatabase
+import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.state.utils.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,5 +43,13 @@ class YuliHomeComponent (
                 scope.cancel()
             }
         }
+    }
+
+    override fun onFollowsClicked(type: FollowType) {
+        output(Output.Follows(type))
+    }
+
+    override fun onLoginClicked() {
+        output(Output.Login)
     }
 }

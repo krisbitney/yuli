@@ -1,10 +1,15 @@
 package io.github.krisbitney.yuli.state.home
 
 import io.github.krisbitney.yuli.models.User
+import io.github.krisbitney.yuli.models.FollowType
 import kotlinx.coroutines.flow.StateFlow
 
 interface YuliHome {
     val model: StateFlow<Model>
+
+    fun onFollowsClicked(type: FollowType)
+
+    fun onLoginClicked()
 
     data class Model(
         val user: User?,
@@ -15,6 +20,7 @@ interface YuliHome {
     )
 
     sealed class Output {
-        data object Home : Output()
+        data object Login : Output()
+        data class Follows(val type: FollowType) : Output()
     }
 }
