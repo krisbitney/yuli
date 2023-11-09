@@ -1,85 +1,78 @@
-package io.polywrap.ipfsdemo.ui.theme
+package io.github.krisbitney.yuli.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val Iris = Color(0x5361f8ff)
-val Gray = Color(0xf9f9f9ff)
-val Black = Color(0x06071aff)
-val Cyan = Color(0x05d3fbff)
+@Composable
+expect fun getColorScheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    dynamicColor: Boolean = false
+): ColorScheme
 
 val LightColorScheme = lightColorScheme(
-//    primary: Color,
-//    onPrimary: Color,
-//    primaryContainer: Color,
-//    onPrimaryContainer: Color,
-//    inversePrimary: Color,
-//    secondary: Color,
-//    onSecondary: Color,
-//    secondaryContainer: Color,
-//    onSecondaryContainer: Color,
-//    tertiary: Color,
-//    onTertiary: Color,
-//    tertiaryContainer: Color,
-//    onTertiaryContainer: Color,
-//    background: Color,
-//    onBackground: Color,
-//    surface: Color,
-//    onSurface: Color,
-//    surfaceVariant: Color,
-//    onSurfaceVariant: Color,
-//    surfaceTint: Color,
-//    inverseSurface: Color,
-//    inverseOnSurface: Color,
-//    error: Color,
-//    onError: Color,
-//    errorContainer: Color,
-//    onErrorContainer: Color,
-//    outline: Color,
-//    outlineVariant: Color,
-//    scrim: Color
+    primary = Color(0xFFE5C6B3),
+    onPrimary = Color(0xFFE6C7B4),
+    primaryContainer = Color(0xFFE7C8B5),
+    onPrimaryContainer = Color(0xFFE5C6B2),
+    inversePrimary = Color(0xFFE8C9B6),
+    secondary = Color(0xFFEBCCB9),
+    onSecondary = Color(0xFFFEE2D5),
+    secondaryContainer = Color(0xFFFEEDF),
+    onSecondaryContainer = Color(0xFFEECFBE),
+    tertiary = Color(0xFFEACAB7),
+    onTertiary = Color(0xFFE8DB),
+    tertiaryContainer = Color(0xFFEDCEBD),
+    onTertiaryContainer = Color(0xFFE6C7B3),
+    background = Color(0xFFFEE1D2),
+    onBackground = Color(0xFFE5C6B1),
+    surface = Color(0xFFEDE2),
+    onSurface = Color(0xFFE9CAB7),
+    surfaceVariant = Color(0xFFE4C5B2),
+    onSurfaceVariant = Color(0xFFFBD5CE),
+    surfaceTint = Color(0xFFFEE3D6),
+    inverseSurface = Color(0xFFE7DA),
+    inverseOnSurface = Color(0xFFEEADF),
+    error = Color(0xFFBA1B1B),
+    onError = Color(0xFFFFFFFF),
+    errorContainer = Color(0xFFFDE0E0),
+    onErrorContainer = Color(0xFF410001),
+    outline = Color(0xFF8A8A8A),
+    outlineVariant = Color(0xFF5F5F5F),
+    scrim = Color(0xBF000000)
 )
 
 val DarkColorScheme = darkColorScheme(
-//    primary: Color,
-//    onPrimary: Color,
-//    primaryContainer: Color,
-//    onPrimaryContainer: Color,
-//    inversePrimary: Color,
-//    secondary: Color,
-//    onSecondary: Color,
-//    secondaryContainer: Color,
-//    onSecondaryContainer: Color,
-//    tertiary: Color,
-//    onTertiary: Color,
-//    tertiaryContainer: Color,
-//    onTertiaryContainer: Color,
-//    background: Color,
-//    onBackground: Color,
-//    surface: Color,
-//    onSurface: Color,
-//    surfaceVariant: Color,
-//    onSurfaceVariant: Color,
-//    surfaceTint: Color,
-//    inverseSurface: Color,
-//    inverseOnSurface: Color,
-//    error: Color,
-//    onError: Color,
-//    errorContainer: Color,
-//    onErrorContainer: Color,
-//    outline: Color,
-//    outlineVariant: Color,
-//    scrim: Color
-
-    primary = Color.White,
-    secondary = Color.White,
-    tertiary = Color.Cyan,
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
+    primary = Color(0xFF1F2937),
+    onPrimary = Color(0xFFFFFFFF),
+    primaryContainer = Color(0xFF293B4D),
+    onPrimaryContainer = Color(0xFFFFFFFF),
+    inversePrimary = Color(0xFF1F2937),
+    secondary = Color(0xFF374151),
+    onSecondary = Color(0xFFFFFFFF),
+    secondaryContainer = Color(0xFF485A6E),
+    onSecondaryContainer = Color(0xFFFFFFFF),
+    tertiary = Color(0xFF4B5563),
+    onTertiary = Color(0xFFFFFFFF),
+    tertiaryContainer = Color(0xFF5F6B7B),
+    onTertiaryContainer = Color(0xFFFFFFFF),
+    background = Color(0xFF111827),
+    onBackground = Color(0xFFFFFFFF),
+    surface = Color(0xFF1F2937),
+    onSurface = Color(0xFFFFFFFF),
+    surfaceVariant = Color(0xFF293B4D),
+    onSurfaceVariant = Color(0xFFFFFFFF),
+    surfaceTint = Color(0xFF2D3B4F),
+    inverseSurface = Color(0xFF1F2937),
+    inverseOnSurface = Color(0xFFFFFFFF),
+    error = Color(0xFFDC2626),
+    onError = Color(0xFFFFFFFF),
+    errorContainer = Color(0xFFFECACA),
+    onErrorContainer = Color(0xFF7F1D1D),
+    outline = Color(0xFF6B7280),
+    outlineVariant = Color(0xFF9CA3AF),
+    scrim = Color(0xBF000000)
 )

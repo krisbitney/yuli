@@ -97,7 +97,7 @@ android {
     namespace = "io.github.krisbitney.yuli.common"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].res.srcDirs("src/commonMain/resources")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
