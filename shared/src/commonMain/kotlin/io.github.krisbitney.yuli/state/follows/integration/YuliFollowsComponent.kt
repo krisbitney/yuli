@@ -51,7 +51,7 @@ class YuliFollowsComponent (
         output(YuliFollows.Output.Back)
     }
 
-    override fun sortFollows(sortBy: Profile.SortBy) {
+    override fun onSortClicked(sortBy: Profile.SortBy) {
         if (sortBy != model.value.sortedBy) {
             store.accept(YuliFollowsStore.Intent.Sort(sortBy))
         }

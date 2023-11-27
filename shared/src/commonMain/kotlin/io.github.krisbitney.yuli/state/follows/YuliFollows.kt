@@ -8,7 +8,7 @@ interface YuliFollows {
 
     fun onBackClicked()
 
-    fun sortFollows(sortBy: Profile.SortBy)
+    fun onSortClicked(sortBy: Profile.SortBy)
 
     data class Model(
         val follows: List<Profile>,

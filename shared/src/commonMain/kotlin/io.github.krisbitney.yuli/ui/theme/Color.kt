@@ -14,10 +14,10 @@ expect fun getColorScheme(
 ): ColorScheme
 
 val LightColorScheme = lightColorScheme(
-    primary = Color(0xFFE5C6B3),
-    onPrimary = Color(0xFFE6C7B4),
-    primaryContainer = Color(0xFFE7C8B5),
-    onPrimaryContainer = Color(0xFFE5C6B2),
+    primary = Color(0xFFFBEFE3), // light creamy background
+    onPrimary = Color(0xFF0C253B), // dark greenish-bluish text
+    primaryContainer = Color(0xFF809790), // dark green button color
+    onPrimaryContainer = Color(0xFFFEFEFD), // slightly off-white text
     inversePrimary = Color(0xFFE8C9B6),
     secondary = Color(0xFFEBCCB9),
     onSecondary = Color(0xFFFEE2D5),
