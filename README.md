@@ -15,13 +15,13 @@ Nearly the entire app is written in Kotlin, with the one exception of a small AP
 The app uses an MVI architecture with unidirectional data flow. Events flow from the UI downward, and state flows upward from the data layer. The UI is updated based on the current state.
 
 ```plaintext
-API ----------------|
-                    |
-                    V
-                    Repository -----> State -----> UI
-                    ^
-                    |
-DB -----------------|
+API --------|
+            |
+            V
+            Repository -----> State -----> UI
+            ^
+            |
+DB ---------|
 ```
 
 - **API and DB (Level -2)**
