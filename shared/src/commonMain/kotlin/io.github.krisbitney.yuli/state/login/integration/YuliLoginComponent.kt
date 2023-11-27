@@ -44,7 +44,6 @@ class YuliLoginComponent (
     private val scope = CoroutineScope(Dispatchers.Default)
     override val model: StateFlow<YuliLogin.Model> = store.stateFlow.map(scope, stateToModel)
 
-    override var showWarning by mutableStateOf(false)
     override var usernameInput by mutableStateOf("")
     override var passwordInput by mutableStateOf("")
 
@@ -75,15 +74,4 @@ class YuliLoginComponent (
     override fun onCloseClicked() {
         output(YuliLogin.Output.Close)
     }
-
-    override fun showConfirmation() {
-        showWarning = true
-    }
-
-    override fun onConfirmationClosed() {
-        usernameInput = model.value.username ?: ""
-        store.accept(YuliLoginStore.Intent.SetUsername(null))
-        showWarning = false
-    }
-
 }
