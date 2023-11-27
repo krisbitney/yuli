@@ -36,7 +36,7 @@ fun getTypography(): Typography {
     return Typography(
         displayLarge = TextStyle(
             fontFamily = nunitoFontFamily,
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.Black,
             fontSize = 30.sp, // Adjusted to reflect the username size
             lineHeight = 38.sp,
             letterSpacing = (-0.015).sp // Slightly tightened

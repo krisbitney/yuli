@@ -1,18 +1,21 @@
 package io.github.krisbitney.yuli.ui.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.state.home.YuliHome
@@ -24,13 +27,13 @@ fun HomeScreen(component: YuliHome) {
     val model = component.model.collectAsState()
 
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.TopStart
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.TopStart,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.Start
+            horizontalAlignment = Alignment.CenterHorizontally
             ) {
             if (model.value.user != null) {
                 UserHeadline(
@@ -38,12 +41,6 @@ fun HomeScreen(component: YuliHome) {
                     username = model.value.user?.username ?: "",
                     pic = model.value.user?.pic
                 )
-                Box(
-                    modifier = Modifier.fillMaxWidth().height(48.dp),
-                    contentAlignment = Alignment.CenterStart
-                ) {
-                    Text("You're amazing!");
-                }
             } else {
                 UserHeadline(
                     fullName = "Not Logged In",
@@ -59,19 +56,47 @@ fun HomeScreen(component: YuliHome) {
                     }
                 }
             }
-            Button(onClick = { component.onFollowsClicked(FollowType.MUTUAL) }) {
-                GroupCard("Mutuals", model.value.mutualsCount)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(topStart = 52.dp, topEnd = 52.dp))
+                    .background(MaterialTheme.colorScheme.surface),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                GroupButton(
+                    name = "Mutuals",
+                    count = model.value.mutualsCount,
+                    portraitImg = "portrait_green.png",
+                    flourishImg = "leaves_1.png",
+                ) {
+                    component.onFollowsClicked(FollowType.MUTUAL)
+                }
+                GroupButton(
+                    name = "Non-followers",
+                    count = model.value.nonfollowersCount,
+                    portraitImg = "portrait_pink.png",
+                    flourishImg = "leaves_1.png",
+                ) {
+                    component.onFollowsClicked(FollowType.NONFOLLOWER)
+                }
+                GroupButton(
+                    name = "Fans",
+                    count = model.value.fansCount,
+                    portraitImg = "portrait_green.png",
+                    flourishImg = "leaves_2.png",
+                ) {
+                    component.onFollowsClicked(FollowType.FAN)
+                }
+                GroupButton(
+                    name = "Former Connections",
+                    count = model.value.formerConnectionsCount,
+                    portraitImg = "portrait_pink.png",
+                    flourishImg = "leaves_1.png",
+                ) {
+                    component.onFollowsClicked(FollowType.FORMER)
+                }
             }
-            Button(onClick = { component.onFollowsClicked(FollowType.NONFOLLOWER) }) {
-                GroupCard("Non-followers", model.value.nonfollowersCount)
-            }
-            Button(onClick = { component.onFollowsClicked(FollowType.FAN) }) {
-                GroupCard("Fans", model.value.fansCount)
-            }
-            Button(onClick = { component.onFollowsClicked(FollowType.FORMER) }) {
-                GroupCard("Former Connections", model.value.formerConnectionsCount)
-            }
-            HistoryCard()
         }
     }
 }

@@ -27,10 +27,10 @@ val LightColorScheme = lightColorScheme(
     onTertiary = Color(0xFFE8DB),
     tertiaryContainer = Color(0xFFEDCEBD),
     onTertiaryContainer = Color(0xFFE6C7B3),
-    background = Color(0xFFFEE1D2),
-    onBackground = Color(0xFFE5C6B1),
-    surface = Color(0xFFEDE2),
-    onSurface = Color(0xFFE9CAB7),
+    background = Color(0xFFCFD1C7), // light greenish background
+    onBackground = Color(0xFFFEFEFD), // slightly off-white text
+    surface = Color(0xFFFBEFE3), // light creamy background
+    onSurface = Color(0xFF0C253B), // dark greenish-bluish text
     surfaceVariant = Color(0xFFE4C5B2),
     onSurfaceVariant = Color(0xFFFBD5CE),
     surfaceTint = Color(0xFFFEE3D6),
@@ -40,7 +40,7 @@ val LightColorScheme = lightColorScheme(
     onError = Color(0xFFFFFFFF),
     errorContainer = Color(0xFFFDE0E0),
     onErrorContainer = Color(0xFF410001),
-    outline = Color(0xFF8A8A8A),
+    outline = Color.Black.copy(alpha = 0.1f), // semi-transparent black
     outlineVariant = Color(0xFF5F5F5F),
     scrim = Color(0xBF000000)
 )
