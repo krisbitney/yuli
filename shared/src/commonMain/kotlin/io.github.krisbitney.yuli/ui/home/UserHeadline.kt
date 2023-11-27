@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.ui.utils.toPainter
@@ -44,11 +43,9 @@ fun UserHeadline(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(168.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.onBackground,
-                        shape = RoundedCornerShape(percent = 50)
-                    )
+                    .size(if (pic == null) 164.dp else 168.dp)
+                    .clip(RoundedCornerShape(percent = 50))
+                    .background(color = MaterialTheme.colorScheme.onBackground)
             ) {
                 Image(
                     painter = pic?.toPainter() ?: painterResource("avatar_placeholder.png"),
