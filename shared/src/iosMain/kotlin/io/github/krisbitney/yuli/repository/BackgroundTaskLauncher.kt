@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import platform.BackgroundTasks.BGProcessingTaskRequest
 import platform.BackgroundTasks.BGTask
 import platform.BackgroundTasks.BGTaskScheduler
+import platform.Foundation.NSDate
 import platform.Foundation.NSError
 import platform.Foundation.NSUUID
 import platform.UserNotifications.UNMutableNotificationContent
@@ -21,11 +22,12 @@ import platform.UserNotifications.UNUserNotificationCenter
 
 actual object BackgroundTaskLauncher {
 
-    val updateFollowsTaskIdentifier = "io.github.krisbitney.yuli.updateFollows"
+    private const val updateFollowsTaskIdentifier = "io.github.krisbitney.yuli.updateFollows"
+    private const val scheduleUpdateFollowsTaskIdentifier = "io.github.krisbitney.yuli.scheduleUpdateFollows"
 
     // alert permission = 0x01
     // sound permission = 0x02
-    val alertAndSoundPermission = 0x01.and(0x02).toULong()
+    private val alertAndSoundPermission = 0x01.and(0x02).toULong()
 
     fun requestNotificationPermissions() = UNUserNotificationCenter
         .currentNotificationCenter()
@@ -42,12 +44,29 @@ actual object BackgroundTaskLauncher {
                 this@BackgroundTaskLauncher.handleUpdateFollowsTask(it!!)
             }
         }
+        BGTaskScheduler.sharedScheduler.registerForTaskWithIdentifier(
+            scheduleUpdateFollowsTaskIdentifier,
+            null
+        ) {
+            CoroutineScope(Dispatchers.Default).launch {
+                this@BackgroundTaskLauncher.handleUpdateFollowsTask(it!!, true)
+            }
+        }
+    }
+
+    actual fun <AndroidContext> scheduleUpdateFollows(context: AndroidContext){
+        this.updateFollows(scheduleUpdateFollowsTaskIdentifier, NSDate(UPDATE_FOLLOWS_INTERVAL_SECONDS.toDouble()))
+    }
+
+    actual fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
+        this.updateFollows(updateFollowsTaskIdentifier)
     }
 
     @OptIn(ExperimentalForeignApi::class, BetaInteropApi::class)
-    actual fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
-        val request = BGProcessingTaskRequest(updateFollowsTaskIdentifier)
+    private fun updateFollows(taskIdentifier: String, scheduled: NSDate? = null) {
+        val request = BGProcessingTaskRequest(taskIdentifier)
         request.requiresNetworkConnectivity = true
+        request.earliestBeginDate = scheduled
         memScoped {
             val err = alloc<ObjCObjectVar<NSError?>>()
             BGTaskScheduler.sharedScheduler.submitTaskRequest(request, err.ptr)
@@ -58,7 +77,7 @@ actual object BackgroundTaskLauncher {
     }
 
     // TODO: is it possible to update progress intermittently?
-    private suspend fun handleUpdateFollowsTask(task: BGTask) {
+    private suspend fun handleUpdateFollowsTask(task: BGTask, reschedule: Boolean = false) {
         task.expirationHandler = {
             // TODO: Cleanup code
         }
@@ -81,6 +100,9 @@ actual object BackgroundTaskLauncher {
             }
 
         task.setTaskCompletedWithSuccess(result.isSuccess)
+        if (reschedule) {
+            scheduleUpdateFollows(null)
+        }
     }
 
     // TODO: make notification look good

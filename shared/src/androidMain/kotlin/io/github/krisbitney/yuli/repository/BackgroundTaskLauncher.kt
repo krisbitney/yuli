@@ -8,15 +8,30 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ForegroundInfo
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import java.util.concurrent.TimeUnit
 
 actual object BackgroundTaskLauncher {
+
     actual fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
         val workRequest = OneTimeWorkRequestBuilder<UpdateFollowsWorker>().build()
         WorkManager.getInstance(context as Context).enqueue(workRequest)
+    }
+
+    actual fun <AndroidContext> scheduleUpdateFollows(context: AndroidContext) {
+        val workRequest = PeriodicWorkRequestBuilder<UpdateFollowsWorker>(UPDATE_FOLLOWS_INTERVAL_SECONDS, TimeUnit.SECONDS)
+            .setInitialDelay(UPDATE_FOLLOWS_INTERVAL_SECONDS, TimeUnit.SECONDS)
+            .build()
+        WorkManager.getInstance(context as Context).enqueueUniquePeriodicWork(
+            "YuliUpdateFollowsWork",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
     }
 }
 

@@ -6,8 +6,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
+const val UPDATE_FOLLOWS_INTERVAL_SECONDS: Long = 60 * 60 * 6 // 6 hours
+
 expect object BackgroundTaskLauncher {
     fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext)
+    fun <AndroidContext> scheduleUpdateFollows(context: AndroidContext)
 }
 
 object BackgroundTasks {

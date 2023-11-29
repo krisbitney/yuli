@@ -10,6 +10,7 @@ import com.arkivanov.mvikotlin.main.store.DefaultStoreFactory
 import io.github.krisbitney.yuli.api.SocialApiFactory
 import io.github.krisbitney.yuli.database.YuliDatabase
 import io.github.krisbitney.yuli.repository.ApiHandler
+import io.github.krisbitney.yuli.repository.BackgroundTaskLauncher
 import io.github.krisbitney.yuli.state.YuliRootComponent
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
             database = db,
             apiHandler = ApiHandler(api, db)
         )
+
+        BackgroundTaskLauncher.scheduleUpdateFollows(applicationContext)
 
         setContent {
             MainView(rootComponent)

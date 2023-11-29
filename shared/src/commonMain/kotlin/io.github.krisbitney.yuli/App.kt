@@ -13,7 +13,7 @@ fun App(component: YuliRoot) {
 }
 
 // TODO: Localization
-// TODO: automatic period background data updates
+// TODO: manual refresh button for iOS
 // TODO: event history screen
 // TODO: real device metadata
 // TODO: notification UI
