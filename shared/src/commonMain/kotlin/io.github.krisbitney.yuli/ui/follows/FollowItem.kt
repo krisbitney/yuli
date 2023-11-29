@@ -69,11 +69,12 @@ fun FollowItem(profile: Profile) {
                 )
             }
         }
-        Image(
+        ImageLink(
             painter = painterResource("instagram_glyph_icon.xml"),
             contentDescription = "instagram glyph icon",
             contentScale = ContentScale.Fit,
-            modifier = Modifier.size(48.dp).padding(end = 12.dp)
+            modifier = Modifier.size(48.dp).padding(end = 12.dp),
+            url = "https://instagram.com/${profile.username}"
         )
     }
 }

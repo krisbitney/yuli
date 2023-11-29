@@ -68,7 +68,7 @@ class YuliRootComponent(
     override val childStack: Value<ChildStack<*, YuliRoot.Child>> = childStack(
         source = navigation,
         serializer = Configuration.serializer(),
-        initialConfiguration = Configuration.Login,
+        initialConfiguration = Configuration.Home,
         handleBackButton = true,
         childFactory = ::createChild
     )
