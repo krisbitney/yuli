@@ -17,3 +17,5 @@ actual fun openUrl(url: String, androidContext: Any?) {
     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     startActivity(androidContext as Context, intent, null)
 }
+
+actual fun platformIsIos(): Boolean = false

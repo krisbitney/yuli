@@ -17,3 +17,5 @@ actual fun openUrl(url: String, androidContext: Any?) {
     val nsUrl = NSURL(string = url)
     UIApplication.sharedApplication.openURL(nsUrl)
 }
+
+actual fun platformIsIos(): Boolean = true

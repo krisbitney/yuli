@@ -18,8 +18,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
 class YuliHomeComponent (
@@ -59,5 +62,13 @@ class YuliHomeComponent (
 
     override fun onRefreshClicked() {
         store.accept(YuliHomeStore.Intent.RefreshFollowsData)
+        scope.launch {
+            delay(600_000)
+            if (model.value.updateInProgress) {
+                withContext(Dispatchers.Main) {
+                    store.accept(YuliHomeStore.Intent.SetUpdateInProgress(false))
+                }
+            }
+        }
     }
 }

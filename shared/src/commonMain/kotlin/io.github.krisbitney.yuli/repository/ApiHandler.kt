@@ -43,7 +43,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
         val state = when (maybeOldUser?.username) {
             username -> db.selectState()!!
-            else -> UserState(username, isLoggedIn = false, isLocked = false, 0)
+            else -> UserState(username, isLoggedIn = false, isLocked = false)
         }
 
         val isLoggedIn = withTimeoutOrNull(requestTimeout) {

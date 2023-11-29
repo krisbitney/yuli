@@ -7,17 +7,15 @@ class UserState(
     @PrimaryKey
     var username: String,
     var isLoggedIn: Boolean,
-    var isLocked: Boolean,
-    var lastUpdate: Long
+    var isLocked: Boolean
 ) : RealmObject {
-    constructor() : this("", false, false, 0)
+    constructor() : this("", false, false)
 
     fun copy(
         username: String = this.username,
         isLoggedIn: Boolean = this.isLoggedIn,
-        isLocked: Boolean = this.isLocked,
-        lastUpdate: Long = this.lastUpdate
+        isLocked: Boolean = this.isLocked
     ): UserState {
-        return UserState(username, isLoggedIn, isLocked, lastUpdate)
+        return UserState(username, isLoggedIn, isLocked)
     }
 }

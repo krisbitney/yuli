@@ -78,6 +78,7 @@ internal class YuliHomeStoreProvider(
             when (intent) {
                 is Intent.OpenSettings -> Unit
                 is Intent.RefreshFollowsData -> refreshFollowsData()
+                is Intent.SetUpdateInProgress -> dispatch(Msg.SetUpdateInProgress(intent.value))
             }
 
         private fun refreshFollowsData() {

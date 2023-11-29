@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.ui.common.TitleColumn
+import io.github.krisbitney.yuli.ui.utils.platformIsIos
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @ExperimentalResourceApi
@@ -31,22 +32,31 @@ fun UserHeadline(
             onClickHeaderImage = {}
         )
         TitleColumn(pic, Modifier.fillMaxHeight(), MaterialTheme.colorScheme.onBackground)
-        // TODO: add refresh image and loading indicator
-        if (updateInProgress) {
-            flowerColumn(
-                text = "@$username",
-                flowerImage = "flower_2.png",
-                headerImage = "pink_heart.png",
-                headerImageDescription = "pink heart icon",
-                onClickHeaderImage = {}
-            )
+        if (!platformIsIos()) {
+            if (updateInProgress) {
+                flowerColumn(
+                    text = "@$username",
+                    flowerImage = "flower_2.png",
+                    headerImage = "downloading_icon.xml",
+                    headerImageDescription = "downloading icon",
+                    onClickHeaderImage = {}
+                )
+            } else {
+                flowerColumn(
+                    text = "@$username",
+                    flowerImage = "flower_2.png",
+                    headerImage = "refresh_icon.xml",
+                    headerImageDescription = "refresh icon",
+                    onClickHeaderImage = onClickRightHeaderImage
+                )
+            }
         } else {
             flowerColumn(
                 text = "@$username",
                 flowerImage = "flower_2.png",
                 headerImage = "pink_heart.png",
                 headerImageDescription = "pink heart icon",
-                onClickHeaderImage = onClickRightHeaderImage
+                onClickHeaderImage = {}
             )
         }
     }
