@@ -15,6 +15,7 @@ interface YuliLogin {
         val username: String? = null,
         val isLoggedIn: Boolean = false,
         val errorMsg: String? = null,
+        val isLoading: Boolean = false
     )
 
     sealed class Output {

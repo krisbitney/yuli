@@ -25,7 +25,8 @@ fun TextInput(
     label: String,
     value: String,
     onValueChange: (String) -> Unit,
-    hideValue: Boolean
+    hideValue: Boolean,
+    enabled: Boolean
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().wrapContentHeight(),
@@ -49,10 +50,15 @@ fun TextInput(
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                .background(color = if (enabled) {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                } else {
+                    MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.5f)
+                })
                 .border(width = 1.dp, color = Color.Black)
                 .padding(8.dp),
-            textStyle = MaterialTheme.typography.bodyMedium
+            textStyle = MaterialTheme.typography.bodyMedium,
+            enabled = enabled
         )
     }
 }

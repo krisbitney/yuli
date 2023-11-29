@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults.iconButtonColors
@@ -28,8 +29,22 @@ fun LoginScreen(component: YuliLogin) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background)
+            .background(color = MaterialTheme.colorScheme.surface)
     ) {
+        // Loading Indicator
+        if (model.value.isLoading) {
+            Box(
+                // Semi-transparent black background
+                modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp).offset(y = (-40).dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    strokeWidth = 4.dp
+                )
+            }
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -53,21 +68,32 @@ fun LoginScreen(component: YuliLogin) {
             }
 
             // Title
-            TitleColumn(null, Modifier.wrapContentSize())
+            TitleColumn(null, Modifier.wrapContentSize(), MaterialTheme.colorScheme.onSurface)
 
             // Username and Password
             TextInput(
                 label = "Username",
                 value = component.usernameInput,
                 onValueChange = { component.usernameInput = it },
-                hideValue = false
+                hideValue = false,
+                enabled = !model.value.isLoading
             )
             TextInput(
                 label = "Password",
                 value = component.passwordInput,
                 onValueChange = { component.passwordInput = it },
-                hideValue = true
+                hideValue = true,
+                enabled = !model.value.isLoading
             )
+
+            // Error Message
+            if (model.value.errorMsg != null) {
+                Text(
+                    text = model.value.errorMsg ?: "",
+                    color = Color.Red,
+                    style = MaterialTheme.typography.headlineSmall
+                )
+            }
 
             // Login Button
             Button(onClick = {
@@ -82,18 +108,10 @@ fun LoginScreen(component: YuliLogin) {
                     pressedElevation = 0.dp,
                     disabledElevation = 0.dp
                 ),
-                modifier = Modifier.padding(top = 16.dp).height(48.dp).width(96.dp)
+                modifier = Modifier.padding(top = 16.dp).height(48.dp).width(96.dp),
+                enabled = !model.value.isLoading
             ) {
                 Text(text = "Login", style = MaterialTheme.typography.headlineLarge)
-            }
-
-            // Error Message
-            if (model.value.errorMsg != null) {
-                Text(
-                    text = model.value.errorMsg ?: "",
-                    color = Color.Red,
-                    style = MaterialTheme.typography.headlineSmall
-                )
             }
         }
     }

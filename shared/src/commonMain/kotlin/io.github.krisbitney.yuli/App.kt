@@ -13,3 +13,8 @@ fun App(component: YuliRoot) {
 }
 
 // TODO: Localization
+// TODO: instagram links
+// TODO: automatic period background data updates
+// TODO: event history screen
+// TODO: real device metadata
+// TODO: notification UI

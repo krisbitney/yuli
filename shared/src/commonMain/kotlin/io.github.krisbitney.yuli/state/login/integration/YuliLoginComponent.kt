@@ -68,7 +68,6 @@ class YuliLoginComponent (
 
     override fun onLoginClicked(username: String, password: String) {
         store.accept(YuliLoginStore.Intent.Login(username.trim(), password.trim()))
-        // TODO: add loading indicator with a timeout that produces an error message if it takes too long
     }
 
     override fun onCloseClicked() {

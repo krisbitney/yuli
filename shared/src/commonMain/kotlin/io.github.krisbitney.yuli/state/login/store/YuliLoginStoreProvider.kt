@@ -32,6 +32,7 @@ internal class YuliLoginStoreProvider(
     private sealed class Msg {
         data class SetUsername(val username: String?) : Msg()
         data class SetLoginAttempt(val isLoggedIn: Boolean, val errorMsg: String?) : Msg()
+        data class SetIsLoading(val isLoading: Boolean) : Msg()
     }
 
     private inner class ExecutorImpl : CoroutineExecutor<Intent, Unit, State, Msg, Nothing>() {
@@ -48,6 +49,7 @@ internal class YuliLoginStoreProvider(
         override fun executeIntent(intent: Intent, getState: () -> State): Unit =
             when (intent) {
                 is Intent.Login -> {
+                    dispatch(Msg.SetIsLoading(true))
                     dispatch(Msg.SetLoginAttempt(false, null))
                     login(intent.username, intent.password)
                 }
@@ -63,6 +65,7 @@ internal class YuliLoginStoreProvider(
                     apiHandler.inBackground.updateFollowsAndNotify()
                 }
                 dispatch(Msg.SetLoginAttempt(result.isSuccess, result.exceptionOrNull()?.message))
+                dispatch(Msg.SetIsLoading(false))
             }
         }
     }
@@ -75,6 +78,7 @@ internal class YuliLoginStoreProvider(
                     isLoggedIn = msg.isLoggedIn,
                     errorMsg = msg.errorMsg
                 )
+                is Msg.SetIsLoading -> copy(isLoading = msg.isLoading)
             }
     }
 

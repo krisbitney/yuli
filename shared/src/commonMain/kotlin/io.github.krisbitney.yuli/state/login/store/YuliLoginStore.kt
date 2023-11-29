@@ -14,6 +14,7 @@ internal interface YuliLoginStore : Store<Intent, State, Nothing> {
     data class State(
         val username: String? = null,
         val isLoggedIn: Boolean = false,
-        val errorMsg: String? = null
+        val errorMsg: String? = null,
+        val isLoading: Boolean = false
     )
 }

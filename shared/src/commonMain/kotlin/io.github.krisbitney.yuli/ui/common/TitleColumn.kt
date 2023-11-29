@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.ui.utils.toPainter
@@ -23,7 +24,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun TitleColumn(pic: List<Byte>? = null, modifier: Modifier) {
+fun TitleColumn(pic: List<Byte>? = null, modifier: Modifier, titleColor: Color) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -32,7 +33,7 @@ fun TitleColumn(pic: List<Byte>? = null, modifier: Modifier) {
         Text(
             text = "Yuli",
             style = MaterialTheme.typography.displayLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = titleColor,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Box(
