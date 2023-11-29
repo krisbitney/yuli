@@ -56,7 +56,7 @@ internal class YuliLoginStoreProvider(
                 is Intent.SetUsername -> dispatch(Msg.SetUsername(intent.username))
             }
 
-        fun login(username: String, password: String) {
+        private fun login(username: String, password: String) {
             scope.launch {
                 val result = withContext(Dispatchers.IO) {
                     apiHandler.createSession(username, password)

@@ -11,6 +11,8 @@ import io.github.krisbitney.yuli.state.home.YuliHome.Model
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStoreProvider
 import io.github.krisbitney.yuli.database.YuliDatabase
 import io.github.krisbitney.yuli.models.FollowType
+import io.github.krisbitney.yuli.repository.ApiHandler
+import io.github.krisbitney.yuli.state.home.store.YuliHomeStore
 import io.github.krisbitney.yuli.state.utils.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,13 +26,15 @@ class YuliHomeComponent (
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
     database: YuliDatabase,
+    apiHandler: ApiHandler,
     private val output: (Output) -> Unit,
 ) : YuliHome, ComponentContext by componentContext {
 
     private val store = instanceKeeper.getStore {
         YuliHomeStoreProvider(
             storeFactory = storeFactory,
-            database = YuliHomeStoreDatabase(database = database)
+            database = YuliHomeStoreDatabase(database = database),
+            apiHandler = apiHandler
         ).provide()
     }
 
@@ -51,5 +55,9 @@ class YuliHomeComponent (
 
     override fun onLoginClicked() {
         output(Output.Login)
+    }
+
+    override fun onRefreshClicked() {
+        store.accept(YuliHomeStore.Intent.RefreshFollowsData)
     }
 }

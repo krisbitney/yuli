@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.models.User
+import io.github.krisbitney.yuli.repository.ApiHandler
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.Intent
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.State
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,8 @@ import kotlinx.coroutines.withContext
 
 internal class YuliHomeStoreProvider(
     private val storeFactory: StoreFactory,
-    private val database: Database
+    private val database: Database,
+    private val apiHandler: ApiHandler
 ) {
 
     fun provide(): YuliHomeStore =
@@ -42,6 +44,7 @@ internal class YuliHomeStoreProvider(
         data class SetNonFollowersCount(val value: Long) : Msg()
         data class SetFansCount(val value: Long) : Msg()
         data class SetFormerConnectionsCount(val value: Long) : Msg()
+        data class SetUpdateInProgress(val value: Boolean) : Msg()
     }
 
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -74,7 +77,15 @@ internal class YuliHomeStoreProvider(
         override fun executeIntent(intent: Intent, getState: () -> State): Unit =
             when (intent) {
                 is Intent.OpenSettings -> Unit
+                is Intent.RefreshFollowsData -> refreshFollowsData()
             }
+
+        private fun refreshFollowsData() {
+            scope.launch {
+                dispatch(Msg.SetUpdateInProgress(true))
+                apiHandler.inBackground.updateFollowsAndNotify()
+            }
+        }
 
         private suspend fun launchSubscription(
             producer: () -> Flow<Long>,
@@ -83,6 +94,7 @@ internal class YuliHomeStoreProvider(
             producer().stateIn(this).collectLatest {
                 withContext(Dispatchers.Main) {
                     dispatch(holder(it))
+                    dispatch(Msg.SetUpdateInProgress(false))
                 }
             }
         }
@@ -96,6 +108,7 @@ internal class YuliHomeStoreProvider(
                 is Msg.SetNonFollowersCount -> copy(nonfollowersCount = msg.value)
                 is Msg.SetFansCount -> copy(fansCount = msg.value)
                 is Msg.SetFormerConnectionsCount -> copy(formerConnectionsCount = msg.value)
+                is Msg.SetUpdateInProgress -> copy(updateInProgress = msg.value)
             }
     }
 

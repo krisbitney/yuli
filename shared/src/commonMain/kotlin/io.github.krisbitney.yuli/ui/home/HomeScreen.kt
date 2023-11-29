@@ -39,7 +39,9 @@ fun HomeScreen(component: YuliHome) {
                 UserHeadline(
                     fullName = model.value.user?.name ?: "",
                     username = model.value.user?.username ?: "",
-                    pic = model.value.user?.pic
+                    pic = model.value.user?.pic,
+                    onClickRightHeaderImage = component::onRefreshClicked,
+                    updateInProgress = model.value.updateInProgress
                 )
             } else {
                 UserHeadline(
@@ -52,7 +54,7 @@ fun HomeScreen(component: YuliHome) {
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        Text("\uD83E\uDE77 Click here to log in. \uD83E\uDE77");
+                        Text("\uD83E\uDE77 Click here to log in. \uD83E\uDE77")
                     }
                 }
             }

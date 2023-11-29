@@ -40,6 +40,7 @@ class YuliRootComponent(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 database = database,
+                apiHandler = apiHandler,
                 output = output
             )
         },

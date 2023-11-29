@@ -11,12 +11,15 @@ interface YuliHome {
 
     fun onLoginClicked()
 
+    fun onRefreshClicked()
+
     data class Model(
         val user: User?,
         val mutualsCount: Long,
         val nonfollowersCount: Long,
         val fansCount: Long,
         val formerConnectionsCount: Long,
+        val updateInProgress: Boolean,
     )
 
     sealed class Output {

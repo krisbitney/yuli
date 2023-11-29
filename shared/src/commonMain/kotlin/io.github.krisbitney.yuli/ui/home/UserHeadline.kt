@@ -14,15 +14,40 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 fun UserHeadline(
     fullName: String,
     username: String,
-    pic: List<Byte>?
+    pic: List<Byte>?,
+    onClickRightHeaderImage: () -> Unit = {},
+    updateInProgress: Boolean = false
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().height(250.dp).padding(vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.Bottom
     ) {
-        flowerColumn(fullName, "flower_1.png", "flower icon")
+        flowerColumn(
+            text = fullName,
+            flowerImage = "flower_1.png",
+            headerImage = "pink_heart.png",
+            headerImageDescription = "pink heart icon",
+            onClickHeaderImage = {}
+        )
         TitleColumn(pic, Modifier.fillMaxHeight(), MaterialTheme.colorScheme.onBackground)
-        flowerColumn("@$username", "flower_2.png", "flower icon")
+        // TODO: add refresh image and loading indicator
+        if (updateInProgress) {
+            flowerColumn(
+                text = "@$username",
+                flowerImage = "flower_2.png",
+                headerImage = "pink_heart.png",
+                headerImageDescription = "pink heart icon",
+                onClickHeaderImage = {}
+            )
+        } else {
+            flowerColumn(
+                text = "@$username",
+                flowerImage = "flower_2.png",
+                headerImage = "pink_heart.png",
+                headerImageDescription = "pink heart icon",
+                onClickHeaderImage = onClickRightHeaderImage
+            )
+        }
     }
 }

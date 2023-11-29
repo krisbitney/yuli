@@ -1,6 +1,7 @@
 package io.github.krisbitney.yuli.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,22 +22,28 @@ import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun flowerColumn(text: String, image: String, imageDescription: String? = null) {
+fun flowerColumn(
+    text: String,
+    flowerImage: String,
+    headerImage: String,
+    headerImageDescription: String? = null,
+    onClickHeaderImage: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxHeight().width(100.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Image(
-            painter = painterResource("pink_heart.png"),
-            contentDescription = "pink heart icon",
+            painter = painterResource(headerImage),
+            contentDescription = headerImageDescription,
             contentScale = ContentScale.Fit,
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(48.dp).clickable { onClickHeaderImage() }
         )
         Spacer(modifier = Modifier.height(16.dp))
         Image(
-            painter = painterResource(image),
-            contentDescription = imageDescription,
+            painter = painterResource(flowerImage),
+            contentDescription = "flower image",
             contentScale = ContentScale.Fit,
             modifier = Modifier.size(48.dp)
         )
