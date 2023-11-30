@@ -89,7 +89,7 @@ internal class YuliHomeStoreProvider(
         }
 
         private suspend fun launchSubscription(
-            producer: () -> Flow<Long>,
+            producer: suspend () -> Flow<Long>,
             holder: (value: Long) -> Msg
         ) = scope.launch(Dispatchers.IO) {
             producer().stateIn(this).collectLatest {
@@ -114,8 +114,8 @@ internal class YuliHomeStoreProvider(
     }
 
     interface Database {
-        fun selectUser(): User?
+        suspend fun selectUser(): User?
 
-        fun countFollows(type: FollowType): Flow<Long>
+        suspend fun countFollows(type: FollowType): Flow<Long>
     }
 }

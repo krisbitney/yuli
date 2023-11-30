@@ -30,6 +30,12 @@ class Event(
         STARTED_FOLLOWING,
         STOPPED_FOLLOWING
     }
+
+    enum class TimePeriod {
+        TODAY,
+        LAST_7_DAYS,
+        ALL
+    }
     
     fun message(): String  {
         return when (this.kind) {

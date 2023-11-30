@@ -83,6 +83,6 @@ internal class YuliLoginStoreProvider(
     }
 
     interface Database {
-        fun selectUser(): User?
+        suspend fun selectUser(): User?
     }
 }

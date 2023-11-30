@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalStdlibApi::class)
 class YuliHomeStoreDatabase(private val database: YuliDatabase) : Database {
-    override fun selectUser(): User? = database.selectUser()
+    override suspend fun selectUser(): User? = database.selectUser()
 
-    override fun countFollows(type: FollowType): Flow<Long> = database.countProfilesAsFlow(type)
+    override suspend fun countFollows(type: FollowType): Flow<Long> = database.countProfilesAsFlow(type)
 }

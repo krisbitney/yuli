@@ -1,4 +1,4 @@
-package io.github.krisbitney.yuli.state.follows.integration
+package io.github.krisbitney.yuli.state.history.integration
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -6,11 +6,10 @@ import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
 import io.github.krisbitney.yuli.database.YuliDatabase
-import io.github.krisbitney.yuli.models.FollowType
-import io.github.krisbitney.yuli.models.Profile
-import io.github.krisbitney.yuli.state.follows.YuliFollows
-import io.github.krisbitney.yuli.state.follows.store.YuliFollowsStore
-import io.github.krisbitney.yuli.state.follows.store.YuliFollowsStoreProvider
+import io.github.krisbitney.yuli.models.Event
+import io.github.krisbitney.yuli.state.history.YuliHistory
+import io.github.krisbitney.yuli.state.history.store.YuliHistoryStore
+import io.github.krisbitney.yuli.state.history.store.YuliHistoryStoreProvider
 import io.github.krisbitney.yuli.state.utils.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,24 +19,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.isActive
 
 @OptIn(ExperimentalStdlibApi::class, ExperimentalCoroutinesApi::class)
-class YuliFollowsComponent(
+class YuliHistoryComponent(
     componentContext: ComponentContext,
     storeFactory: StoreFactory,
     database: YuliDatabase,
-    private val output: (YuliFollows.Output) -> Unit,
-    private val type: FollowType
-) : YuliFollows, ComponentContext by componentContext {
+    private val output: (YuliHistory.Output) -> Unit,
+) : YuliHistory, ComponentContext by componentContext {
 
     private val store = instanceKeeper.getStore {
-        YuliFollowsStoreProvider(
+        YuliHistoryStoreProvider(
             storeFactory = storeFactory,
-            database = YuliFollowsStoreDatabase(database = database),
-            type
+            database = YuliHistoryStoreDatabase(database = database),
         ).provide()
     }
 
     private val scope = CoroutineScope(Dispatchers.Default)
-    override val model: StateFlow<YuliFollows.Model> = store.stateFlow.map(scope, stateToModel)
+    override val model: StateFlow<YuliHistory.Model> = store.stateFlow.map(scope, stateToModel)
 
     init {
         lifecycle.doOnDestroy {
@@ -48,12 +45,12 @@ class YuliFollowsComponent(
     }
 
     override fun onBackClicked() {
-        output(YuliFollows.Output.Back)
+        output(YuliHistory.Output.Back)
     }
 
-    override fun onSortClicked(sortBy: Profile.SortBy) {
-        if (sortBy != model.value.sortedBy) {
-            store.accept(YuliFollowsStore.Intent.Sort(sortBy))
-        }
+    override fun onTimePeriodClicked(timePeriod: Event.TimePeriod) {
+        store.accept(YuliHistoryStore.Intent.FilterTime(timePeriod))
     }
+
+
 }

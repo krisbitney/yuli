@@ -14,6 +14,8 @@ import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.repository.ApiHandler
 import io.github.krisbitney.yuli.state.follows.YuliFollows
 import io.github.krisbitney.yuli.state.follows.integration.YuliFollowsComponent
+import io.github.krisbitney.yuli.state.history.YuliHistory
+import io.github.krisbitney.yuli.state.history.integration.YuliHistoryComponent
 import io.github.krisbitney.yuli.state.home.YuliHome
 import io.github.krisbitney.yuli.state.home.integration.YuliHomeComponent
 import io.github.krisbitney.yuli.state.login.YuliLogin
@@ -25,7 +27,8 @@ class YuliRootComponent(
     private val componentContext: ComponentContext,
     private val yuliHome: (ComponentContext, (YuliHome.Output) -> Unit) -> YuliHome,
     private val yuliLogin: (ComponentContext, (YuliLogin.Output) -> Unit) -> YuliLogin,
-    private val yuliFollows: (ComponentContext, (YuliFollows.Output) -> Unit, FollowType) -> YuliFollows
+    private val yuliFollows: (ComponentContext, (YuliFollows.Output) -> Unit, FollowType) -> YuliFollows,
+    private val yuliHistory: (ComponentContext, (YuliHistory.Output) -> Unit) -> YuliHistory,
 ) : YuliRoot, ComponentContext by componentContext {
 
      constructor(
@@ -61,6 +64,14 @@ class YuliRootComponent(
                 output = output,
                 type = type,
             )
+        },
+        yuliHistory = { childContext, output ->
+            YuliHistoryComponent(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                database = database,
+                output = output
+            )
         }
     )
 
@@ -81,6 +92,7 @@ class YuliRootComponent(
             is Configuration.Follows -> YuliRoot.Child.Follows(
                 yuliFollows(componentContext, ::onFollowsOutput, configuration.type)
             )
+            is Configuration.History -> YuliRoot.Child.History(yuliHistory(componentContext, ::onHistoryOutput))
         }
 
     private fun onHomeOutput(output: YuliHome.Output): Unit =
@@ -99,6 +111,11 @@ class YuliRootComponent(
             is YuliFollows.Output.Back -> navigation.pop()
         }
 
+    private fun onHistoryOutput(output: YuliHistory.Output): Unit =
+        when (output) {
+            is YuliHistory.Output.Back -> navigation.pop()
+        }
+
     @Serializable
     private sealed class Configuration {
         @Serializable
@@ -107,5 +124,7 @@ class YuliRootComponent(
         data object Login : Configuration()
         @Serializable
         data class Follows(val type: FollowType) : Configuration()
+        @Serializable
+        data object History : Configuration()
     }
 }

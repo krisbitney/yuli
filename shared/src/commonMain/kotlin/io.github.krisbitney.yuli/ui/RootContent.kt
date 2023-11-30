@@ -8,6 +8,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.scal
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import io.github.krisbitney.yuli.state.YuliRoot
 import io.github.krisbitney.yuli.ui.follows.FollowsScreen
+import io.github.krisbitney.yuli.ui.history.HistoryScreen
 import io.github.krisbitney.yuli.ui.home.HomeScreen
 import io.github.krisbitney.yuli.ui.login.LoginScreen
 
@@ -21,6 +22,7 @@ fun RootContent(component: YuliRoot) {
             is YuliRoot.Child.Login -> LoginScreen(child.component)
             is YuliRoot.Child.Home -> HomeScreen(child.component)
             is YuliRoot.Child.Follows -> FollowsScreen(child.component)
+            is YuliRoot.Child.History -> HistoryScreen(child.component)
         }
     }
 }

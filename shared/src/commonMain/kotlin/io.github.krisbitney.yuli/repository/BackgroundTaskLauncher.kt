@@ -5,6 +5,7 @@ import io.github.krisbitney.yuli.database.YuliDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Instant
 
 const val UPDATE_FOLLOWS_INTERVAL_SECONDS: Long = 60 * 60 * 6 // 6 hours
 
@@ -23,6 +24,13 @@ object BackgroundTasks {
                 val e = Exception("No user logged in")
                 return@use Result.failure(e)
             }
+            // clear old events to keep app storage down
+            val oldEvents = db.selectEvents(
+                Instant.DISTANT_PAST.epochSeconds,
+                db.daysAgoUnixTimestamp(30)
+            )
+            db.deleteEvents(oldEvents)
+            // update follows
             ApiHandler(api, db).updateFollows(username, reportProgress)
         }
     }

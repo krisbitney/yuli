@@ -75,6 +75,6 @@ internal class YuliFollowsStoreProvider(
     }
 
     interface Database {
-        fun selectProfiles(type: FollowType): List<Profile>
+        suspend fun selectProfiles(type: FollowType): List<Profile>
     }
 }
