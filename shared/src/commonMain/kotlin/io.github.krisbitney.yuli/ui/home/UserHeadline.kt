@@ -32,7 +32,7 @@ fun UserHeadline(
             onClickHeaderImage = {}
         )
         TitleColumn(pic, Modifier.fillMaxHeight(), MaterialTheme.colorScheme.onBackground)
-        if (!platformIsIos()) {
+        if (platformIsIos()) {
             if (updateInProgress) {
                 flowerColumn(
                     text = "@$username",

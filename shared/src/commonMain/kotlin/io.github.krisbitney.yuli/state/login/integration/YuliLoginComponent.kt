@@ -53,7 +53,7 @@ class YuliLoginComponent (
                 model.collect {
                     if (it.isLoggedIn) {
                         withContext(Dispatchers.Main) {
-                            output(YuliLogin.Output.Close)
+                            output(YuliLogin.Output.Close(true))
                         }
                     }
                 }
@@ -71,6 +71,6 @@ class YuliLoginComponent (
     }
 
     override fun onCloseClicked() {
-        output(YuliLogin.Output.Close)
+        output(YuliLogin.Output.Close(false))
     }
 }

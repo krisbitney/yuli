@@ -5,9 +5,12 @@ import io.github.krisbitney.yuli.database.YuliDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 const val UPDATE_FOLLOWS_INTERVAL_SECONDS: Long = 60 * 60 * 6 // 6 hours
+
+const val DAYS_TO_KEEP_EVENTS: Int = 30
 
 expect object BackgroundTaskLauncher {
     fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext)
@@ -27,11 +30,16 @@ object BackgroundTasks {
             // clear old events to keep app storage down
             val oldEvents = db.selectEvents(
                 Instant.DISTANT_PAST.epochSeconds,
-                db.daysAgoUnixTimestamp(30)
+                db.daysAgoUnixTimestamp(DAYS_TO_KEEP_EVENTS)
             )
             db.deleteEvents(oldEvents)
             // update follows
-            ApiHandler(api, db).updateFollows(username, reportProgress)
+            val result = ApiHandler(api, db).updateFollows(username, reportProgress)
+            // record update time
+            db.selectState()?.let {
+                db.insertOrReplaceState(it.copy(lastUpdate = Clock.System.now().epochSeconds))
+            }
+            result
         }
     }
 

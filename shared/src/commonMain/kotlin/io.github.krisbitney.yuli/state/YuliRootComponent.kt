@@ -25,7 +25,7 @@ import kotlinx.serialization.Serializable
 @OptIn(ExperimentalStdlibApi::class)
 class YuliRootComponent(
     private val componentContext: ComponentContext,
-    private val yuliHome: (ComponentContext, (YuliHome.Output) -> Unit) -> YuliHome,
+    private val yuliHome: (ComponentContext, (YuliHome.Output) -> Unit, Boolean) -> YuliHome,
     private val yuliLogin: (ComponentContext, (YuliLogin.Output) -> Unit) -> YuliLogin,
     private val yuliFollows: (ComponentContext, (YuliFollows.Output) -> Unit, FollowType) -> YuliFollows,
     private val yuliHistory: (ComponentContext, (YuliHistory.Output) -> Unit) -> YuliHistory,
@@ -38,13 +38,14 @@ class YuliRootComponent(
          apiHandler: ApiHandler
     ) : this(
         componentContext = componentContext,
-        yuliHome = { childContext, output ->
+        yuliHome = { childContext, output, isUpdating ->
             YuliHomeComponent(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 database = database,
                 apiHandler = apiHandler,
-                output = output
+                output = output,
+                isUpdating = isUpdating
             )
         },
         yuliLogin = { childContext, output ->
@@ -80,14 +81,16 @@ class YuliRootComponent(
     override val childStack: Value<ChildStack<*, YuliRoot.Child>> = childStack(
         source = navigation,
         serializer = Configuration.serializer(),
-        initialConfiguration = Configuration.Home,
+        initialConfiguration = Configuration.Home(false),
         handleBackButton = true,
         childFactory = ::createChild
     )
 
     private fun createChild(configuration: Configuration, componentContext: ComponentContext): YuliRoot.Child =
         when (configuration) {
-            is Configuration.Home -> YuliRoot.Child.Home(yuliHome(componentContext, ::onHomeOutput))
+            is Configuration.Home -> YuliRoot.Child.Home(
+                yuliHome(componentContext, ::onHomeOutput, configuration.isUpdating)
+            )
             is Configuration.Login -> YuliRoot.Child.Login(yuliLogin(componentContext, ::onLoginOutput))
             is Configuration.Follows -> YuliRoot.Child.Follows(
                 yuliFollows(componentContext, ::onFollowsOutput, configuration.type)
@@ -103,7 +106,7 @@ class YuliRootComponent(
 
     private fun onLoginOutput(output: YuliLogin.Output): Unit =
         when (output) {
-            is YuliLogin.Output.Close -> navigation.replaceCurrent(Configuration.Home)
+            is YuliLogin.Output.Close -> navigation.replaceCurrent(Configuration.Home(output.isUpdating))
         }
 
     private fun onFollowsOutput(output: YuliFollows.Output): Unit =
@@ -119,7 +122,7 @@ class YuliRootComponent(
     @Serializable
     private sealed class Configuration {
         @Serializable
-        data object Home : Configuration()
+        data class Home(val isUpdating: Boolean) : Configuration()
         @Serializable
         data object Login : Configuration()
         @Serializable

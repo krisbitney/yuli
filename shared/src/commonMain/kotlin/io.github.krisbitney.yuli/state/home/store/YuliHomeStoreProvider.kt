@@ -12,11 +12,13 @@ import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.Intent
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 
 internal class YuliHomeStoreProvider(
     private val storeFactory: StoreFactory,
@@ -78,13 +80,31 @@ internal class YuliHomeStoreProvider(
             when (intent) {
                 is Intent.OpenSettings -> Unit
                 is Intent.RefreshFollowsData -> refreshFollowsData()
-                is Intent.SetUpdateInProgress -> dispatch(Msg.SetUpdateInProgress(intent.value))
+                is Intent.SetIsUpdating -> dispatch(Msg.SetUpdateInProgress(intent.isUpdating))
             }
 
         private fun refreshFollowsData() {
             scope.launch {
                 dispatch(Msg.SetUpdateInProgress(true))
                 apiHandler.inBackground.updateFollowsAndNotify()
+                withContext(Dispatchers.IO) {
+                    val lastUpdate = database.watchLastUpdate()
+                    var startUpdateTime = 0L
+                    withTimeoutOrNull(600_000) {
+                        lastUpdate.collect {
+                            if (startUpdateTime == 0L) {
+                                startUpdateTime = it
+                            } else {
+                                if (it != startUpdateTime) {
+                                    withContext(Dispatchers.Main) {
+                                        dispatch(Msg.SetUpdateInProgress(false))
+                                    }
+                                    cancel()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -117,5 +137,7 @@ internal class YuliHomeStoreProvider(
         suspend fun selectUser(): User?
 
         suspend fun countFollows(type: FollowType): Flow<Long>
+
+        suspend fun watchLastUpdate(): Flow<Long>
     }
 }

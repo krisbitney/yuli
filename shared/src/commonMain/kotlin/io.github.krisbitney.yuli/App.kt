@@ -15,4 +15,3 @@ fun App(component: YuliRoot) {
 // TODO: Localization
 // TODO: event history screen
 // TODO: notification UI
-// TODO: use lastUpdate time to know whether manual refresh finished

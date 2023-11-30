@@ -10,7 +10,7 @@ internal interface YuliHomeStore : Store<Intent, State, Nothing> {
     sealed class Intent {
         data object OpenSettings : Intent()
         data object RefreshFollowsData : Intent()
-        data class SetUpdateInProgress(val value: Boolean) : Intent()
+        data class SetIsUpdating(val isUpdating: Boolean) : Intent()
     }
 
     data class State(

@@ -19,6 +19,6 @@ interface YuliLogin {
     )
 
     sealed class Output {
-        data object Close : Output()
+        data class Close(val isUpdating: Boolean) : Output()
     }
 }

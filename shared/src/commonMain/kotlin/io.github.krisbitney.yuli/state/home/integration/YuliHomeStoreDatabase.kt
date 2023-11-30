@@ -11,4 +11,6 @@ class YuliHomeStoreDatabase(private val database: YuliDatabase) : Database {
     override suspend fun selectUser(): User? = database.selectUser()
 
     override suspend fun countFollows(type: FollowType): Flow<Long> = database.countProfilesAsFlow(type)
+
+    override suspend fun watchLastUpdate(): Flow<Long> = database.watchLastUpdate()
 }
