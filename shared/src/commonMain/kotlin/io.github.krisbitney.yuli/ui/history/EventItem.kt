@@ -1,10 +1,9 @@
-package io.github.krisbitney.yuli.ui.follows
+package io.github.krisbitney.yuli.ui.history
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,14 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import io.github.krisbitney.yuli.models.Profile
+import io.github.krisbitney.yuli.models.Event
 import io.github.krisbitney.yuli.ui.common.ImageLink
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun FollowItem(profile: Profile) {
+fun EventItem(event: Event) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,35 +46,25 @@ fun FollowItem(profile: Profile) {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // TODO: different image for each event type
             Image(
                 painter = painterResource("portrait_pink.png"),
                 contentDescription = "silhouette portrait icon",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier.size(48.dp)
             )
-            Column(
-                modifier = Modifier.fillMaxHeight().wrapContentWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
-            ) {
-                Text(
-                    text = profile.name,
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Text(
-                    text = "@${profile.username}",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
+            Text(
+                text = event.message(),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         }
         ImageLink(
             painter = painterResource("instagram_glyph_icon.xml"),
             contentDescription = "instagram glyph icon",
             contentScale = ContentScale.Fit,
             modifier = Modifier.size(48.dp).padding(end = 12.dp),
-            url = "https://instagram.com/${profile.username}"
+            url = "https://instagram.com/${event.username}"
         )
     }
 }

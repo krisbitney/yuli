@@ -11,7 +11,8 @@ interface YuliHistory {
     fun onTimePeriodClicked(timePeriod: Event.TimePeriod)
 
     data class Model(
-        val events: List<Event>
+        val events: List<Event>,
+        val timePeriod: Event.TimePeriod
     )
 
     sealed class Output {

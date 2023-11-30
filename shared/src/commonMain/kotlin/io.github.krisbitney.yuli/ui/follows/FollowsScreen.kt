@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.state.follows.YuliFollows
+import io.github.krisbitney.yuli.ui.common.BackButton
 
 @Composable
 fun FollowsScreen(component: YuliFollows) {

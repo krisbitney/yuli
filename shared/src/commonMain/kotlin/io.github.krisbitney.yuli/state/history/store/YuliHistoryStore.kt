@@ -13,6 +13,6 @@ interface YuliHistoryStore : Store<Intent, State, Nothing> {
 
     data class State(
         val events: List<Event> = emptyList(),
-        val timePeriod: Event.TimePeriod = Event.TimePeriod.LAST_7_DAYS
+        val timePeriod: Event.TimePeriod = Event.TimePeriod.SEVEN_DAYS
     )
 }

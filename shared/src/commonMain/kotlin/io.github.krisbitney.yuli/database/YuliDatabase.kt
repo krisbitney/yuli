@@ -19,11 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
@@ -113,13 +108,7 @@ class YuliDatabase : AutoCloseable {
     }
 
     fun daysAgoUnixTimestamp(days: Int): Long {
-        val now = Clock.System.now()
-        val localToday = now.toLocalDateTime(TimeZone.currentSystemDefault()).date
-        val startOfDay = LocalDateTime(localToday, LocalTime(0, 0))
-        return startOfDay
-            .toInstant(TimeZone.currentSystemDefault())
-            .minus(days.toDuration(DurationUnit.DAYS))
-            .epochSeconds
+        return Clock.System.now().minus(days.toDuration(DurationUnit.DAYS)).epochSeconds
     }
 
     override fun close() = realm.close()

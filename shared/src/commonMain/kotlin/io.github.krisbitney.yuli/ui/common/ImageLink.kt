@@ -1,4 +1,4 @@
-package io.github.krisbitney.yuli.ui.follows
+package io.github.krisbitney.yuli.ui.common
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

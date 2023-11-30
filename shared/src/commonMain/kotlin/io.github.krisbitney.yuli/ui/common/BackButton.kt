@@ -1,4 +1,4 @@
-package io.github.krisbitney.yuli.ui.follows
+package io.github.krisbitney.yuli.ui.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size

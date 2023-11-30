@@ -9,11 +9,11 @@ import kotlinx.datetime.Instant
 class YuliHistoryStoreDatabase(private val database: YuliDatabase) : YuliHistoryStoreProvider.Database {
     override suspend fun selectEvents(timePeriod: Event.TimePeriod): List<Event> {
         return when (timePeriod) {
-            Event.TimePeriod.TODAY -> database.selectEvents(
+            Event.TimePeriod.ONE_DAY -> database.selectEvents(
                 database.daysAgoUnixTimestamp(0),
                 Instant.DISTANT_FUTURE.epochSeconds
             )
-            Event.TimePeriod.LAST_7_DAYS -> database.selectEvents(
+            Event.TimePeriod.SEVEN_DAYS -> database.selectEvents(
                 database.daysAgoUnixTimestamp(7),
                 Instant.DISTANT_FUTURE.epochSeconds
             )

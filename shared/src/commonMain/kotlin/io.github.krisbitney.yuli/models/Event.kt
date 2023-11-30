@@ -32,8 +32,8 @@ class Event(
     }
 
     enum class TimePeriod {
-        TODAY,
-        LAST_7_DAYS,
+        ONE_DAY,
+        SEVEN_DAYS,
         ALL
     }
     
