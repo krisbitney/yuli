@@ -29,7 +29,7 @@ fun TimeFilterToggle(timePeriod: Event.TimePeriod, onToggle: (Event.TimePeriod) 
             Tab(
                 icon = {
                     Image(
-                        painter = painterResource(it.icon),
+                        painter = painterResource("calendar_$timePeriod.xml"),
                         contentDescription = "Toggle time period to ${it.name}",
                         modifier = Modifier.size(64.dp),
                     )

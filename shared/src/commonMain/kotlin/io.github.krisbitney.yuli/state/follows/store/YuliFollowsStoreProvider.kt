@@ -40,7 +40,6 @@ internal class YuliFollowsStoreProvider(
 
         override fun executeAction(action: Unit, getState: () -> State) {
             scope.launch {
-                // TODO: observe follows?
                 val follows = withContext(Dispatchers.IO) { database.selectProfiles(type) }
                 val state = getState()
                 val sorted = follows.sortedBy {

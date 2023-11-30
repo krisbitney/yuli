@@ -34,7 +34,15 @@ class Event(
     enum class TimePeriod {
         ONE_DAY,
         SEVEN_DAYS,
-        ALL
+        ALL;
+
+        override fun toString(): String {
+            return when (this) {
+                ONE_DAY -> "1"
+                SEVEN_DAYS -> "7"
+                ALL -> "$DAYS_TO_KEEP_EVENTS"
+            }
+        }
     }
     
     fun message(): String  {
@@ -44,5 +52,9 @@ class Event(
             Kind.STARTED_FOLLOWING -> "You followed $name"
             Kind.STOPPED_FOLLOWING -> "You unfollowed $name"
         }
+    }
+
+    companion object {
+        const val DAYS_TO_KEEP_EVENTS: Int = 30
     }
 }
