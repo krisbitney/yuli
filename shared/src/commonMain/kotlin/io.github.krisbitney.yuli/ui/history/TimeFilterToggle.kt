@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.models.Event
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -31,6 +32,7 @@ fun TimeFilterToggle(timePeriod: Event.TimePeriod, onToggle: (Event.TimePeriod) 
                     Image(
                         painter = painterResource("calendar_$timePeriod.xml"),
                         contentDescription = "Toggle time period to ${it.name}",
+                        contentScale = ContentScale.Fit,
                         modifier = Modifier.size(64.dp),
                     )
                 },
