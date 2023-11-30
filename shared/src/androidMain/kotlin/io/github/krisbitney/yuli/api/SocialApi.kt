@@ -53,7 +53,9 @@ class AndroidSocialApi(override val context: Context) : SocialApi {
             if (client.exists()) client.delete()
             if (cookie.exists()) cookie.delete()
             try {
+                val igDevice = DeviceInfoHelper(context).getDeviceInformation()
                 insta = IGClient.builder()
+                    .device(igDevice)
                     .username(username)
                     .password(password)
                     .login()
