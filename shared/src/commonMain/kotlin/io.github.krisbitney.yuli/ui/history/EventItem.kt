@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,12 +50,26 @@ fun EventItem(event: Event) {
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // TODO: different image for each event type
             Image(
-                painter = painterResource("portrait_pink.png"),
-                contentDescription = "silhouette portrait icon",
+                painter = painterResource(
+                    when (event.kind) {
+                        Event.Kind.GAINED_FOLLOWER -> "user_star.xml"
+                        Event.Kind.LOST_FOLLOWER -> "user_none.xml"
+                        Event.Kind.STARTED_FOLLOWING -> "user_plus.xml"
+                        Event.Kind.STOPPED_FOLLOWING -> "user_minus.xml"
+                    }
+                ),
+                contentDescription = "event kind icon",
                 contentScale = ContentScale.Fit,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(48.dp),
+                colorFilter = ColorFilter.tint(
+                    when (event.kind) {
+                        Event.Kind.GAINED_FOLLOWER -> MaterialTheme.colorScheme.onSurface
+                        Event.Kind.LOST_FOLLOWER -> MaterialTheme.colorScheme.secondaryContainer
+                        Event.Kind.STARTED_FOLLOWING -> MaterialTheme.colorScheme.primaryContainer
+                        Event.Kind.STOPPED_FOLLOWING -> MaterialTheme.colorScheme.background
+                    }
+                )
             )
             Column(
                 modifier = Modifier.fillMaxHeight().wrapContentWidth(),
