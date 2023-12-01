@@ -30,7 +30,7 @@ fun FollowsScreen(component: YuliFollows) {
         Row(
             Modifier.fillMaxWidth().wrapContentHeight().padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top
         ) {
             BackButton(onClick = component::onBackClicked)
             SortToggle(model.value.sortedBy, component::onSortClicked)

@@ -30,7 +30,7 @@ fun HistoryScreen(component: YuliHistory) {
         Row(
             Modifier.fillMaxWidth().wrapContentHeight().padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Top
         ) {
             BackButton(onClick = component::onBackClicked)
             TimeFilterToggle(model.value.timePeriod, component::onTimePeriodClicked)
