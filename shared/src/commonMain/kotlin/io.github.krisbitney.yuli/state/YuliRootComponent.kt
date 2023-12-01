@@ -102,6 +102,7 @@ class YuliRootComponent(
         when (output) {
             is YuliHome.Output.Login -> navigation.replaceCurrent(Configuration.Login)
             is YuliHome.Output.Follows -> navigation.push(Configuration.Follows(type = output.type))
+            is YuliHome.Output.History -> navigation.push(Configuration.History)
         }
 
     private fun onLoginOutput(output: YuliLogin.Output): Unit =

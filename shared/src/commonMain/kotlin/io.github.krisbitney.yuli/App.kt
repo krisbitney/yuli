@@ -13,5 +13,4 @@ fun App(component: YuliRoot) {
 }
 
 // TODO: Localization
-// TODO: event history screen (need to a button on home screen to link it)
 // TODO: notification UI

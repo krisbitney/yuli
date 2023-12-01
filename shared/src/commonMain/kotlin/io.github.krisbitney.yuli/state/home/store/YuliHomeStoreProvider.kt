@@ -80,27 +80,40 @@ internal class YuliHomeStoreProvider(
             when (intent) {
                 is Intent.OpenSettings -> Unit
                 is Intent.RefreshFollowsData -> refreshFollowsData()
-                is Intent.SetIsUpdating -> dispatch(Msg.SetUpdateInProgress(intent.isUpdating))
+                is Intent.SetIsUpdating -> {
+                    dispatch(Msg.SetUpdateInProgress(intent.isUpdating))
+                    if (intent.isUpdating) {
+                        watchLastUpdate()
+                    }
+                    Unit
+                }
             }
 
         private fun refreshFollowsData() {
             scope.launch {
                 dispatch(Msg.SetUpdateInProgress(true))
                 apiHandler.inBackground.updateFollowsAndNotify()
-                withContext(Dispatchers.IO) {
-                    val lastUpdate = database.watchLastUpdate()
-                    var startUpdateTime = 0L
-                    withTimeoutOrNull(600_000) {
-                        lastUpdate.collect {
-                            if (startUpdateTime == 0L) {
-                                startUpdateTime = it
-                            } else {
-                                if (it != startUpdateTime) {
-                                    withContext(Dispatchers.Main) {
-                                        dispatch(Msg.SetUpdateInProgress(false))
-                                    }
-                                    cancel()
+                watchLastUpdate()
+            }
+        }
+
+        // TODO: this needs testing to make sure there is no race condition where the background update happens too quickly
+        private fun watchLastUpdate() = scope.launch {
+            withContext(Dispatchers.IO) {
+                val lastUpdate = database.watchLastUpdate()
+                var startUpdateTime = 0L
+                withTimeoutOrNull(600_000) {
+                    lastUpdate.collect {
+                        // the first value should be the prior update time
+                        if (startUpdateTime == 0L) {
+                            startUpdateTime = it
+                        // subsequent values should be the current update time
+                        } else {
+                            if (it > startUpdateTime) {
+                                withContext(Dispatchers.Main) {
+                                    dispatch(Msg.SetUpdateInProgress(false))
                                 }
+                                cancel()
                             }
                         }
                     }

@@ -9,6 +9,8 @@ interface YuliHome {
 
     fun onFollowsClicked(type: FollowType)
 
+    fun onHistoryClicked()
+
     fun onLoginClicked()
 
     fun onRefreshClicked()
@@ -25,5 +27,6 @@ interface YuliHome {
     sealed class Output {
         data object Login : Output()
         data class Follows(val type: FollowType) : Output()
+        data object History : Output()
     }
 }

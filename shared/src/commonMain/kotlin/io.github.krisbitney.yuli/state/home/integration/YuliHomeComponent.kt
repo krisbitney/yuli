@@ -58,6 +58,10 @@ class YuliHomeComponent (
         output(Output.Follows(type))
     }
 
+    override fun onHistoryClicked() {
+        output(Output.History)
+    }
+
     override fun onLoginClicked() {
         output(Output.Login)
     }
