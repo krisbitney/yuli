@@ -7,3 +7,12 @@ plugins {
     id("org.jetbrains.compose").apply(false)
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("dev.icerock.moko:resources-generator:0.23.0")
+    }
+}

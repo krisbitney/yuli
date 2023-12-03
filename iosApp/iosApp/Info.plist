@@ -50,5 +50,11 @@
     <array>
         <string>io.github.krisbitney.yuli.updateFollows</string>
     </array>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>ru</string>
+        <string>es</string>
+    </array>
 </dict>
 </plist>

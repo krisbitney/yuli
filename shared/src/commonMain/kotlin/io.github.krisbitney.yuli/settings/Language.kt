@@ -2,8 +2,8 @@ package io.github.krisbitney.yuli.settings
 
 enum class Language(val value: String) {
     ENGLISH("en"),
-    SPANISH("es"),
-    RUSSIAN("ru");
+    RUSSIAN("ru"),
+    SPANISH("es");
 
     override fun toString(): String {
         return this.name.lowercase().replaceFirstChar { it.titlecase() }
