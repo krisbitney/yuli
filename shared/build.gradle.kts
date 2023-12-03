@@ -57,11 +57,12 @@ kotlin {
                 implementation("com.arkivanov.mvikotlin:mvikotlin-main:$mviKotlinVersion")
                 implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:$mviKotlinVersion")
                 implementation("co.touchlab:kermit:2.0.2")
+                implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
             }
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.8.0")
+                api("androidx.activity:activity-compose:1.8.1")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.12.0")
                 implementation("com.github.instagram4j:instagram4j:2.0.7")

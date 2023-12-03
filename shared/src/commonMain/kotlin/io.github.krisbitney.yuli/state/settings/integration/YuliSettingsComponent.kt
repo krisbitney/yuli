@@ -5,7 +5,9 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.stateFlow
+import io.github.krisbitney.yuli.settings.Language
 import io.github.krisbitney.yuli.state.settings.YuliSettings
+import io.github.krisbitney.yuli.state.settings.store.YuliSettingsStore
 import io.github.krisbitney.yuli.state.settings.store.YuliSettingsStoreProvider
 import io.github.krisbitney.yuli.state.utils.map
 import kotlinx.coroutines.CoroutineScope
@@ -39,5 +41,9 @@ class YuliSettingsComponent(
 
     override fun onBackClicked() {
         output(YuliSettings.Output.Back)
+    }
+
+    override fun onLanguageChanged(language: Language) {
+        store.accept(YuliSettingsStore.Intent.SetLanguage(language))
     }
 }

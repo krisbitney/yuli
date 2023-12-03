@@ -1,5 +1,6 @@
 package io.github.krisbitney.yuli.state.settings
 
+import io.github.krisbitney.yuli.settings.Language
 import kotlinx.coroutines.flow.StateFlow
 
 interface YuliSettings {
@@ -7,8 +8,10 @@ interface YuliSettings {
 
     fun onBackClicked()
 
+    fun onLanguageChanged(language: Language)
+
     data class Model(
-        val language: String
+        val language: Language
     )
 
     sealed class Output {
