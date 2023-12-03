@@ -12,5 +12,6 @@ fun App(component: YuliRoot) {
     }
 }
 
+// TODO: Settings
 // TODO: Localization
 // TODO: notification UI

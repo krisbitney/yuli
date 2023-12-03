@@ -20,6 +20,8 @@ import io.github.krisbitney.yuli.state.home.YuliHome
 import io.github.krisbitney.yuli.state.home.integration.YuliHomeComponent
 import io.github.krisbitney.yuli.state.login.YuliLogin
 import io.github.krisbitney.yuli.state.login.integration.YuliLoginComponent
+import io.github.krisbitney.yuli.state.settings.YuliSettings
+import io.github.krisbitney.yuli.state.settings.integration.YuliSettingsComponent
 import kotlinx.serialization.Serializable
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -29,6 +31,7 @@ class YuliRootComponent(
     private val yuliLogin: (ComponentContext, (YuliLogin.Output) -> Unit) -> YuliLogin,
     private val yuliFollows: (ComponentContext, (YuliFollows.Output) -> Unit, FollowType) -> YuliFollows,
     private val yuliHistory: (ComponentContext, (YuliHistory.Output) -> Unit) -> YuliHistory,
+    private val yuliSettings: (ComponentContext, (YuliSettings.Output) -> Unit) -> YuliSettings,
 ) : YuliRoot, ComponentContext by componentContext {
 
      constructor(
@@ -73,6 +76,13 @@ class YuliRootComponent(
                 database = database,
                 output = output
             )
+        },
+        yuliSettings = { childContext, output ->
+            YuliSettingsComponent(
+                componentContext = childContext,
+                storeFactory = storeFactory,
+                output = output
+            )
         }
     )
 
@@ -96,6 +106,7 @@ class YuliRootComponent(
                 yuliFollows(componentContext, ::onFollowsOutput, configuration.type)
             )
             is Configuration.History -> YuliRoot.Child.History(yuliHistory(componentContext, ::onHistoryOutput))
+            is Configuration.Settings -> YuliRoot.Child.Settings(yuliSettings(componentContext, ::onSettingsOutput))
         }
 
     private fun onHomeOutput(output: YuliHome.Output): Unit =
@@ -103,6 +114,7 @@ class YuliRootComponent(
             is YuliHome.Output.Login -> navigation.replaceCurrent(Configuration.Login)
             is YuliHome.Output.Follows -> navigation.push(Configuration.Follows(type = output.type))
             is YuliHome.Output.History -> navigation.push(Configuration.History)
+            is YuliHome.Output.Settings -> navigation.push(Configuration.Settings)
         }
 
     private fun onLoginOutput(output: YuliLogin.Output): Unit =
@@ -120,6 +132,11 @@ class YuliRootComponent(
             is YuliHistory.Output.Back -> navigation.pop()
         }
 
+    private fun onSettingsOutput(output: YuliSettings.Output): Unit =
+        when (output) {
+            is YuliSettings.Output.Back -> navigation.pop()
+        }
+
     @Serializable
     private sealed class Configuration {
         @Serializable
@@ -130,5 +147,7 @@ class YuliRootComponent(
         data class Follows(val type: FollowType) : Configuration()
         @Serializable
         data object History : Configuration()
+        @Serializable
+        data object Settings : Configuration()
     }
 }

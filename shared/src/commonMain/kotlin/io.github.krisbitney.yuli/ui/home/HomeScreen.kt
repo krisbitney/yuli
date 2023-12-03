@@ -122,6 +122,28 @@ fun HomeScreen(component: YuliHome) {
                         style = MaterialTheme.typography.displaySmall,
                     )
                 }
+                Button(
+                    onClick = component::onSettingsClicked,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 4.dp,
+                        pressedElevation = 0.dp,
+                        disabledElevation = 0.dp
+                    ),
+                    modifier = Modifier
+                        .padding(start = 64.dp, end = 64.dp, top = 24.dp)
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .clip(RoundedCornerShape(24.dp))
+                ) {
+                    Text(
+                        "Settings",
+                        style = MaterialTheme.typography.displaySmall,
+                    )
+                }
             }
         }
     }

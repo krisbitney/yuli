@@ -66,6 +66,10 @@ class YuliHomeComponent (
         output(Output.Login)
     }
 
+    override fun onSettingsClicked() {
+        output(Output.Settings)
+    }
+
     override fun onRefreshClicked() {
         store.accept(YuliHomeStore.Intent.RefreshFollowsData)
     }

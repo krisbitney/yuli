@@ -6,6 +6,7 @@ import io.github.krisbitney.yuli.state.follows.YuliFollows
 import io.github.krisbitney.yuli.state.history.YuliHistory
 import io.github.krisbitney.yuli.state.home.YuliHome
 import io.github.krisbitney.yuli.state.login.YuliLogin
+import io.github.krisbitney.yuli.state.settings.YuliSettings
 
 interface YuliRoot {
     val childStack: Value<ChildStack<*, Child>>
@@ -15,5 +16,6 @@ interface YuliRoot {
         data class Login(val component: YuliLogin) : Child()
         data class Follows(val component: YuliFollows) : Child()
         data class History(val component: YuliHistory) : Child()
+        data class Settings(val component: YuliSettings) : Child()
     }
 }

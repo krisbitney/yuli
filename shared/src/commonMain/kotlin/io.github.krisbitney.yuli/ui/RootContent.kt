@@ -11,6 +11,7 @@ import io.github.krisbitney.yuli.ui.follows.FollowsScreen
 import io.github.krisbitney.yuli.ui.history.HistoryScreen
 import io.github.krisbitney.yuli.ui.home.HomeScreen
 import io.github.krisbitney.yuli.ui.login.LoginScreen
+import io.github.krisbitney.yuli.ui.settings.SettingsScreen
 
 @Composable
 fun RootContent(component: YuliRoot) {
@@ -23,6 +24,7 @@ fun RootContent(component: YuliRoot) {
             is YuliRoot.Child.Home -> HomeScreen(child.component)
             is YuliRoot.Child.Follows -> FollowsScreen(child.component)
             is YuliRoot.Child.History -> HistoryScreen(child.component)
+            is YuliRoot.Child.Settings -> SettingsScreen(child.component)
         }
     }
 }
