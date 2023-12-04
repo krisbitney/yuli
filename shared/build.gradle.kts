@@ -15,12 +15,7 @@ kotlin {
     listOf(
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "shared"
-            isStatic = true
-        }
-    }
+    )
 
     cocoapods {
         name = "shared"
@@ -28,7 +23,11 @@ kotlin {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
         ios.deploymentTarget = "13.0"
-
+        podfile = project.file("../iosApp/Podfile")
+        framework {
+            baseName = "shared"
+            isStatic = true
+        }
         pod("yuli_ios") {
             version = "1.0.0"
             source = path(project.file("/Users/kris/XcodeProjects/yuli_ios"))
