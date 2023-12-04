@@ -115,9 +115,9 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         // organize followers and followings
         val follows = followSetAlgebra(followers, followings)
 
-        // calculate former connections
+        // calculate former follows
         val previousAll = previous.fans + previous.mutuals + previous.nonfollowers
-        val formerConnections = (previousAll - follows.fans - follows.mutuals - follows.nonfollowers).onEach {
+        val formerFollows = (previousAll - follows.fans - follows.mutuals - follows.nonfollowers).onEach {
             it.follower = false
             it.following = false
         }
@@ -126,7 +126,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         db.insertOrReplaceProfiles(follows.fans)
         db.insertOrReplaceProfiles(follows.mutuals)
         db.insertOrReplaceProfiles(follows.nonfollowers)
-        db.insertOrReplaceProfiles(formerConnections)
+        db.insertOrReplaceProfiles(formerFollows)
 
         // assess change events
         val events = deriveFollowEvents(previous, follows)

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.models.Event
 import io.github.krisbitney.yuli.ui.common.ImageLink
 import io.github.krisbitney.yuli.ui.utils.formatDatetime
+import io.github.krisbitney.yuli.ui.utils.localizedMessage
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -77,7 +78,7 @@ fun EventItem(event: Event) {
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = event.message(),
+                    text = event.localizedMessage(),
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onSurface
                 )

@@ -22,7 +22,7 @@ interface YuliHome {
         val mutualsCount: Long,
         val nonfollowersCount: Long,
         val fansCount: Long,
-        val formerConnectionsCount: Long,
+        val formerFollowsCount: Long,
         val updateInProgress: Boolean,
     )
 

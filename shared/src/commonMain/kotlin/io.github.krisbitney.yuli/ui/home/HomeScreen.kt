@@ -19,7 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
 import io.github.krisbitney.yuli.models.FollowType
+import io.github.krisbitney.yuli.resources.MR
 import io.github.krisbitney.yuli.state.home.YuliHome
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -47,8 +49,8 @@ fun HomeScreen(component: YuliHome) {
                 )
             } else {
                 UserHeadline(
-                    fullName = "Not Logged In",
-                    username = "please_log_in",
+                    fullName = stringResource(MR.strings.not_logged_in),
+                    username = stringResource(MR.strings.please_log),
                     pic = null
                 )
                 Button(onClick = component::onLoginClicked) {
@@ -56,7 +58,7 @@ fun HomeScreen(component: YuliHome) {
                         modifier = Modifier.fillMaxWidth().height(48.dp),
                         contentAlignment = Alignment.CenterStart
                     ) {
-                        Text("\uD83E\uDE77 Click here to log in. \uD83E\uDE77")
+                        Text("\uD83E\uDE77 ${stringResource(MR.strings.click_to_log_in)}. \uD83E\uDE77")
                     }
                 }
             }
@@ -69,7 +71,7 @@ fun HomeScreen(component: YuliHome) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 GroupButton(
-                    name = "Mutuals",
+                    name = stringResource(MR.strings.mutuals),
                     count = model.value.mutualsCount,
                     portraitImg = "portrait_green.png",
                     flourishImg = "leaves_1.png",
@@ -77,7 +79,7 @@ fun HomeScreen(component: YuliHome) {
                     component.onFollowsClicked(FollowType.MUTUAL)
                 }
                 GroupButton(
-                    name = "Non-followers",
+                    name = stringResource(MR.strings.non_followers),
                     count = model.value.nonfollowersCount,
                     portraitImg = "portrait_pink.png",
                     flourishImg = "leaves_1.png",
@@ -85,7 +87,7 @@ fun HomeScreen(component: YuliHome) {
                     component.onFollowsClicked(FollowType.NONFOLLOWER)
                 }
                 GroupButton(
-                    name = "Fans",
+                    name = stringResource(MR.strings.fans),
                     count = model.value.fansCount,
                     portraitImg = "portrait_green.png",
                     flourishImg = "leaves_2.png",
@@ -93,8 +95,8 @@ fun HomeScreen(component: YuliHome) {
                     component.onFollowsClicked(FollowType.FAN)
                 }
                 GroupButton(
-                    name = "Former Connections",
-                    count = model.value.formerConnectionsCount,
+                    name = stringResource(MR.strings.former_follows),
+                    count = model.value.formerFollowsCount,
                     portraitImg = "portrait_pink.png",
                     flourishImg = "leaves_1.png",
                 ) {
@@ -118,7 +120,7 @@ fun HomeScreen(component: YuliHome) {
                         .clip(RoundedCornerShape(24.dp))
                 ) {
                     Text(
-                        "History",
+                        stringResource(MR.strings.history),
                         style = MaterialTheme.typography.displaySmall,
                     )
                 }
@@ -140,7 +142,7 @@ fun HomeScreen(component: YuliHome) {
                         .clip(RoundedCornerShape(24.dp))
                 ) {
                     Text(
-                        "Settings",
+                        stringResource(MR.strings.settings),
                         style = MaterialTheme.typography.displaySmall,
                     )
                 }

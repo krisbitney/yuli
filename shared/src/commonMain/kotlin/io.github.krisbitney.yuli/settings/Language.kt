@@ -10,6 +10,12 @@ enum class Language(val value: String) {
     }
 
     companion object {
-        fun default(): Language = ENGLISH
+        fun default(): Language = when (getSystemLanguageCode()) {
+            "ru" -> RUSSIAN
+            "es" -> SPANISH
+            else -> ENGLISH
+        }
     }
 }
+
+expect fun getSystemLanguageCode(): String

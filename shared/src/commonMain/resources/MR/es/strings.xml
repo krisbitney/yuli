@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <!--common-->
+    <string name="app_title">Yuli</string>
+
+    <!--follows-->
+    <string name="sort">Ordenar</string>
+    <string name="name">Nombre</string>
+    <string name="username">Nombre de usuario</string>
+
+    <!--settings-->
+    <string name="language">Idioma</string>
+    <string name="english">Inglés</string>
+    <string name="russian">Ruso</string>
+    <string name="spanish">Español</string>
+
+    <!--history-->
+    <string name="followed_you">te ha seguido</string>
+    <string name="unfollowed_you">te ha dejado de seguir</string>
+    <string name="you_followed">Has seguido a</string>
+    <string name="you_unfollowed">Has dejado de seguir a</string>
+
+    <!--home-->
+    <string name="not_logged_in">No conectado</string>
+    <string name="please_log">por favor, inicia sesión</string>
+    <string name="click_to_log_in">Haz clic aquí para iniciar sesión</string>
+    <string name="mutuals">Mutuos</string>
+    <string name="non_followers">No seguidores</string>
+    <string name="fans">Fans</string>
+    <string name="former_follows">Seguimientos Anteriores</string>
+    <string name="history">Historia</string>
+    <string name="settings">Configuraciones</string>
+
+    <!--login-->
+    <string name="password">Contraseña</string>
+    <string name="login">Iniciar sesión</string>
+</resources>

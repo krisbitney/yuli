@@ -20,7 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import dev.icerock.moko.resources.compose.stringResource
+import io.github.krisbitney.yuli.resources.MR
 import io.github.krisbitney.yuli.settings.Language
+import io.github.krisbitney.yuli.ui.utils.localized
 
 @Composable
 fun LanguageSetting(language: Language, onChange: (Language) -> Unit) {
@@ -37,7 +40,7 @@ fun LanguageSetting(language: Language, onChange: (Language) -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Language",
+            text = stringResource(MR.strings.language),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSecondary
         )
@@ -45,7 +48,7 @@ fun LanguageSetting(language: Language, onChange: (Language) -> Unit) {
             onClick = { expanded = true },
         ) {
             Text(
-                text = selectedLanguage.toString(),
+                text = selectedLanguage.localized(),
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onSecondary
             )
@@ -59,7 +62,7 @@ fun LanguageSetting(language: Language, onChange: (Language) -> Unit) {
                     DropdownMenuItem(
                         text = {
                             Text(
-                                text = lang.toString(),
+                                text = lang.localized(),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = MaterialTheme.colorScheme.onSecondary
                             )

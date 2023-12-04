@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="my_hi">My default localization string</string>
+<!--common-->
+    <string name="app_title">Yuli</string>
+
+<!--follows-->
+    <string name="sort">Sort</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+
+<!--settings-->
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="russian">Russian</string>
+    <string name="spanish">Spanish</string>
+
+<!--history-->
+    <string name="followed_you">followed you</string>
+    <string name="unfollowed_you">unfollowed you</string>
+    <string name="you_followed">You followed</string>
+    <string name="you_unfollowed">You unfollowed</string>
+
+<!--home-->
+    <string name="not_logged_in">Not logged in</string>
+    <string name="please_log">please_log_in</string>
+    <string name="click_to_log_in">Click here to log in</string>
+    <string name="mutuals">Mutuals</string>
+    <string name="non_followers">Non-followers</string>
+    <string name="fans">Fans</string>
+    <string name="former_follows">Former Follows</string>
+    <string name="history">History</string>
+    <string name="settings">Settings</string>
+
+<!--login-->
+    <string name="password">Password</string>
+    <string name="login">Login</string>
 </resources>

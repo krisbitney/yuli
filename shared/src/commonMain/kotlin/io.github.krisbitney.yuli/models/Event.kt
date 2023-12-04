@@ -21,7 +21,7 @@ class Event(
     ) : this(profile.username, profile.name, kind.ordinal, timestamp)
 
     var kind: Kind
-        get() = Kind.values()[kindOrdinal]
+        get() = Kind.entries[kindOrdinal]
         set(value) { kindOrdinal = value.ordinal }
 
     enum class Kind {
@@ -42,15 +42,6 @@ class Event(
                 SEVEN_DAYS -> "7"
                 ALL -> "$DAYS_TO_KEEP_EVENTS"
             }
-        }
-    }
-    
-    fun message(): String  {
-        return when (this.kind) {
-            Kind.GAINED_FOLLOWER -> "$name followed you"
-            Kind.LOST_FOLLOWER -> "$name unfollowed you"
-            Kind.STARTED_FOLLOWING -> "You followed $name"
-            Kind.STOPPED_FOLLOWING -> "You unfollowed $name"
         }
     }
 

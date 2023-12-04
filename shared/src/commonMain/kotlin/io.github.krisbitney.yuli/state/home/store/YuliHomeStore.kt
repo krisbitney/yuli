@@ -18,7 +18,7 @@ internal interface YuliHomeStore : Store<Intent, State, Nothing> {
         val mutualsCount: Long = 0L,
         val nonfollowersCount: Long = 0L,
         val fansCount: Long = 0L,
-        val formerConnectionsCount: Long = 0L,
+        val formerFollowsCount: Long = 0L,
         val updateInProgress: Boolean = false
     )
 }

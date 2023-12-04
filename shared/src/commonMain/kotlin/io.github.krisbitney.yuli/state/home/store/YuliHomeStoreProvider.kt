@@ -45,7 +45,7 @@ internal class YuliHomeStoreProvider(
         data class SetMutualsCount(val value: Long) : Msg()
         data class SetNonFollowersCount(val value: Long) : Msg()
         data class SetFansCount(val value: Long) : Msg()
-        data class SetFormerConnectionsCount(val value: Long) : Msg()
+        data class SetFormerFollowsCount(val value: Long) : Msg()
         data class SetUpdateInProgress(val value: Boolean) : Msg()
     }
 
@@ -71,7 +71,7 @@ internal class YuliHomeStoreProvider(
                     launchSubscription({ database.countFollows(FollowType.MUTUAL) }, Msg::SetMutualsCount)
                     launchSubscription({ database.countFollows(FollowType.NONFOLLOWER) }, Msg::SetNonFollowersCount)
                     launchSubscription({ database.countFollows(FollowType.FAN) }, Msg::SetFansCount)
-                    launchSubscription({ database.countFollows(FollowType.FORMER) }, Msg::SetFormerConnectionsCount)
+                    launchSubscription({ database.countFollows(FollowType.FORMER) }, Msg::SetFormerFollowsCount)
                 }
             }
         }
@@ -141,7 +141,7 @@ internal class YuliHomeStoreProvider(
                 is Msg.SetMutualsCount -> copy(mutualsCount = msg.value)
                 is Msg.SetNonFollowersCount -> copy(nonfollowersCount = msg.value)
                 is Msg.SetFansCount -> copy(fansCount = msg.value)
-                is Msg.SetFormerConnectionsCount -> copy(formerConnectionsCount = msg.value)
+                is Msg.SetFormerFollowsCount -> copy(formerFollowsCount = msg.value)
                 is Msg.SetUpdateInProgress -> copy(updateInProgress = msg.value)
             }
     }

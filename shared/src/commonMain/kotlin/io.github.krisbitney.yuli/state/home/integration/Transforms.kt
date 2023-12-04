@@ -10,7 +10,7 @@ internal val stateToModel: (YuliHomeStore.State) -> YuliHome.Model = {
         mutualsCount = it.mutualsCount,
         nonfollowersCount = it.nonfollowersCount,
         fansCount = it.fansCount,
-        formerConnectionsCount = it.formerConnectionsCount,
+        formerFollowsCount = it.formerFollowsCount,
         updateInProgress = it.updateInProgress
     )
 }

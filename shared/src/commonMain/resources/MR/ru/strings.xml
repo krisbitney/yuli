@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <!--common-->
+    <string name="app_title">Юли</string>
+
+    <!--follows-->
+    <string name="sort">Сортировать</string>
+    <string name="name">Имя</string>
+    <string name="username">Имя пользователя</string>
+
+    <!--settings-->
+    <string name="language">Язык</string>
+    <string name="english">Английский</string>
+    <string name="russian">Русский</string>
+    <string name="spanish">Испанский</string>
+
+    <!--history-->
+    <string name="followed_you">подписался на вас</string>
+    <string name="unfollowed_you">отписался от вас</string>
+    <string name="you_followed">Вы подписались</string>
+    <string name="you_unfollowed">Вы отписались</string>
+
+    <!--home-->
+    <string name="not_logged_in">Не в сети</string>
+    <string name="please_log">пожалуйста, войдите в систему</string>
+    <string name="click_to_log_in">Нажмите здесь, чтобы войти</string>
+    <string name="mutuals">Взаимные</string>
+    <string name="non_followers">Не подписчики</string>
+    <string name="fans">Поклонники</string>
+    <string name="former_follows">Бывшие подписки</string>
+    <string name="history">История</string>
+    <string name="settings">Настройки</string>
+
+    <!--login-->
+    <string name="password">Пароль</string>
+    <string name="login">Войти</string>
+</resources>

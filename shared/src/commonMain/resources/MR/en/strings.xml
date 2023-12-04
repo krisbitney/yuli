@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-    <string name="my_string">My default localization string</string>
+    <!--common-->
+    <string name="app_title">Yuli</string>
+
+    <!--follows-->
+    <string name="sort">Sort</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+
+    <!--settings-->
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="russian">Russian</string>
+    <string name="spanish">Spanish</string>
 </resources>
