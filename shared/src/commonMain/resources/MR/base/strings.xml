@@ -23,7 +23,6 @@
 <!--home-->
     <string name="not_logged_in">Not logged in</string>
     <string name="please_log">please_log_in</string>
-    <string name="click_to_log_in">Click here to log in</string>
     <string name="mutuals">Mutuals</string>
     <string name="non_followers">Non-followers</string>
     <string name="fans">Fans</string>

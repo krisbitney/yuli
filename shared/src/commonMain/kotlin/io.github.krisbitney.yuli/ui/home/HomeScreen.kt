@@ -53,14 +53,6 @@ fun HomeScreen(component: YuliHome) {
                     username = stringResource(MR.strings.please_log),
                     pic = null
                 )
-                Button(onClick = component::onLoginClicked) {
-                    Box(
-                        modifier = Modifier.fillMaxWidth().height(48.dp),
-                        contentAlignment = Alignment.CenterStart
-                    ) {
-                        Text("\uD83E\uDE77 ${stringResource(MR.strings.click_to_log_in)}. \uD83E\uDE77")
-                    }
-                }
             }
             Column(
                 modifier = Modifier
@@ -103,7 +95,13 @@ fun HomeScreen(component: YuliHome) {
                     component.onFollowsClicked(FollowType.FORMER)
                 }
                 Button(
-                    onClick = component::onHistoryClicked,
+                    onClick = {
+                        if (model.value.user != null) {
+                            component.onHistoryClicked()
+                        } else {
+                            component.onLoginClicked()
+                        }
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -119,10 +117,17 @@ fun HomeScreen(component: YuliHome) {
                         .height(48.dp)
                         .clip(RoundedCornerShape(24.dp))
                 ) {
-                    Text(
-                        stringResource(MR.strings.history),
-                        style = MaterialTheme.typography.displaySmall,
-                    )
+                    if (model.value.user != null) {
+                        Text(
+                            stringResource(MR.strings.history),
+                            style = MaterialTheme.typography.displaySmall,
+                        )
+                    } else {
+                        Text(
+                            stringResource(MR.strings.login),
+                            style = MaterialTheme.typography.displaySmall,
+                        )
+                    }
                 }
                 Button(
                     onClick = component::onSettingsClicked,

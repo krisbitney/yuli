@@ -22,8 +22,7 @@
 
     <!--home-->
     <string name="not_logged_in">Не в сети</string>
-    <string name="please_log">пожалуйста, войдите в систему</string>
-    <string name="click_to_log_in">Нажмите здесь, чтобы войти</string>
+    <string name="please_log">nе_в_сети</string>
     <string name="mutuals">Взаимные</string>
     <string name="non_followers">Не подписчики</string>
     <string name="fans">Поклонники</string>

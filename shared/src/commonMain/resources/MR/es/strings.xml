@@ -22,8 +22,7 @@
 
     <!--home-->
     <string name="not_logged_in">No conectado</string>
-    <string name="please_log">por favor, inicia sesión</string>
-    <string name="click_to_log_in">Haz clic aquí para iniciar sesión</string>
+    <string name="please_log">no_conectado</string>
     <string name="mutuals">Mutuos</string>
     <string name="non_followers">No seguidores</string>
     <string name="fans">Fans</string>
