@@ -46,10 +46,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-    <array>
-        <string>io.github.krisbitney.yuli.updateFollows</string>
-    </array>
     <key>CFBundleLocalizations</key>
     <array>
         <string>en</string>

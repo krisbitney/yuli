@@ -12,11 +12,26 @@ import platform.UIKit.UIViewController
 import platform.UIKit.addChildViewController
 import platform.UIKit.didMoveToParentViewController
 
+@OptIn(ExperimentalStdlibApi::class)
 fun MainViewController(): UIViewController {
     BackgroundTaskLauncher.requestNotificationPermissions()
     BackgroundTaskLauncher.registerTasks()
-    BackgroundTaskLauncher.scheduleUpdateFollows(null)
-    return LifecycleManagingViewController()
+
+    // disabled for now, as it does not persist through app close
+//    BackgroundTaskLauncher.scheduleUpdateFollows(null)
+
+    val lifecycle = LifecycleRegistry()
+    val db = YuliDatabase()
+    val api = SocialApiFactory.get(null)
+    val rootComponent = YuliRootComponent(
+        componentContext = DefaultComponentContext(lifecycle),
+        storeFactory = DefaultStoreFactory(),
+        database = db,
+        apiHandler = ApiHandler(api, db)
+    )
+    return ComposeUIViewController { App(rootComponent) }
+
+//    return LifecycleManagingViewController()
 }
 
 @OptIn(ExperimentalStdlibApi::class)

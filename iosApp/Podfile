@@ -1,6 +1,6 @@
 target 'iosApp' do
   use_frameworks!
   platform :ios, '14.1'
-  pod 'yuli_ios', :path => '/Users/kris/XcodeProjects/yuli_ios'
   pod 'shared', :path => '../shared'
+  pod 'yuli_ios', :path => '/Users/kris/XcodeProjects/yuli_ios'
 end

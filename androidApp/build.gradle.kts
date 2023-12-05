@@ -1,8 +1,22 @@
+import java.util.Properties
+
 plugins {
     kotlin("multiplatform")
     id("com.android.application")
     id("org.jetbrains.compose")
 }
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
+val releaseStoreFile = localProperties.getProperty("RELEASE_STORE_FILE") ?: ""
+val releaseStorePassword = localProperties.getProperty("RELEASE_STORE_PASSWORD") ?: ""
+val releaseKeyAlias = localProperties.getProperty("RELEASE_KEY_ALIAS") ?: ""
+val releaseKeyPassword = localProperties.getProperty("RELEASE_KEY_PASSWORD") ?: ""
+
 
 kotlin {
     androidTarget()
@@ -41,5 +55,20 @@ android {
     }
     kotlin {
         jvmToolchain(11)
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(releaseStoreFile)
+            storePassword = releaseStorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
+        }
+    }
+
+    buildTypes {
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
+        }
     }
 }
