@@ -27,7 +27,6 @@ kotlin {
             baseName = "shared"
             isStatic = true
         }
-        extraSpecAttributes["resources"] = "['src/commonMain/resources/**', 'src/iosMain/resources/**']"
         pod("yuli_ios") {
             version = "1.0.0"
             source = path(project.file("/Users/kris/XcodeProjects/yuli_ios"))
