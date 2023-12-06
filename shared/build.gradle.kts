@@ -1,5 +1,3 @@
-import dev.icerock.gradle.MRVisibility
-
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -7,7 +5,6 @@ plugins {
     kotlin("native.cocoapods")
     kotlin("plugin.serialization")
     id("io.realm.kotlin")
-    id("dev.icerock.mobile.multiplatform-resources")
 }
 
 kotlin {
@@ -37,7 +34,6 @@ kotlin {
     val decomposeVersion = extra["decompose.version"] as String
     val mviKotlinVersion = extra["mvi.version"] as String
     val realmVersion = extra["realm.version"] as String
-    val mokoVersion = extra["moko.version"] as String
     val ktorVersion = "2.3.5"
 
     sourceSets {
@@ -60,12 +56,9 @@ kotlin {
                 implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:$mviKotlinVersion")
                 implementation("co.touchlab:kermit:2.0.2")
                 implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
-                implementation("dev.icerock.moko:resources:$mokoVersion")
-                implementation("dev.icerock.moko:resources-compose:$mokoVersion")
             }
         }
         val androidMain by getting {
-            kotlin.srcDir("build/generated/moko/androidMain/src")
             dependencies {
                 api("androidx.activity:activity-compose:1.8.1")
                 api("androidx.appcompat:appcompat:1.6.1")
@@ -116,11 +109,6 @@ android {
     kotlin {
         jvmToolchain(11)
     }
-}
-
-multiplatformResources {
-    multiplatformResourcesPackage = "io.github.krisbitney.yuli.resources"
-    multiplatformResourcesVisibility = MRVisibility.Internal
 }
 
 // print stdout during tests

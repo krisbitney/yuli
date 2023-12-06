@@ -2,10 +2,9 @@ package io.github.krisbitney.yuli.ui.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.BitmapPainter
-import dev.icerock.moko.resources.compose.stringResource
 import io.github.krisbitney.yuli.models.Event
-import io.github.krisbitney.yuli.resources.MR
 import io.github.krisbitney.yuli.settings.Language
+import io.github.krisbitney.yuli.settings.Localization
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -25,17 +24,17 @@ fun formatDatetime(epochMilliseconds: Long): String {
 
 @Composable
 fun Language.localized(): String = when (this) {
-    Language.ENGLISH -> stringResource(MR.strings.english)
-    Language.RUSSIAN -> stringResource(MR.strings.russian)
-    Language.SPANISH -> stringResource(MR.strings.spanish)
+    Language.ENGLISH -> Localization.stringResource("english")
+    Language.RUSSIAN -> Localization.stringResource("russian")
+    Language.SPANISH -> Localization.stringResource("spanish")
 }
 
 @Composable
 fun Event.localizedMessage(): String  {
     return when (this.kind) {
-        Event.Kind.GAINED_FOLLOWER -> "$name ${stringResource(MR.strings.followed_you)}"
-        Event.Kind.LOST_FOLLOWER -> "$name ${stringResource(MR.strings.unfollowed_you)}"
-        Event.Kind.STARTED_FOLLOWING -> "${stringResource(MR.strings.you_followed)} $name"
-        Event.Kind.STOPPED_FOLLOWING -> "${stringResource(MR.strings.you_unfollowed)} $name"
+        Event.Kind.GAINED_FOLLOWER -> "$name ${Localization.stringResource("followed_you")}"
+        Event.Kind.LOST_FOLLOWER -> "$name ${Localization.stringResource("unfollowed_you")}"
+        Event.Kind.STARTED_FOLLOWING -> "${Localization.stringResource("you_followed")} $name"
+        Event.Kind.STOPPED_FOLLOWING -> "${Localization.stringResource("you_unfollowed")} $name"
     }
 }

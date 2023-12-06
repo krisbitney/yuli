@@ -9,7 +9,6 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
-// TODO: make this configurable in settings
 const val UPDATE_FOLLOWS_INTERVAL_SECONDS: Long = 60 * 60 * 6 // 6 hours
 
 expect object BackgroundTaskLauncher {

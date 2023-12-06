@@ -14,3 +14,7 @@ fun App(component: YuliRoot) {
 
 // TODO: error message localization
 // TODO: notification UI
+// TODO: setting: clear former follows
+// TODO: setting: dark mode
+// TODO: setting: data update interval
+// TODO: setting: use default portrait instead of own pic, or allow upload pic

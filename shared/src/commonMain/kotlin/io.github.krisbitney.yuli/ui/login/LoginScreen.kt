@@ -17,8 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.stringResource
-import io.github.krisbitney.yuli.resources.MR
+import io.github.krisbitney.yuli.settings.Localization
 import io.github.krisbitney.yuli.state.login.YuliLogin
 import io.github.krisbitney.yuli.ui.common.TitleColumn
 
@@ -74,14 +73,14 @@ fun LoginScreen(component: YuliLogin) {
 
             // Username and Password
             TextInput(
-                label = stringResource(MR.strings.username),
+                label = Localization.stringResource("username"),
                 value = component.usernameInput,
                 onValueChange = { component.usernameInput = it },
                 hideValue = false,
                 enabled = !model.value.isLoading
             )
             TextInput(
-                label = stringResource(MR.strings.password),
+                label = Localization.stringResource("password"),
                 value = component.passwordInput,
                 onValueChange = { component.passwordInput = it },
                 hideValue = true,
@@ -113,7 +112,7 @@ fun LoginScreen(component: YuliLogin) {
                 modifier = Modifier.padding(top = 16.dp).height(48.dp).width(96.dp),
                 enabled = !model.value.isLoading
             ) {
-                Text(text = stringResource(MR.strings.login), style = MaterialTheme.typography.headlineLarge)
+                Text(text = Localization.stringResource("login"), style = MaterialTheme.typography.headlineLarge)
             }
         }
     }

@@ -18,8 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.stringResource
-import io.github.krisbitney.yuli.resources.MR
+import io.github.krisbitney.yuli.settings.Localization
 import io.github.krisbitney.yuli.ui.utils.toPainter
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
@@ -33,7 +32,7 @@ fun TitleColumn(pic: List<Byte>? = null, modifier: Modifier, titleColor: Color) 
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = stringResource(MR.strings.app_title),
+            text = Localization.stringResource("app_title"),
             style = MaterialTheme.typography.displayLarge,
             color = titleColor,
         )

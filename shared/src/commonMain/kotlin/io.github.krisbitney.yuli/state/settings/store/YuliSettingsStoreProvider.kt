@@ -6,8 +6,8 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import com.russhwolf.settings.Settings
-import dev.icerock.moko.resources.desc.StringDesc
 import io.github.krisbitney.yuli.settings.Language
+import io.github.krisbitney.yuli.settings.Localization
 import io.github.krisbitney.yuli.state.settings.store.YuliSettingsStore.Intent
 import io.github.krisbitney.yuli.state.settings.store.YuliSettingsStore.State
 
@@ -35,7 +35,7 @@ class YuliSettingsStoreProvider(
             val language = settings
                 .getString("language", Language.default().name)
                 .let(Language::valueOf)
-            StringDesc.localeType = StringDesc.LocaleType.Custom(language.value)
+            Localization.current = language
             dispatch(Msg.SetLanguage(language))
         }
 
@@ -46,7 +46,7 @@ class YuliSettingsStoreProvider(
             when (intent) {
                 is Intent.SetLanguage -> {
                     settings.putString("language", intent.language.name)
-                    StringDesc.localeType = StringDesc.LocaleType.Custom(intent.language.value)
+                    Localization.current = intent.language
                     dispatch(Msg.SetLanguage(intent.language))
                 }
             }

@@ -20,9 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.stringResource
-import io.github.krisbitney.yuli.resources.MR
 import io.github.krisbitney.yuli.settings.Language
+import io.github.krisbitney.yuli.settings.Localization
 import io.github.krisbitney.yuli.ui.utils.localized
 
 @Composable
@@ -40,7 +39,7 @@ fun LanguageSetting(language: Language, onChange: (Language) -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(MR.strings.language),
+            text = Localization.stringResource("language"),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSecondary
         )

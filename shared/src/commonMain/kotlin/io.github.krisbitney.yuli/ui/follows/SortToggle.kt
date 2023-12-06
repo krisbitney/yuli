@@ -14,9 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.icerock.moko.resources.compose.stringResource
 import io.github.krisbitney.yuli.models.Profile
-import io.github.krisbitney.yuli.resources.MR
+import io.github.krisbitney.yuli.settings.Localization
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -29,7 +28,7 @@ fun SortToggle(sortedBy: Profile.SortBy, onToggle: (Profile.SortBy) -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "${stringResource(MR.strings.sort)}: ",
+                text = "${Localization.stringResource("sort")}: ",
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onPrimary
             )
@@ -56,9 +55,9 @@ fun SortToggle(sortedBy: Profile.SortBy, onToggle: (Profile.SortBy) -> Unit) {
             }
             Text(
                 text = if (sortedBy == Profile.SortBy.USERNAME) {
-                    stringResource(MR.strings.username)
+                    Localization.stringResource("username")
                 } else {
-                    stringResource(MR.strings.name)
+                    Localization.stringResource("name")
                 },
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onPrimary
