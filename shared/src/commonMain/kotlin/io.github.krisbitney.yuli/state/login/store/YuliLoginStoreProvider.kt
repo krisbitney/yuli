@@ -79,7 +79,7 @@ internal class YuliLoginStoreProvider(
                 dispatch(Msg.SetIsChallenge(true))
             }
             while (getState().challenge == null) {
-                delay(100)
+                delay(100L)
             }
             val challenge = getState().challenge?.trim()
             withContext(Dispatchers.Main) {
