@@ -7,11 +7,14 @@ import io.github.krisbitney.yuli.App
 import io.github.krisbitney.yuli.api.SocialApiFactory
 import io.github.krisbitney.yuli.database.YuliDatabase
 import io.github.krisbitney.yuli.repository.ApiHandler
+import io.github.krisbitney.yuli.repository.BackgroundTaskLauncher
 import io.github.krisbitney.yuli.state.YuliRootComponent
 import platform.UIKit.UIViewController
 
 @OptIn(ExperimentalStdlibApi::class, ExperimentalDecomposeApi::class)
 fun MainViewController(): UIViewController {
+    BackgroundTaskLauncher.requestNotificationPermissions()
+    BackgroundTaskLauncher.registerTasks()
     val lifecycle = ApplicationLifecycle()
     val db = YuliDatabase()
     val api = SocialApiFactory.get(null)

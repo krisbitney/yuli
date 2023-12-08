@@ -1,5 +1,6 @@
 package io.github.krisbitney.yuli.repository
 
+import co.touchlab.kermit.Logger
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ObjCObjectVar
@@ -7,9 +8,8 @@ import kotlinx.cinterop.alloc
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.value
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.Clock
 import platform.BackgroundTasks.BGProcessingTaskRequest
 import platform.BackgroundTasks.BGTask
 import platform.BackgroundTasks.BGTaskScheduler
@@ -32,7 +32,9 @@ actual object BackgroundTaskLauncher {
     fun requestNotificationPermissions() = UNUserNotificationCenter
         .currentNotificationCenter()
         .requestAuthorizationWithOptions(alertAndSoundPermission) { granted, error ->
-            // TODO: handle error?
+            if (error != null) {
+                Logger.e(error.localizedDescription, null, "BackgroundTaskLauncher::requestNotificationPermissions")
+            }
         }
 
     fun registerTasks() {
@@ -40,22 +42,19 @@ actual object BackgroundTaskLauncher {
             updateFollowsTaskIdentifier,
             null
         ) {
-            CoroutineScope(Dispatchers.Default).launch {
-                this@BackgroundTaskLauncher.handleUpdateFollowsTask(it!!)
-            }
+            handleUpdateFollowsTask(it!!)
         }
         BGTaskScheduler.sharedScheduler.registerForTaskWithIdentifier(
             scheduleUpdateFollowsTaskIdentifier,
             null
         ) {
-            CoroutineScope(Dispatchers.Default).launch {
-                this@BackgroundTaskLauncher.handleUpdateFollowsTask(it!!, true)
-            }
+            handleUpdateFollowsTask(it!!, true)
         }
     }
 
     actual fun <AndroidContext> scheduleUpdateFollows(context: AndroidContext){
-        this.updateFollows(scheduleUpdateFollowsTaskIdentifier, NSDate(UPDATE_FOLLOWS_INTERVAL_SECONDS.toDouble()))
+        val scheduled = Clock.System.now().epochSeconds + UPDATE_FOLLOWS_INTERVAL_SECONDS
+        this.updateFollows(scheduleUpdateFollowsTaskIdentifier, NSDate(scheduled.toDouble()))
     }
 
     actual fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
@@ -66,22 +65,22 @@ actual object BackgroundTaskLauncher {
     private fun updateFollows(taskIdentifier: String, scheduled: NSDate? = null) {
         val request = BGProcessingTaskRequest(taskIdentifier)
         request.requiresNetworkConnectivity = true
-        request.earliestBeginDate = scheduled
+        scheduled?.let { request.earliestBeginDate = it }
         memScoped {
             val err = alloc<ObjCObjectVar<NSError?>>()
             BGTaskScheduler.sharedScheduler.submitTaskRequest(request, err.ptr)
             if (err.value != null) {
-                throw Exception(err.value!!.localizedDescription)
+                Logger.e(err.value!!.localizedDescription, null, "BackgroundTaskLauncher::updateFollows")
             }
         }
     }
 
     // TODO: is it possible to update progress intermittently?
-    private suspend fun handleUpdateFollowsTask(task: BGTask, reschedule: Boolean = false) {
+    private fun handleUpdateFollowsTask(task: BGTask, reschedule: Boolean = false) {
         task.expirationHandler = {
             // TODO: Cleanup code
         }
-        val result = BackgroundTasks.launchUpdateFollowsTask(null)
+        val result = runBlocking { BackgroundTasks.launchUpdateFollowsTask(null) }
 
         UNUserNotificationCenter.currentNotificationCenter()
             .getNotificationSettingsWithCompletionHandler { settings ->
