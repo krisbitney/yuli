@@ -11,7 +11,9 @@ import io.github.krisbitney.yuli.state.login.store.YuliLoginStore.Intent
 import io.github.krisbitney.yuli.state.login.store.YuliLoginStore.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 internal class YuliLoginStoreProvider(
@@ -33,6 +35,8 @@ internal class YuliLoginStoreProvider(
         data class SetUsername(val username: String?) : Msg()
         data class SetLoginAttempt(val isLoggedIn: Boolean, val errorMsg: String?) : Msg()
         data class SetIsLoading(val isLoading: Boolean) : Msg()
+        data class SetIsChallenge(val isChallenge: Boolean) : Msg()
+        data class SetChallenge(val challenge: String?) : Msg()
     }
 
     private inner class ExecutorImpl : CoroutineExecutor<Intent, Unit, State, Msg, Nothing>() {
@@ -51,15 +55,16 @@ internal class YuliLoginStoreProvider(
                 is Intent.Login -> {
                     dispatch(Msg.SetIsLoading(true))
                     dispatch(Msg.SetLoginAttempt(false, null))
-                    login(intent.username, intent.password)
+                    login(intent.username, intent.password, getState)
                 }
                 is Intent.SetUsername -> dispatch(Msg.SetUsername(intent.username))
+                is Intent.SetChallenge -> dispatch(Msg.SetChallenge(intent.challenge))
             }
 
-        private fun login(username: String, password: String) {
+        private fun login(username: String, password: String, getState: () -> State) {
             scope.launch {
                 val result = withContext(Dispatchers.IO) {
-                    apiHandler.createSession(username, password)
+                    apiHandler.createSession(username, password) { onChallenge(getState) }
                 }
                 if (result.isSuccess) {
                     apiHandler.inBackground.updateFollowsAndNotify()
@@ -67,6 +72,21 @@ internal class YuliLoginStoreProvider(
                 dispatch(Msg.SetLoginAttempt(result.isSuccess, result.exceptionOrNull()?.message))
                 dispatch(Msg.SetIsLoading(false))
             }
+        }
+
+        private fun onChallenge(getState: () -> State): String = runBlocking(Dispatchers.Default) {
+            withContext(Dispatchers.Main) {
+                dispatch(Msg.SetIsChallenge(true))
+            }
+            while (getState().challenge == null) {
+                delay(100)
+            }
+            val challenge = getState().challenge?.trim()
+            withContext(Dispatchers.Main) {
+                dispatch(Msg.SetIsChallenge(false))
+                dispatch(Msg.SetChallenge(null))
+            }
+            challenge ?: ""
         }
     }
 
@@ -79,6 +99,8 @@ internal class YuliLoginStoreProvider(
                     errorMsg = msg.errorMsg
                 )
                 is Msg.SetIsLoading -> copy(isLoading = msg.isLoading)
+                is Msg.SetIsChallenge -> copy(isChallenge = msg.isChallenge)
+                is Msg.SetChallenge -> copy(challenge = msg.challenge)
             }
     }
 

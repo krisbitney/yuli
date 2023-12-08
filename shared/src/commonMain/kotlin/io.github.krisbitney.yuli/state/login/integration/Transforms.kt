@@ -8,6 +8,7 @@ internal val stateToModel: (State) -> Model = {
         username = it.username,
         isLoggedIn = it.isLoggedIn,
         errorMsg = it.errorMsg,
-        isLoading = it.isLoading
+        isLoading = it.isLoading,
+        isChallenge = it.isChallenge
     )
 }

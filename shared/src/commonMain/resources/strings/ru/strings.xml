@@ -33,4 +33,6 @@
     <!--login-->
     <string name="password">Пароль</string>
     <string name="login">Войти</string>
+    <string name="challenge_message">Instagram просит вас доказать, что вы человек. Пожалуйста, введите код двухфакторной аутентификации, отправленный на ваш телефон или электронную почту. Если вы не получили код, посетите https://i.instagram.com/challenge для верификации вашего аккаунта.</string>
+    <string name="submit_challenge">Готово</string>
 </resources>

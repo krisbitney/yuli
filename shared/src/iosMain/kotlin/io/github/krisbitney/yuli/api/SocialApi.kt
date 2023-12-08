@@ -23,11 +23,11 @@ class IosSocialApi : SocialApi {
 
     private val api = SwiftSocialApi()
 
-    override suspend fun login(username: String, password: String): Result<Unit> = withContext(Dispatchers.IO) {
+    override suspend fun login(username: String, password: String, onChallenge: () -> String): Result<Unit> = withContext(Dispatchers.IO) {
         var isLoggedIn: Result<Unit> = Result.failure(Exception("'isLoggedIn' failed to initialize"))
         try {
             var isComplete = false
-            api.loginWithUsername(username, password) { isSuccess: Boolean, error: String? ->
+            api.loginWithUsername(username, password, onChallenge) { isSuccess: Boolean, error: String? ->
                 isLoggedIn = if (isSuccess) {
                     Result.success(Unit)
                 } else if (error != null) {

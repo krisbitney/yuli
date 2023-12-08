@@ -33,4 +33,6 @@
 <!--login-->
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="challenge_message">Instagram wants you to prove you are human. Please input the two-factor authentication challenge code sent to your phone or email. If you did not receive one, please visit https://i.instagram.com/challenge to verify your account.</string>
+    <string name="submit_challenge">Done</string>
 </resources>

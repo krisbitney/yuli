@@ -6,6 +6,8 @@ import androidx.security.crypto.MasterKey
 import com.github.instagram4j.instagram4j.IGClient
 import com.github.instagram4j.instagram4j.actions.users.UserAction
 import com.github.instagram4j.instagram4j.exceptions.IGLoginException
+import com.github.instagram4j.instagram4j.responses.accounts.LoginResponse
+import com.github.instagram4j.instagram4j.utils.IGChallengeUtils
 import io.github.krisbitney.yuli.IGClientEncryptedDeserializer
 import io.github.krisbitney.yuli.models.Profile
 import io.github.krisbitney.yuli.models.User
@@ -48,27 +50,29 @@ class AndroidSocialApi(override val context: Context) : SocialApi {
     private var insta: IGClient? = null
     private var username: String? = null
 
-    override suspend fun login(username: String, password: String): Result<Unit> = withContext(Dispatchers.IO) {
+    override suspend fun login(username: String, password: String, onChallenge: () -> String): Result<Unit> = withContext(Dispatchers.IO) {
         runCatching {
             if (client.exists()) client.delete()
             if (cookie.exists()) cookie.delete()
             try {
                 val igDevice = DeviceInfoHelper(context).getDeviceInformation()
+                val onChallengeJvm: (IGClient, LoginResponse) -> LoginResponse = { client, response ->
+                    IGChallengeUtils.resolveChallenge(client, response, onChallenge)
+                }
+                val onTwoFactorJvm: (IGClient, LoginResponse) -> LoginResponse = { client, response ->
+                    IGChallengeUtils.resolveTwoFactor(client, response, onChallenge)
+                }
                 insta = IGClient.builder()
                     .device(igDevice)
                     .username(username)
                     .password(password)
+                    .onChallenge(onChallengeJvm)
+                    .onTwoFactor(onTwoFactorJvm)
                     .login()
                 insta?.serializeEncrypted(encryptedClient, encryptedCookie)
                 this@AndroidSocialApi.username = username
             } catch (e: IGLoginException) {
-                // TODO: Do I need this?
-                val revised: Exception = if (e.loginResponse.two_factor_info != null) {
-                    Exception("This account requires 2-factor-authentication.")
-                } else {
-                    e
-                }
-                return@withContext Result.failure(revised)
+                return@withContext Result.failure(e)
             }
         }
     }

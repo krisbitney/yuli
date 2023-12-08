@@ -1,8 +1,5 @@
 package io.github.krisbitney.yuli.state.login.integration
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
@@ -44,9 +41,6 @@ class YuliLoginComponent (
     private val scope = CoroutineScope(Dispatchers.Default)
     override val model: StateFlow<YuliLogin.Model> = store.stateFlow.map(scope, stateToModel)
 
-    override var usernameInput by mutableStateOf("")
-    override var passwordInput by mutableStateOf("")
-
     init {
         lifecycle.doOnCreate {
             scope.launch {
@@ -72,5 +66,9 @@ class YuliLoginComponent (
 
     override fun onCloseClicked() {
         output(YuliLogin.Output.Close(false))
+    }
+
+    override fun onSubmitChallenge(challenge: String) {
+        store.accept(YuliLoginStore.Intent.SetChallenge(challenge))
     }
 }

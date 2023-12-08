@@ -6,7 +6,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults.iconButtonColors
@@ -24,28 +23,23 @@ import io.github.krisbitney.yuli.ui.common.TitleColumn
 @Composable
 fun LoginScreen(component: YuliLogin) {
     val model = component.model.collectAsState()
+    var usernameInput by remember { mutableStateOf("") }
     if (model.value.username != null) {
-        component.usernameInput = model.value.username ?: ""
+        usernameInput = model.value.username ?: ""
     }
+    var passwordInput by remember { mutableStateOf("") }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surface)
     ) {
-        // Loading Indicator
-        if (model.value.isLoading) {
-            Box(
-                // Semi-transparent black background
-                modifier = Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.5f)),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp).offset(y = (-40).dp),
-                    color = MaterialTheme.colorScheme.primary,
-                    strokeWidth = 4.dp
-                )
-            }
+        if (model.value.isChallenge) {
+            ChallengeDialog(component::onSubmitChallenge)
+        } else if (model.value.isLoading) {
+            Loading()
         }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -68,51 +62,57 @@ fun LoginScreen(component: YuliLogin) {
                 ) { Icon(Icons.Rounded.Close, "Close login screen") }
             }
 
-            // Title
-            TitleColumn(null, Modifier.wrapContentSize(), MaterialTheme.colorScheme.onSurface)
+            if (!model.value.isChallenge) {
+                // Title
+                TitleColumn(null, Modifier.wrapContentSize(), MaterialTheme.colorScheme.onSurface)
 
-            // Username and Password
-            TextInput(
-                label = Localization.stringResource("username"),
-                value = component.usernameInput,
-                onValueChange = { component.usernameInput = it },
-                hideValue = false,
-                enabled = !model.value.isLoading
-            )
-            TextInput(
-                label = Localization.stringResource("password"),
-                value = component.passwordInput,
-                onValueChange = { component.passwordInput = it },
-                hideValue = true,
-                enabled = !model.value.isLoading
-            )
-
-            // Error Message
-            if (model.value.errorMsg != null) {
-                Text(
-                    text = model.value.errorMsg ?: "",
-                    color = Color.Red,
-                    style = MaterialTheme.typography.headlineSmall
+                // Username and Password
+                TextInput(
+                    label = Localization.stringResource("username"),
+                    value = usernameInput,
+                    onValueChange = { usernameInput = it },
+                    hideValue = false,
+                    enabled = !model.value.isLoading
                 )
-            }
+                TextInput(
+                    label = Localization.stringResource("password"),
+                    value = passwordInput,
+                    onValueChange = { passwordInput = it },
+                    hideValue = true,
+                    enabled = !model.value.isLoading
+                )
 
-            // Login Button
-            Button(onClick = {
-                component.onLoginClicked(component.usernameInput, component.passwordInput)
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                ),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 4.dp,
-                    pressedElevation = 0.dp,
-                    disabledElevation = 0.dp
-                ),
-                modifier = Modifier.padding(top = 16.dp).height(48.dp).width(96.dp),
-                enabled = !model.value.isLoading
-            ) {
-                Text(text = Localization.stringResource("login"), style = MaterialTheme.typography.headlineLarge)
+                // Error Message
+                if (model.value.errorMsg != null) {
+                    Text(
+                        text = model.value.errorMsg ?: "",
+                        color = Color.Red,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                }
+
+                // Login Button
+                Button(
+                    onClick = {
+                        component.onLoginClicked(usernameInput, passwordInput)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 4.dp,
+                        pressedElevation = 0.dp,
+                        disabledElevation = 0.dp
+                    ),
+                    modifier = Modifier.padding(top = 16.dp).height(48.dp).width(96.dp),
+                    enabled = !model.value.isLoading
+                ) {
+                    Text(
+                        text = Localization.stringResource("login"),
+                        style = MaterialTheme.typography.headlineLarge
+                    )
+                }
             }
         }
     }

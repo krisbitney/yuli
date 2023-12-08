@@ -37,7 +37,8 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
     suspend fun createSession(
         username: String,
-        password: String
+        password: String,
+        onChallenge: () -> String
     ): Result<User> = withContext(Dispatchers.IO) {
         val maybeOldUser = db.selectUser()
 
@@ -47,7 +48,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
         }
 
         val isLoggedIn = withTimeoutOrNull(requestTimeout) {
-            api.login(username, password)
+            api.login(username, password, onChallenge)
         } ?: return@withContext Result.failure(Exception("Login timed out. Please try again."))
 
         if (isLoggedIn.isFailure) {
@@ -212,13 +213,18 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
     // handles login exceptions; updates database and user state
     private suspend fun handleLoginException(e: Throwable, initialState: UserState): Throwable = withContext(Dispatchers.IO) {
         var newState = initialState.copy(isLoggedIn = false, isLocked = false)
-        val newException = if (e.message!!.contains("factor")) {
+        val message = e.message ?: ""
+        val newException = if (message.contains("factor")) {
             Exception("This account requires 2-factor-authentication.")
-        } else if (e.message!!.contains("few minutes")) {
+        } else if (message.contains("few minutes")) {
             Exception("Please wait a few minutes and try again.")
-        } else if (e.message!!.contains("password")) {
+        } else if (
+            message.contains("password") ||
+            message.contains("Authenticator.Error error 2") ||
+            message.contains("Authenticator.Error error 5")
+            ) {
             Exception("Username or password is incorrect")
-        } else if (e.message!!.contains("challenge")) {
+        } else if (message.contains("challenge") || message.contains("Authenticator.Error error 6")) {
             newState = newState.copy(isLocked = true)
             Exception("Your account is locked. Open https://i.instagram.com/challenge to verify your account.")
         } else {
