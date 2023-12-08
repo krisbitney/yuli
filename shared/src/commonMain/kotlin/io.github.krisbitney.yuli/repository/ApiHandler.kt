@@ -47,9 +47,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
             else -> UserState(username, isLoggedIn = false, isLocked = false, lastUpdate = 0L)
         }
 
-        val isLoggedIn = withTimeoutOrNull(requestTimeout) {
-            api.login(username, password, onChallenge)
-        } ?: return@withContext Result.failure(Exception("Login timed out. Please try again."))
+        val isLoggedIn = api.login(username, password, onChallenge)
 
         if (isLoggedIn.isFailure) {
             val exception = handleLoginException(isLoggedIn.exceptionOrNull()!!, state)
