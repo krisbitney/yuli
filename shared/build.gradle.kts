@@ -54,7 +54,7 @@ kotlin {
                 implementation("com.arkivanov.mvikotlin:mvikotlin:$mviKotlinVersion")
                 implementation("com.arkivanov.mvikotlin:mvikotlin-main:$mviKotlinVersion")
                 implementation("com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines:$mviKotlinVersion")
-                implementation("co.touchlab:kermit:2.0.2")
+//                implementation("co.touchlab:kermit:2.0.2")
                 implementation("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
             }
         }

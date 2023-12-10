@@ -41,14 +41,14 @@ class YuliRootComponent(
          apiHandler: ApiHandler
     ) : this(
         componentContext = componentContext,
-        yuliHome = { childContext, output, isUpdating ->
+        yuliHome = { childContext, output, shouldUpdate ->
             YuliHomeComponent(
                 componentContext = childContext,
                 storeFactory = storeFactory,
                 database = database,
                 apiHandler = apiHandler,
                 output = output,
-                isUpdating = isUpdating
+                shouldUpdate = shouldUpdate
             )
         },
         yuliLogin = { childContext, output ->
@@ -99,7 +99,7 @@ class YuliRootComponent(
     private fun createChild(configuration: Configuration, componentContext: ComponentContext): YuliRoot.Child =
         when (configuration) {
             is Configuration.Home -> YuliRoot.Child.Home(
-                yuliHome(componentContext, ::onHomeOutput, configuration.isUpdating)
+                yuliHome(componentContext, ::onHomeOutput, configuration.shouldUpdate)
             )
             is Configuration.Login -> YuliRoot.Child.Login(yuliLogin(componentContext, ::onLoginOutput))
             is Configuration.Follows -> YuliRoot.Child.Follows(
@@ -119,7 +119,7 @@ class YuliRootComponent(
 
     private fun onLoginOutput(output: YuliLogin.Output): Unit =
         when (output) {
-            is YuliLogin.Output.Close -> navigation.replaceCurrent(Configuration.Home(output.isUpdating))
+            is YuliLogin.Output.Close -> navigation.replaceCurrent(Configuration.Home(output.shouldUpdate))
         }
 
     private fun onFollowsOutput(output: YuliFollows.Output): Unit =
@@ -140,7 +140,7 @@ class YuliRootComponent(
     @Serializable
     private sealed class Configuration {
         @Serializable
-        data class Home(val isUpdating: Boolean) : Configuration()
+        data class Home(val shouldUpdate: Boolean) : Configuration()
         @Serializable
         data object Login : Configuration()
         @Serializable

@@ -10,7 +10,7 @@ class YuliHistoryStoreDatabase(private val database: YuliDatabase) : YuliHistory
     override suspend fun selectEvents(timePeriod: Event.TimePeriod): List<Event> {
         return when (timePeriod) {
             Event.TimePeriod.ONE_DAY -> database.selectEvents(
-                database.daysAgoUnixTimestamp(0),
+                database.daysAgoUnixTimestamp(1),
                 Instant.DISTANT_FUTURE.epochSeconds
             )
             Event.TimePeriod.SEVEN_DAYS -> database.selectEvents(

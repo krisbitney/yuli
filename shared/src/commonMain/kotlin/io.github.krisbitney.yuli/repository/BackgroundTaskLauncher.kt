@@ -12,22 +12,18 @@ import kotlinx.datetime.Instant
 const val UPDATE_FOLLOWS_INTERVAL_SECONDS: Long = 60 * 60 * 6 // 6 hours
 
 expect object BackgroundTaskLauncher {
-    fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext)
+    suspend fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext)
     fun <AndroidContext> scheduleUpdateFollows(context: AndroidContext)
 }
 
 object BackgroundTasks {
+
+    // TODO: need to inform the user if this fails
     @OptIn(ExperimentalStdlibApi::class)
     suspend fun <AndroidContext> launchUpdateFollowsTask(context: AndroidContext, reportProgress: suspend (message: String) -> Unit = {}): Result<ApiHandler.UpdateFollowsSummary> = withContext(Dispatchers.IO) {
         YuliDatabase().use { db ->
             val api = SocialApiFactory.get(context)
-            val username = db.selectUser()?.username
-            if (username == null) {
-                val e = Exception("No user logged in")
-                return@use Result.failure(e)
-            }
-            // update follows
-            val result = ApiHandler(api, db).updateFollows(username, reportProgress)
+            val result = ApiHandler(api, db).updateFollows(reportProgress)
             if (result.isSuccess) {
                 // clear old events to keep app storage down
                 val oldEvents = db.selectEvents(

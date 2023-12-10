@@ -7,6 +7,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.models.User
+import io.github.krisbitney.yuli.models.UserState
 import io.github.krisbitney.yuli.repository.ApiHandler
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.Intent
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.State
@@ -80,44 +81,37 @@ internal class YuliHomeStoreProvider(
             when (intent) {
                 is Intent.OpenSettings -> Unit
                 is Intent.RefreshFollowsData -> refreshFollowsData()
-                is Intent.SetIsUpdating -> {
-                    dispatch(Msg.SetUpdateInProgress(intent.isUpdating))
-                    if (intent.isUpdating) {
-                        watchLastUpdate()
-                    }
-                    Unit
-                }
             }
 
         private fun refreshFollowsData() {
             scope.launch {
                 dispatch(Msg.SetUpdateInProgress(true))
-                apiHandler.inBackground.updateFollowsAndNotify()
-                watchLastUpdate()
+                val lastUpdate = withContext(Dispatchers.IO) {
+                    database.selectState()?.lastUpdate ?: 0L
+                }
+                launch {
+                    apiHandler.inBackground.updateFollowsAndNotify()
+                }
+                watchLastUpdate(lastUpdate)
             }
         }
 
-        // TODO: this needs testing to make sure there is no race condition where the background update happens too quickly
-        private fun watchLastUpdate() = scope.launch {
+        private suspend fun watchLastUpdate(lastUpdate: Long) {
             withContext(Dispatchers.IO) {
-                val lastUpdate = database.watchLastUpdate()
-                var startUpdateTime = 0L
+                val nextUpdate = database.watchLastUpdate()
                 withTimeoutOrNull(600_000) {
-                    lastUpdate.collect {
-                        // the first value should be the prior update time
-                        if (startUpdateTime == 0L) {
-                            startUpdateTime = it
-                        // subsequent values should be the current update time
-                        } else {
-                            if (it > startUpdateTime) {
-                                withContext(Dispatchers.Main) {
-                                    dispatch(Msg.SetUpdateInProgress(false))
-                                }
-                                cancel()
+                    nextUpdate.collect {
+                        if (it > lastUpdate) {
+                            withContext(Dispatchers.Main) {
+                                dispatch(Msg.SetUpdateInProgress(false))
                             }
+                            this@withTimeoutOrNull.cancel()
                         }
                     }
                 }
+            }
+            withContext(Dispatchers.Main) {
+                dispatch(Msg.SetUpdateInProgress(false))
             }
         }
 
@@ -148,6 +142,8 @@ internal class YuliHomeStoreProvider(
 
     interface Database {
         suspend fun selectUser(): User?
+
+        suspend fun selectState(): UserState?
 
         suspend fun countFollows(type: FollowType): Flow<Long>
 

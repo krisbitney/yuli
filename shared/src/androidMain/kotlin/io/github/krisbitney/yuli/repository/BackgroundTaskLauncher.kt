@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 
 actual object BackgroundTaskLauncher {
 
-    actual fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
+    actual suspend fun <AndroidContext> updateFollowsAndNotify(context: AndroidContext) {
         val workRequest = OneTimeWorkRequestBuilder<UpdateFollowsWorker>().build()
         WorkManager.getInstance(context as Context).enqueue(workRequest)
     }

@@ -17,7 +17,8 @@ fun UserHeadline(
     username: String,
     pic: List<Byte>?,
     onClickRightHeaderImage: () -> Unit = {},
-    updateInProgress: Boolean = false
+    updateInProgress: Boolean = false,
+    loggedIn: Boolean = true
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().height(250.dp).padding(vertical = 12.dp),
@@ -32,7 +33,7 @@ fun UserHeadline(
             onClickHeaderImage = {}
         )
         TitleColumn(pic, Modifier.fillMaxHeight(), MaterialTheme.colorScheme.onBackground)
-        if (platformIsIos()) {
+        if (platformIsIos() && loggedIn) {
             if (updateInProgress) {
                 flowerColumn(
                     text = "@$username",

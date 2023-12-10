@@ -8,7 +8,6 @@ import io.github.krisbitney.yuli.models.UserState
 import io.realm.kotlin.Realm
 import io.realm.kotlin.RealmConfiguration
 import io.realm.kotlin.UpdatePolicy
-import io.realm.kotlin.delete
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.ext.toRealmList
 import io.realm.kotlin.query.Sort
@@ -93,17 +92,18 @@ class YuliDatabase : AutoCloseable {
     }
 
     suspend fun deleteEvents(events: Collection<Event>) = withContext(Dispatchers.IO) {
+        if (events.isEmpty()) return@withContext
         realm.write {
-            delete(events.toRealmList())
+            val realmList = events.toRealmList()
+            while (realmList.isNotEmpty()) {
+                delete(realmList.removeLast())
+            }
         }
     }
 
     suspend fun clear() = withContext(Dispatchers.IO) {
         realm.write {
-            delete<Event>()
-            delete<Profile>()
-            delete<User>()
-            delete<UserState>()
+            deleteAll()
         }
     }
 

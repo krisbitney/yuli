@@ -66,9 +66,6 @@ internal class YuliLoginStoreProvider(
                 val result = withContext(Dispatchers.IO) {
                     apiHandler.createSession(username, password) { onChallenge(getState) }
                 }
-                if (result.isSuccess) {
-                    apiHandler.inBackground.updateFollowsAndNotify()
-                }
                 dispatch(Msg.SetLoginAttempt(result.isSuccess, result.exceptionOrNull()?.message))
                 dispatch(Msg.SetIsLoading(false))
             }

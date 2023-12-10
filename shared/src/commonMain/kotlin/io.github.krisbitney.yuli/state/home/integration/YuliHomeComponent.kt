@@ -1,7 +1,6 @@
 package io.github.krisbitney.yuli.state.home.integration
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -29,7 +28,7 @@ class YuliHomeComponent (
     database: YuliDatabase,
     apiHandler: ApiHandler,
     private val output: (Output) -> Unit,
-    isUpdating: Boolean
+    shouldUpdate: Boolean
 ) : YuliHome, ComponentContext by componentContext {
 
     private val store = instanceKeeper.getStore {
@@ -44,8 +43,8 @@ class YuliHomeComponent (
     override val model: StateFlow<Model> = store.stateFlow.map(scope, stateToModel)
 
     init {
-        lifecycle.doOnCreate {
-            store.accept(YuliHomeStore.Intent.SetIsUpdating(isUpdating))
+        if (shouldUpdate) {
+            store.accept(YuliHomeStore.Intent.RefreshFollowsData)
         }
         lifecycle.doOnDestroy {
             if (scope.isActive) {

@@ -14,7 +14,6 @@ import platform.UIKit.UIViewController
 @OptIn(ExperimentalStdlibApi::class, ExperimentalDecomposeApi::class)
 fun MainViewController(): UIViewController {
     BackgroundTaskLauncher.requestNotificationPermissions()
-    BackgroundTaskLauncher.registerTasks()
     val lifecycle = ApplicationLifecycle()
     val db = YuliDatabase()
     val api = SocialApiFactory.get(null)

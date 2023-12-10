@@ -52,10 +52,5 @@
         <string>ru</string>
         <string>es</string>
     </array>
-    <key>BGTaskSchedulerPermittedIdentifiers</key>
-    <array>
-        <string>io.github.krisbitney.yuli.updateFollows</string>
-        <string>io.github.krisbitney.yuli.scheduleUpdateFollows</string>
-    </array>
 </dict>
 </plist>

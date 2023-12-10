@@ -44,13 +44,15 @@ fun HomeScreen(component: YuliHome) {
                     username = model.value.user?.username ?: "",
                     pic = model.value.user?.pic,
                     onClickRightHeaderImage = component::onRefreshClicked,
-                    updateInProgress = model.value.updateInProgress
+                    updateInProgress = model.value.updateInProgress,
+                    loggedIn = true
                 )
             } else {
                 UserHeadline(
                     fullName = Localization.stringResource("not_logged_in"),
                     username = Localization.stringResource("please_log"),
-                    pic = null
+                    pic = null,
+                    loggedIn = false,
                 )
             }
             Column(

@@ -21,7 +21,7 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
     val inBackground = LaunchInBackground(api.context)
     inner class LaunchInBackground(private val context: Any?) {
-        fun updateFollowsAndNotify() = BackgroundTaskLauncher.updateFollowsAndNotify(context)
+        suspend fun updateFollowsAndNotify() = BackgroundTaskLauncher.updateFollowsAndNotify(context)
     }
 
     data class UpdateFollowsSummary(
@@ -82,7 +82,13 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    suspend fun updateFollows(username: String, reportProgress: suspend (message: String) -> Unit = {}): Result<UpdateFollowsSummary> = withContext(Dispatchers.IO) {
+    suspend fun updateFollows(reportProgress: suspend (message: String) -> Unit = {}): Result<UpdateFollowsSummary> = withContext(Dispatchers.IO) {
+        val username = db.selectUser()?.username
+        if (username == null) {
+            val e = Exception("No user logged in")
+            return@withContext Result.failure(e)
+        }
+
         reportProgress("Checking login status...")
         ApiHandler(api, db)
             .restoreSession(username)
