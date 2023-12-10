@@ -33,24 +33,22 @@ fun UserHeadline(
             onClickHeaderImage = {}
         )
         TitleColumn(pic, Modifier.fillMaxHeight(), MaterialTheme.colorScheme.onBackground)
-        if (platformIsIos() && loggedIn) {
-            if (updateInProgress) {
-                flowerColumn(
-                    text = "@$username",
-                    flowerImage = "flower_2.png",
-                    headerImage = "downloading_icon.xml",
-                    headerImageDescription = "downloading icon",
-                    onClickHeaderImage = {}
-                )
-            } else {
-                flowerColumn(
-                    text = "@$username",
-                    flowerImage = "flower_2.png",
-                    headerImage = "refresh_icon.xml",
-                    headerImageDescription = "refresh icon",
-                    onClickHeaderImage = onClickRightHeaderImage
-                )
-            }
+        if (updateInProgress && loggedIn) {
+            flowerColumn(
+                text = "@$username",
+                flowerImage = "flower_2.png",
+                headerImage = "downloading_icon.xml",
+                headerImageDescription = "downloading icon",
+                onClickHeaderImage = {}
+            )
+        } else if (platformIsIos()) {
+            flowerColumn(
+                text = "@$username",
+                flowerImage = "flower_2.png",
+                headerImage = "refresh_icon.xml",
+                headerImageDescription = "refresh icon",
+                onClickHeaderImage = onClickRightHeaderImage
+            )
         } else {
             flowerColumn(
                 text = "@$username",

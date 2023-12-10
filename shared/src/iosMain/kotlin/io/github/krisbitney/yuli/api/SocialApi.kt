@@ -120,7 +120,7 @@ class IosSocialApi : SocialApi {
         var followings: Result<List<Profile>> = Result.failure(Exception("'followings' failed to initialize"))
         try {
             var isComplete = false
-            api.fetchFollowersWithPageDelay(pageDelay) { iosFollowings: List<*>?, error: String? ->
+            api.fetchFollowingsWithPageDelay(pageDelay) { iosFollowings: List<*>?, error: String? ->
                 followings = if (iosFollowings != null) {
                     iosFollowings
                         .filterIsInstance<SwiftProfile>()
