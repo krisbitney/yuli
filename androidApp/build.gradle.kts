@@ -38,12 +38,12 @@ kotlin {
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.yuli"
+    namespace = "io.github.krisbitney.yuli.android"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
-        applicationId = "io.github.krisbitney.yuli"
+        applicationId = "io.github.krisbitney.yuli.android"
         minSdk = (findProperty("android.minSdk") as String).toInt()
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
         versionCode = 1

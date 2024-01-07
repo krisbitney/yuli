@@ -26,7 +26,7 @@ kotlin {
         }
         pod("yuli_ios") {
             version = "1.0.0"
-            source = git("https://github.com/krisbitney/yuli_ios")
+            source = git("https://github.com/krisbitney/yuli-ios-api.git")
             extraOpts = listOf("-compiler-option", "-fmodules")
         }
     }
