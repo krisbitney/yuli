@@ -72,4 +72,8 @@ class YuliHomeComponent (
     override fun onRefreshClicked() {
         store.accept(YuliHomeStore.Intent.RefreshFollowsData)
     }
+
+    override fun resetUpdateError() {
+        store.accept(YuliHomeStore.Intent.ResetUpdateError)
+    }
 }

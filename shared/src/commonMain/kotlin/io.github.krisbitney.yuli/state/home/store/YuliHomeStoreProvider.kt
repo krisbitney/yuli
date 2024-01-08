@@ -7,19 +7,17 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutor
 import io.github.krisbitney.yuli.models.FollowType
 import io.github.krisbitney.yuli.models.User
-import io.github.krisbitney.yuli.models.UserState
 import io.github.krisbitney.yuli.repository.ApiHandler
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.Intent
 import io.github.krisbitney.yuli.state.home.store.YuliHomeStore.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeoutOrNull
 
 internal class YuliHomeStoreProvider(
     private val storeFactory: StoreFactory,
@@ -48,6 +46,7 @@ internal class YuliHomeStoreProvider(
         data class SetFansCount(val value: Long) : Msg()
         data class SetFormerFollowsCount(val value: Long) : Msg()
         data class SetUpdateInProgress(val value: Boolean) : Msg()
+        data class SetUpdateError(val value: String? = null): Msg()
     }
 
     private inner class BootstrapperImpl : CoroutineBootstrapper<Action>() {
@@ -81,36 +80,19 @@ internal class YuliHomeStoreProvider(
             when (intent) {
                 is Intent.OpenSettings -> Unit
                 is Intent.RefreshFollowsData -> refreshFollowsData()
+                is Intent.ResetUpdateError -> dispatch(Msg.SetUpdateError(null))
             }
 
         private fun refreshFollowsData() {
             scope.launch {
                 dispatch(Msg.SetUpdateInProgress(true))
-                val lastUpdate = withContext(Dispatchers.IO) {
-                    database.selectState()?.lastUpdate ?: 0L
+                val result = async(Dispatchers.IO) {
+                    apiHandler.inBackground.launchUpdateFollowsTask()
+                }.await()
+                if (result.isFailure) {
+                    val message = result.exceptionOrNull()?.message ?: "An unexpected error occurred."
+                    dispatch(Msg.SetUpdateError(message))
                 }
-                launch {
-                    apiHandler.inBackground.updateFollowsAndNotify()
-                }
-                watchLastUpdate(lastUpdate)
-            }
-        }
-
-        private suspend fun watchLastUpdate(lastUpdate: Long) {
-            withContext(Dispatchers.IO) {
-                val nextUpdate = database.watchLastUpdate()
-                withTimeoutOrNull(600_000) {
-                    nextUpdate.collect {
-                        if (it > lastUpdate) {
-                            withContext(Dispatchers.Main) {
-                                dispatch(Msg.SetUpdateInProgress(false))
-                            }
-                            this@withTimeoutOrNull.cancel()
-                        }
-                    }
-                }
-            }
-            withContext(Dispatchers.Main) {
                 dispatch(Msg.SetUpdateInProgress(false))
             }
         }
@@ -137,16 +119,13 @@ internal class YuliHomeStoreProvider(
                 is Msg.SetFansCount -> copy(fansCount = msg.value)
                 is Msg.SetFormerFollowsCount -> copy(formerFollowsCount = msg.value)
                 is Msg.SetUpdateInProgress -> copy(updateInProgress = msg.value)
+                is Msg.SetUpdateError -> copy(updateError = msg.value)
             }
     }
 
     interface Database {
         suspend fun selectUser(): User?
 
-        suspend fun selectState(): UserState?
-
         suspend fun countFollows(type: FollowType): Flow<Long>
-
-        suspend fun watchLastUpdate(): Flow<Long>
     }
 }

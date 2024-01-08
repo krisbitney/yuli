@@ -21,7 +21,9 @@ class ApiHandler(private val api: SocialApi, private val db: YuliDatabase) {
 
     val inBackground = LaunchInBackground(api.context)
     inner class LaunchInBackground(private val context: Any?) {
-        suspend fun updateFollowsAndNotify() = BackgroundTaskLauncher.updateFollowsAndNotify(context)
+        suspend fun launchUpdateFollowsTask(): Result<UpdateFollowsSummary> {
+            return BackgroundTasks.launchUpdateFollowsTask(context)
+        }
     }
 
     data class UpdateFollowsSummary(

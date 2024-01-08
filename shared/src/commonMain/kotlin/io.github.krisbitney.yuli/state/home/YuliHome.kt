@@ -17,6 +17,8 @@ interface YuliHome {
 
     fun onRefreshClicked()
 
+    fun resetUpdateError()
+
     data class Model(
         val user: User?,
         val mutualsCount: Long,
@@ -24,6 +26,7 @@ interface YuliHome {
         val fansCount: Long,
         val formerFollowsCount: Long,
         val updateInProgress: Boolean,
+        val updateError: String?
     )
 
     sealed class Output {

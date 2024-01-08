@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.krisbitney.yuli.ui.common.TitleColumn
-import io.github.krisbitney.yuli.ui.utils.platformIsIos
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @ExperimentalResourceApi
@@ -18,7 +17,7 @@ fun UserHeadline(
     pic: List<Byte>?,
     onClickRightHeaderImage: () -> Unit = {},
     updateInProgress: Boolean = false,
-    loggedIn: Boolean = true
+    loggedIn: Boolean = true,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().height(250.dp).padding(vertical = 12.dp),
@@ -33,7 +32,7 @@ fun UserHeadline(
             onClickHeaderImage = {}
         )
         TitleColumn(pic, Modifier.fillMaxHeight(), MaterialTheme.colorScheme.onBackground)
-        if (updateInProgress && loggedIn) {
+        if (updateInProgress) {
             flowerColumn(
                 text = "@$username",
                 flowerImage = "flower_2.png",
@@ -41,7 +40,7 @@ fun UserHeadline(
                 headerImageDescription = "downloading icon",
                 onClickHeaderImage = {}
             )
-        } else if (platformIsIos()) {
+        } else if (loggedIn) {
             flowerColumn(
                 text = "@$username",
                 flowerImage = "flower_2.png",

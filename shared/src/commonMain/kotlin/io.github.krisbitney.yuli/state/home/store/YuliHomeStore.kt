@@ -10,6 +10,7 @@ internal interface YuliHomeStore : Store<Intent, State, Nothing> {
     sealed class Intent {
         data object OpenSettings : Intent()
         data object RefreshFollowsData : Intent()
+        data object ResetUpdateError : Intent()
     }
 
     data class State(
@@ -18,6 +19,7 @@ internal interface YuliHomeStore : Store<Intent, State, Nothing> {
         val nonfollowersCount: Long = 0L,
         val fansCount: Long = 0L,
         val formerFollowsCount: Long = 0L,
-        val updateInProgress: Boolean = false
+        val updateInProgress: Boolean = false,
+        val updateError: String? = null
     )
 }

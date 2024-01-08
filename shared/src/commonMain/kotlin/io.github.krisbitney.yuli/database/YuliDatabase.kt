@@ -12,10 +12,8 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.ext.toRealmList
 import io.realm.kotlin.query.Sort
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlin.time.DurationUnit
@@ -72,11 +70,6 @@ class YuliDatabase : AutoCloseable {
         realm.write {
             copyToRealm(state, UpdatePolicy.ALL)
         }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    suspend fun watchLastUpdate(): Flow<Long> = withContext(Dispatchers.IO) {
-        realm.query<UserState>().first().asFlow().mapLatest { it.obj?.lastUpdate ?: 0L }
     }
 
     suspend fun selectEvents(fromUnixTime: Long, toUnixTime: Long): List<Event> = withContext(Dispatchers.IO) {
